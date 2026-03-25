@@ -56,9 +56,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .cat-card-over-icon{font-size:12px;display:none;}
 .cat-card.over-goal .cat-card-over-icon{display:block;}
 .cat-card-label{font-size:10px;color:var(--muted);margin-bottom:5px;line-height:1.3;font-weight:500;}
-.cat-card input[type=number]{width:100%;background:none;border:none;border-bottom:1.5px solid var(--border);color:var(--text);font-size:16px;font-weight:700;outline:none;padding:3px 0;transition:border-color .2s;}
+.cat-card input[type=number]{width:100%;background:none;border:none;border-bottom:1.5px solid rgba(124,109,250,.25);color:var(--text);font-size:16px;font-weight:700;outline:none;padding:3px 0;transition:border-color .2s;}
 .cat-card input[type=number]:focus{border-bottom-color:var(--c-color,var(--accent));}
-.cat-card input[type=number]::placeholder{color:var(--border);}
+.cat-card input[type=number]::placeholder{color:rgba(119,119,170,.5);}
 .goal-row{margin-top:6px;display:flex;align-items:center;gap:4px;}
 .goal-row span{font-size:9px;color:var(--muted);white-space:nowrap;}
 .goal-row input{flex:1;background:none;border:none;border-bottom:1px dashed var(--border);color:var(--muted);font-size:11px;outline:none;padding:1px 0;min-width:0;}
@@ -68,9 +68,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .income-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
 .income-card{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:2px solid rgba(34,197,94,.2);border-radius:12px;padding:14px 12px;}
 .income-card .ic-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;}
-.income-card input{width:100%;background:none;border:none;border-bottom:1.5px solid rgba(34,197,94,.3);color:var(--text);font-size:18px;font-weight:800;outline:none;padding:3px 0;}
+.income-card input{width:100%;background:none;border:none;border-bottom:1.5px solid rgba(34,197,94,.4);color:var(--text);font-size:18px;font-weight:800;outline:none;padding:3px 0;}
 .income-card input:focus{border-bottom-color:var(--green);}
-.income-card input::placeholder{color:var(--border);}
+.income-card input::placeholder{color:rgba(34,197,94,.35);}
 
 /* GOALS WARNING BANNER */
 .goals-warn{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);display:none;margin-bottom:14px;line-height:1.6;}
@@ -104,8 +104,10 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .trend-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
 
 /* CSV BUTTON */
-.btn-csv{padding:9px 16px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .2s;}
+.btn-csv{padding:9px 16px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;}
 .btn-csv:hover{border-color:var(--accent);color:var(--accent);}
+.btn-csv-pro{border-color:rgba(124,109,250,.3);background:rgba(124,109,250,.05);}
+.pro-badge-small{font-size:9px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:2px 6px;border-radius:4px;letter-spacing:.3px;}
 
 /* ONBOARDING ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -128,16 +130,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(124,109,250,.1);}
 nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--accent) 35%,var(--accent2) 65%,transparent 100%);opacity:.4;pointer-events:none;}
 [data-theme="light"] nav{background:rgba(244,244,248,.96);border-bottom:1px solid rgba(124,109,250,.15);}
-.nav-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer;flex-shrink:0;transition:opacity .2s;}
+.nav-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer;flex-shrink:0;transition:opacity .2s;gap:2px;}
 .nav-logo:hover{opacity:.85;}
-.nav-logo-text{font-size:21px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#a78bfa,var(--accent2),#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-logo-text::before{content:'✦ ';font-size:13px;opacity:.7;}
-.nav-logo-sub{font-size:8.5px;font-weight:500;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding-left:2px;margin-top:1px;}
-.nav-links{display:flex;gap:2px;background:rgba(255,255,255,.03);border:1px solid rgba(124,109,250,.1);border-radius:10px;padding:4px;}
+.nav-logo-text{font-size:24px;font-weight:900;letter-spacing:-.8px;background:linear-gradient(135deg,#c4b5fd,var(--accent),#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(124,109,250,.4));}
+.nav-logo-text::before{content:'✦ ';font-size:13px;opacity:.6;}
+.nav-logo-sub{font-size:8px;font-weight:500;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;padding-left:2px;opacity:.7;}
+.nav-links{display:flex;gap:2px;background:rgba(255,255,255,.03);border:1px solid rgba(124,109,250,.12);border-radius:10px;padding:4px;position:absolute;left:50%;transform:translateX(-50%);}
 .nav-link{padding:6px 14px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:12.5px;font-weight:500;transition:all .2s;border:none;background:none;display:flex;align-items:center;gap:5px;white-space:nowrap;}
 .nav-link .nl-icon{font-size:13px;line-height:1;}
 .nav-link:hover{color:var(--text);background:rgba(124,109,250,.08);}
-.nav-link.active{color:var(--text);background:rgba(124,109,250,.12);box-shadow:inset 0 0 0 1px rgba(124,109,250,.2);}
+.nav-link.active{color:var(--text);background:rgba(124,109,250,.14);box-shadow:inset 0 0 0 1px rgba(124,109,250,.25);}
 .nav-right{display:flex;align-items:center;gap:8px;}
 .nav-divider{width:1px;height:20px;background:var(--border);margin:0 4px;}
 .lang-select{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;padding:5px 8px;font-size:12px;cursor:pointer;outline:none;transition:border-color .2s;}
@@ -329,7 +331,7 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;backg
 .btn-save:hover{opacity:.85;}
 
 /* ===== TOOLS ===== */
-.tools-page{padding:24px 20px;max-width:860px;margin:0 auto;}
+.tools-page{padding:28px 24px;max-width:1100px;margin:0 auto;}
 .tools-header{margin-bottom:24px;}
 .tools-header h2{font-size:22px;font-weight:700;}
 .tools-header p{color:var(--muted);font-size:13px;margin-top:5px;}
@@ -468,7 +470,7 @@ footer a:hover{color:var(--text);}
         <div class="preview-dot" style="background:#ff5f57"></div>
         <div class="preview-dot" style="background:#ffbd2e"></div>
         <div class="preview-dot" style="background:#28c840"></div>
-        <div class="preview-url">app.getflo.io/dashboard</div>
+        <div class="preview-url">flo.tota-finance.com</div>
       </div>
       <div class="preview-inner">
         <div class="mini-card"><div class="mc-label">Health Score</div><div class="mc-val" style="color:var(--accent)">74</div><div class="mc-sub" style="color:var(--green)">▲ +6 this month</div></div>
@@ -627,7 +629,7 @@ footer a:hover{color:var(--text);}
         <div class="unsaved-bar" id="unsavedBar">⚠️ <span>You have unsaved changes — will auto-save in 10s</span></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
           <button class="btn-save" onclick="saveDashboard()" data-i18n="btn_save">✓ Calculate &amp; Save</button>
-          <button class="btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
+          <button class="btn-csv btn-csv-pro" onclick="exportCSV()">⬇ Export CSV <span class="pro-badge-small">⭐ Pro</span></button>
         </div>
       </div>
     </div>
@@ -938,14 +940,14 @@ footer a:hover{color:var(--text);}
     <h2>6. Your Rights</h2>
     <ul>
       <li>You can clear all your data at any time by clearing your browser's localStorage.</li>
-      <li>GDPR / CCPA: You have the right to access, rectify, or erase your data. Contact us at privacy@getflo.io.</li>
+      <li>GDPR / CCPA: You have the right to access, rectify, or erase your data. Contact us at totafinancehq@gmail.com.</li>
     </ul>
     <h2>7. Children</h2>
     <p>Flo is not directed at children under 13. We do not knowingly collect data from children.</p>
     <h2>8. Changes</h2>
     <p>We may update this policy. We'll note the date of the latest revision at the top of this page.</p>
     <h2>9. Contact</h2>
-    <p>Questions? Email us at <a href="mailto:privacy@getflo.io" style="color:var(--accent)">privacy@getflo.io</a></p>
+    <p>Questions? Email us at <a href="mailto:totafinancehq@gmail.com" style="color:var(--accent)">totafinancehq@gmail.com</a></p>
     <p style="margin-top:32px"><a href="#" onclick="showPage('landing');return false;" style="color:var(--accent)">← Back to Home</a></p>
   </div>
 </div>
@@ -1163,11 +1165,8 @@ const CAT_CFG = [
   {k:'groceries',e:'🛒',c:'#22c55e'},
   {k:'transport',e:'🚗',c:'#f59e0b'},
   {k:'health',e:'❤️',c:'#ec4899'},
-  {k:'dining',e:'🍔',c:'#ef4444'},
   {k:'subs',e:'📱',c:'#a855f7'},
   {k:'shopping',e:'🛍️',c:'#f97316'},
-  {k:'entertainment',e:'🎭',c:'#06b6d4'},
-  {k:'taxes',e:'🧾',c:'#64748b'},
   {k:'investments',e:'💹',c:'#0ea5e9'},
   {k:'education',e:'📚',c:'#84cc16'},
   {k:'other',e:'📦',c:'#6b7280'}
