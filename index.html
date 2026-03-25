@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flo — Know Where Your Money Goes</title>
+<meta name="description" content="Track your monthly budget, get a financial health score, and use free tools — no bank connection, no sign-up needed."/>
+<meta name="keywords" content="budget tracker, personal finance, financial health, spending tracker, free budget app"/>
+<meta property="og:title" content="Flo — Know Where Your Money Goes"/>
+<meta property="og:description" content="Enter your income and spending once a month. Flo shows you exactly where your money goes and gives you a financial health score."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://flo.tota-finance.com"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Flo — Know Where Your Money Goes"/>
+<meta name="twitter:description" content="Free budget tracker. No bank connection. No sign-up. Just enter your numbers and see where your money goes."/>
+<link rel="canonical" href="https://flo.tota-finance.com"/>
+<script defer data-domain="flo.tota-finance.com" src="https://plausible.io/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#07070f;--surface:#111118;--surface2:#1a1a26;--border:#252535;
+  --accent:#7c6dfa;--accent2:#a855f7;--green:#22c55e;--red:#ef4444;
+  --yellow:#f59e0b;--text:#f0f0ff;--muted:#7777aa;--radius:14px;
+  --theme-icon:'🌙';
+}
+[data-theme="light"]{
+  --bg:#f4f4f8;--surface:#ffffff;--surface2:#eeeef5;--border:#dddde8;
+  --text:#16162a;--muted:#6666aa;--theme-icon:'☀️';
+}
+[data-theme="light"] nav{background:rgba(244,244,248,.94);border-bottom-color:rgba(124,109,250,.15);}
+[data-theme="light"] .nav-logo{background:linear-gradient(135deg,#6c5ce7,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+[data-theme="light"] .hero-preview{box-shadow:0 20px 60px rgba(0,0,0,.12);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;transition:background .3s,color .3s;}
+
+/* THEME TOGGLE */
+.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:15px;line-height:1;transition:background .2s;}
+.theme-btn:hover{background:var(--surface2);}
+
+/* CAT CARD GRID */
+.cat-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:4px;}
+@media(max-width:480px){.cat-card-grid{grid-template-columns:repeat(2,1fr);}}
+.cat-card{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:12px 10px;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c-color,var(--accent));border-radius:12px 12px 0 0;opacity:.5;}
+.cat-card.has-val{border-color:var(--c-color,var(--accent));box-shadow:0 0 0 3px color-mix(in srgb,var(--c-color,var(--accent)) 12%,transparent);}
+.cat-card.over-goal{border-color:var(--red) !important;box-shadow:0 0 0 3px rgba(239,68,68,.15) !important;}
+.cat-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.cat-card-emoji{font-size:20px;}
+.cat-card-over-icon{font-size:12px;display:none;}
+.cat-card.over-goal .cat-card-over-icon{display:block;}
+.cat-card-label{font-size:10px;color:var(--muted);margin-bottom:5px;line-height:1.3;font-weight:500;}
+.cat-card input[type=number]{width:100%;background:none;border:none;border-bottom:1.5px solid var(--border);color:var(--text);font-size:16px;font-weight:700;outline:none;padding:3px 0;transition:border-color .2s;}
+.cat-card input[type=number]:focus{border-bottom-color:var(--c-color,var(--accent));}
+.cat-card input[type=number]::placeholder{color:var(--border);}
+.goal-row{margin-top:6px;display:flex;align-items:center;gap:4px;}
+.goal-row span{font-size:9px;color:var(--muted);white-space:nowrap;}
+.goal-row input{flex:1;background:none;border:none;border-bottom:1px dashed var(--border);color:var(--muted);font-size:11px;outline:none;padding:1px 0;min-width:0;}
+.goal-row input:focus{border-bottom-color:var(--muted);}
+
+/* INCOME CARD */
+.income-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.income-card{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:2px solid rgba(34,197,94,.2);border-radius:12px;padding:14px 12px;}
+.income-card .ic-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;}
+.income-card input{width:100%;background:none;border:none;border-bottom:1.5px solid rgba(34,197,94,.3);color:var(--text);font-size:18px;font-weight:800;outline:none;padding:3px 0;}
+.income-card input:focus{border-bottom-color:var(--green);}
+.income-card input::placeholder{color:var(--border);}
+
+/* GOALS WARNING BANNER */
+.goals-warn{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);display:none;margin-bottom:14px;line-height:1.6;}
+
+/* UNSAVED CHANGES */
+.unsaved-bar{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:9px 14px;font-size:12px;color:var(--yellow);display:none;margin-bottom:10px;display:none;align-items:center;gap:8px;}
+.unsaved-bar.show{display:flex;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-state .es-icon{font-size:48px;margin-bottom:14px;}
+.empty-state h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.empty-state p{font-size:13px;line-height:1.6;max-width:300px;margin:0 auto;}
+
+/* NET WORTH */
+.nw-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+@media(max-width:500px){.nw-grid{grid-template-columns:1fr;}}
+.nw-section{background:var(--surface2);border-radius:10px;padding:14px;}
+.nw-section-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.nw-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+.nw-row input[type=text]{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 8px;font-size:12px;outline:none;}
+.nw-row input[type=number]{width:110px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 8px;font-size:12px;outline:none;}
+.nw-row input:focus{border-color:var(--accent);}
+.nw-del{background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:11px;}
+.nw-del:hover{color:var(--red);border-color:var(--red);}
+.nw-total{background:var(--surface);border-radius:10px;padding:14px;text-align:center;margin-bottom:20px;}
+.nw-total .nw-net{font-size:32px;font-weight:800;}
+.nw-total .nw-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* TREND CHART SECTION */
+.trend-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+
+/* CSV BUTTON */
+.btn-csv{padding:9px 16px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .2s;}
+.btn-csv:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ONBOARDING ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.ob-anim{animation:fadeUp .35s ease both;}
+.ob-step-icon{font-size:40px;margin-bottom:12px;display:block;text-align:center;}
+.ob-progress{height:3px;background:var(--border);border-radius:2px;margin-bottom:24px;overflow:hidden;}
+.ob-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s ease;}
+
+/* MOBILE NAV FIX */
+@media(max-width:640px){
+  .mobile-nav{display:block;}
+  .page.active{padding-bottom:70px;}
+}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 12px;cursor:pointer;color:var(--muted);font-size:10px;border:none;background:none;flex:1;}
+.mobile-nav-item.active{color:var(--accent);}
+.mobile-nav-item .mn-icon{font-size:22px;line-height:1;}
+.mobile-nav-items{display:flex;justify-content:space-around;align-items:stretch;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:rgba(7,7,15,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(124,109,250,.12);}
+nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--accent) 35%,var(--accent2) 65%,transparent 100%);opacity:.35;pointer-events:none;}
+[data-theme="light"] nav{background:rgba(244,244,248,.94);border-bottom:1px solid rgba(124,109,250,.15);}
+.nav-logo{font-size:20px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#a78bfa,var(--accent2),#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;flex-shrink:0;transition:opacity .2s;}
+.nav-logo::before{content:'✦ ';font-size:13px;opacity:.7;}
+.nav-logo:hover{opacity:.85;}
+.nav-links{display:flex;gap:2px;}
+.nav-link{padding:6px 13px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:13.5px;font-weight:500;transition:all .2s;border:none;background:none;position:relative;}
+.nav-link::after{content:'';position:absolute;bottom:2px;left:50%;right:50%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:all .25s;}
+.nav-link:hover{color:var(--text);}
+.nav-link.active{color:var(--text);}
+.nav-link.active::after{left:16%;right:16%;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-divider{width:1px;height:20px;background:var(--border);margin:0 4px;}
+.lang-select{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;padding:5px 8px;font-size:12px;cursor:pointer;outline:none;transition:border-color .2s;}
+.lang-select:hover{border-color:var(--accent);color:var(--text);}
+.nav-cta{padding:7px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s;white-space:nowrap;box-shadow:0 0 0 0 rgba(124,109,250,.4);}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,109,250,.4);}
+@media(max-width:640px){
+  .nav-links{display:none;}
+  nav{padding:0 16px;}
+}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ===== LANDING ===== */
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(124,109,250,.4)}50%{box-shadow:0 0 0 8px rgba(124,109,250,0)}}
+@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero-section{position:relative;overflow:hidden;}
+.hero-section::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(124,109,250,.12) 0%,transparent 65%);pointer-events:none;}
+.hero-section::after{content:'';position:absolute;top:60px;right:10%;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,.07) 0%,transparent 70%);pointer-events:none;}
+.hero{text-align:center;padding:90px 20px 60px;max-width:740px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.28);color:var(--accent);border-radius:100px;padding:6px 16px;font-size:12.5px;margin-bottom:28px;animation:badgePulse 3s infinite;font-weight:500;}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:badgePulse 1.5s infinite;}
+.hero h1{font-size:clamp(36px,6.5vw,66px);font-weight:900;line-height:1.05;margin-bottom:20px;letter-spacing:-1.5px;}
+.hero h1 span{background:linear-gradient(135deg,#a78bfa,var(--accent2),#60a5fa);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradientShift 4s ease infinite;}
+.hero p{color:var(--muted);font-size:17px;line-height:1.7;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.hero-social-proof{font-size:12px;color:var(--muted);text-align:center;margin-top:4px;}
+.btn-primary{padding:14px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:11px;font-size:15.5px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 4px 24px rgba(124,109,250,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,109,250,.5);}
+.btn-secondary{padding:14px 28px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:11px;font-size:15.5px;font-weight:500;cursor:pointer;transition:all .25s;}
+.btn-secondary:hover{border-color:var(--accent);background:rgba(124,109,250,.06);}
+
+/* PREVIEW WINDOW */
+.hero-preview{margin:52px auto 0;max-width:860px;background:var(--surface);border:1px solid rgba(124,109,250,.2);border-radius:20px;overflow:hidden;box-shadow:0 0 0 1px rgba(124,109,250,.08),0 40px 100px rgba(0,0,0,.7),0 0 80px rgba(124,109,250,.06);animation:heroFloat 6s ease-in-out infinite;}
+.preview-bar{display:flex;align-items:center;gap:7px;padding:13px 20px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.preview-dot{width:11px;height:11px;border-radius:50%;}
+.preview-url{margin-left:10px;background:var(--bg);border-radius:6px;padding:4px 14px;font-size:11px;color:var(--muted);flex:1;max-width:240px;text-align:center;}
+.preview-inner{padding:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media(max-width:600px){.preview-inner{grid-template-columns:repeat(2,1fr);}}
+.mini-card{background:var(--surface2);border-radius:11px;padding:16px;border:1px solid var(--border);transition:transform .2s;}
+.mini-card:hover{transform:translateY(-2px);}
+.mini-card .mc-label{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;}
+.mini-card .mc-val{font-size:22px;font-weight:800;margin-bottom:2px;}
+.mini-card .mc-sub{font-size:11px;margin-top:3px;}
+
+/* FEATURES */
+.features{padding:80px 20px;max-width:1080px;margin:0 auto;}
+.section-header{text-align:center;margin-bottom:52px;}
+.section-header h2{font-size:36px;font-weight:900;margin-bottom:12px;letter-spacing:-.5px;}
+.section-header p{color:var(--muted);font-size:16px;}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden;}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--fc-color,var(--accent));opacity:.6;transition:opacity .25s;}
+.feature-card:hover{border-color:var(--fc-color,var(--accent));transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2);}
+.feature-card:hover::before{opacity:1;}
+.feature-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;}
+.feature-card h3{font-size:15.5px;font-weight:700;margin-bottom:8px;}
+.feature-card p{color:var(--muted);font-size:13px;line-height:1.65;}
+
+/* PRICING */
+.pricing{padding:80px 20px;max-width:860px;margin:0 auto;}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:580px){.pricing-grid{grid-template-columns:1fr;}}
+.plan-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px;display:flex;flex-direction:column;transition:transform .2s;}
+.plan-card:hover{transform:translateY(-2px);}
+.plan-card.featured{border-color:var(--accent);background:rgba(124,109,250,.05);box-shadow:0 0 40px rgba(124,109,250,.1);}
+.plan-features{flex:1;}
+.plan-badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:10px;font-weight:700;padding:4px 11px;border-radius:100px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.6px;}
+.plan-name{font-size:22px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;}
+.plan-price{font-size:38px;font-weight:900;margin-bottom:4px;letter-spacing:-1px;}
+.plan-price span{font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0;}
+.plan-desc{color:var(--muted);font-size:13px;margin-bottom:22px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+.plan-features li{font-size:13px;display:flex;align-items:center;gap:8px;}
+.plan-features li::before{content:'✓';color:var(--green);font-weight:800;flex-shrink:0;font-size:12px;}
+.plan-features li.locked::before{content:'✗';color:var(--border);}
+.plan-features li.locked{color:var(--muted);}
+.btn-plan{width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;letter-spacing:.2px;}
+.btn-plan-free{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.btn-plan-free:hover{border-color:var(--accent);background:rgba(124,109,250,.08);}
+.btn-plan-pro{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;box-shadow:0 4px 20px rgba(124,109,250,.3);}
+.btn-plan-pro:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(124,109,250,.5);}
+
+/* ===== DASHBOARD ===== */
+.dashboard{padding:24px 20px;max-width:1100px;margin:0 auto;}
+@media(max-width:640px){.dashboard{padding:16px 12px;}}
+
+/* HEADER ROW */
+.dash-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.dash-title{font-size:20px;font-weight:700;}
+.dash-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.ctrl-select{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:8px 12px;font-size:13px;cursor:pointer;outline:none;transition:border-color .2s;}
+.ctrl-select:focus{border-color:var(--accent);}
+
+/* PREMIUM BANNER */
+.premium-banner{background:linear-gradient(135deg,rgba(124,109,250,.1),rgba(168,85,247,.07));border:1px solid rgba(124,109,250,.25);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.pb-text h4{font-size:14px;font-weight:700;margin-bottom:2px;}
+.pb-text p{font-size:12px;color:var(--muted);}
+.btn-upgrade{padding:9px 18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
+.btn-upgrade:hover{opacity:.85;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:420px){.stats-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--radius) var(--radius) 0 0;}
+.stat-card.income::before{background:linear-gradient(90deg,#22c55e,#16a34a);}
+.stat-card.spent::before{background:linear-gradient(90deg,#ef4444,#dc2626);}
+.stat-card.saved::before{background:linear-gradient(90deg,#7c6dfa,#a855f7);}
+.stat-card.score::before{background:linear-gradient(90deg,#f59e0b,#d97706);}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.stat-value{font-size:26px;font-weight:800;margin-bottom:3px;line-height:1;}
+.stat-sub{font-size:12px;color:var(--muted);}
+
+/* MAIN CONTENT ROW */
+.main-row{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:20px;}
+@media(max-width:820px){.main-row{grid-template-columns:1fr;}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+.card-title{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+
+/* CATEGORY LIST */
+.cat-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.cat-item:last-child{border-bottom:none;}
+.cat-emoji{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.cat-info{flex:1;min-width:0;}
+.cat-name{font-size:13px;font-weight:500;}
+.cat-bar-bg{height:3px;background:var(--border);border-radius:2px;margin-top:4px;}
+.cat-bar-fill{height:3px;border-radius:2px;transition:width .7s ease;}
+.cat-right{text-align:right;flex-shrink:0;}
+.cat-amount{font-size:13px;font-weight:600;}
+.cat-pct{font-size:11px;color:var(--muted);}
+
+/* SCORE PANEL */
+.score-wrap{text-align:center;padding:10px 0 16px;}
+.score-big{font-size:56px;font-weight:800;line-height:1;}
+.score-label{font-size:12px;color:var(--muted);margin-top:4px;}
+.score-bar-bg{height:8px;background:var(--border);border-radius:4px;margin:14px 0 6px;}
+.score-bar-fill{height:8px;border-radius:4px;transition:width .8s ease;}
+.score-range{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);}
+
+/* INSIGHTS */
+.insights{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.insight-item{display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:12px;}
+.insight-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.insight-text{font-size:12px;line-height:1.55;color:var(--muted);}
+.insight-text strong{color:var(--text);}
+
+/* SHARE CARD */
+.share-card{background:linear-gradient(135deg,#1a1730,#140e28);border:1px solid rgba(124,109,250,.3);border-radius:14px;padding:20px;margin-top:14px;}
+.sc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.sc-logo{font-size:16px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sc-month{font-size:11px;color:var(--muted);}
+.sc-score-num{font-size:52px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1;}
+.sc-score-lbl{font-size:11px;color:var(--muted);text-align:center;margin-bottom:14px;}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sc-stat{background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px;}
+.sc-stat .v{font-size:14px;font-weight:700;}
+.sc-stat .l{font-size:10px;color:var(--muted);margin-top:2px;}
+.btn-share{margin-top:12px;width:100%;padding:9px;background:rgba(124,109,250,.15);border:1px solid rgba(124,109,250,.25);color:var(--accent);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;}
+.btn-share:hover{background:rgba(124,109,250,.25);}
+
+/* LOCKED PRO SECTION */
+.pro-locked{position:relative;margin-top:20px;}
+.pro-locked .lock-overlay{position:absolute;inset:0;background:rgba(7,7,15,.8);backdrop-filter:blur(4px);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:2;}
+.pro-locked .lock-overlay span{font-size:13px;color:var(--muted);}
+.pro-locked .lock-overlay button{padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.pro-inner{filter:blur(3px);pointer-events:none;}
+
+/* INPUT SECTION */
+.input-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.input-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;}
+.input-header h3{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;}
+.input-toggle{font-size:12px;color:var(--accent);background:rgba(124,109,250,.12);padding:4px 10px;border-radius:6px;border:none;cursor:pointer;font-weight:600;}
+.input-body{padding:0 20px 20px;}
+.input-group-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.input-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:4px;}
+.inp-field{display:flex;flex-direction:column;gap:4px;}
+.inp-field label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.inp-field input{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;transition:border-color .2s;width:100%;}
+.inp-field input:focus{border-color:var(--accent);}
+.inp-field input::placeholder{color:var(--border);}
+.btn-save{margin-top:16px;padding:11px 22px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;gap:6px;}
+.btn-save:hover{opacity:.85;}
+
+/* ===== TOOLS ===== */
+.tools-page{padding:24px 20px;max-width:860px;margin:0 auto;}
+.tools-header{margin-bottom:24px;}
+.tools-header h2{font-size:22px;font-weight:700;}
+.tools-header p{color:var(--muted);font-size:13px;margin-top:5px;}
+.tools-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+.tool-tab{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s;}
+.tool-tab.active,.tool-tab:hover{background:var(--accent);color:white;border-color:var(--accent);}
+.tool-panel{display:none;}
+.tool-panel.active{display:block;}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;}
+.tool-card h3{font-size:17px;font-weight:700;margin-bottom:5px;}
+.tool-desc{color:var(--muted);font-size:13px;margin-bottom:22px;line-height:1.6;}
+.tool-form{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:20px;}
+@media(max-width:520px){
+  .tool-form{grid-template-columns:1fr;}
+  .tool-form .inp-field select,.tool-form .inp-field input{width:100%;}
+  .tools-tabs{gap:6px;}
+  .tool-tab{padding:7px 10px;font-size:12px;}
+}
+.tool-result{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-top:18px;}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.result-row:last-child{border-bottom:none;}
+.result-label{font-size:13px;color:var(--muted);}
+.result-value{font-size:15px;font-weight:700;}
+.result-highlight{font-size:24px;font-weight:800;color:var(--accent);}
+.btn-calc{padding:11px 22px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.btn-calc:hover{opacity:.85;}
+.btn-calc-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+
+/* CURRENCY PAGE */
+.fx-converter{display:grid;grid-template-columns:1fr 44px 1fr;gap:10px;align-items:end;margin-bottom:20px;}
+@media(max-width:480px){.fx-converter{grid-template-columns:1fr 36px 1fr;gap:6px;}}
+.fx-swap-btn{height:40px;width:44px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s;color:var(--text);margin-bottom:0;}
+.fx-swap-btn:hover{background:var(--accent);border-color:var(--accent);}
+.rate-info{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.rate-table{width:100%;border-collapse:collapse;}
+.rate-table th{text-align:left;padding:9px 11px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);}
+.rate-table td{padding:11px;font-size:13px;border-bottom:1px solid var(--border);}
+.rate-table tr:last-child td{border-bottom:none;}
+.rate-table tr:hover td{background:var(--surface2);}
+.pos{color:var(--green);}
+.neg{color:var(--red);}
+
+/* PRIVACY PAGE */
+.privacy-page{padding:40px 20px;max-width:740px;margin:0 auto;}
+.privacy-page h1{font-size:28px;font-weight:800;margin-bottom:8px;}
+.privacy-page .updated{font-size:13px;color:var(--muted);margin-bottom:36px;}
+.privacy-page h2{font-size:17px;font-weight:700;margin:28px 0 10px;}
+.privacy-page p,.privacy-page li{font-size:14px;color:var(--muted);line-height:1.75;}
+.privacy-page ul{padding-left:20px;display:flex;flex-direction:column;gap:5px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--green);color:var(--green);padding:11px 18px;border-radius:9px;font-size:13px;font-weight:500;transform:translateY(70px);opacity:0;transition:all .3s;z-index:999;max-width:300px;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:32px;max-width:460px;width:100%;}
+.modal h2{font-size:21px;font-weight:800;margin-bottom:6px;}
+.modal p{color:var(--muted);font-size:13px;margin-bottom:20px;}
+.modal-form{display:flex;flex-direction:column;gap:12px;}
+.step-dots{display:flex;gap:5px;margin-bottom:24px;}
+.step-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .2s;}
+.step-dot.done{background:var(--accent);}
+.modal-actions{display:flex;gap:9px;margin-top:16px;}
+.btn-modal-p{flex:1;padding:11px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-modal-s{padding:11px 16px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:9px;font-size:14px;cursor:pointer;}
+
+/* FOOTER */
+footer{text-align:center;padding:36px 20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;margin-top:60px;}
+footer a{color:var(--muted);text-decoration:none;}
+footer a:hover{color:var(--text);}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* MOBILE NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:8px 0 env(safe-area-inset-bottom,8px);z-index:90;}
+.mobile-nav-items{display:flex;justify-content:space-around;}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;cursor:pointer;color:var(--muted);font-size:10px;border:none;background:none;}
+.mobile-nav-item.active{color:var(--accent);}
+.mobile-nav-item .mn-icon{font-size:20px;}
+@media(max-width:640px){
+  .mobile-nav{display:block;}
+  .page.active{padding-bottom:70px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('landing')">Flo</div>
+  <div class="nav-links">
+    <button class="nav-link" id="nl-landing" onclick="showPage('landing')" data-i18n="nav_home">Home</button>
+    <button class="nav-link" id="nl-dashboard" onclick="showPage('dashboard')" data-i18n="nav_dashboard">Dashboard</button>
+    <button class="nav-link" id="nl-tools" onclick="showPage('tools')" data-i18n="nav_tools">Tools</button>
+    <button class="nav-link" id="nl-currency" onclick="showPage('currency')" data-i18n="nav_currency">Currencies</button>
+  </div>
+  <div class="nav-right">
+    <a href="https://tota-finance.com" target="_blank" rel="noopener" style="font-size:12px;color:var(--muted);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:7px;transition:all .2s;white-space:nowrap;display:none" id="totaLink" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← Tota Finance</a>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
+      <option value="en">🌐 EN</option>
+      <option value="es">ES</option>
+      <option value="fr">FR</option>
+      <option value="de">DE</option>
+      <option value="tr">TR</option>
+      <option value="pt">PT</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+      <option value="ar">AR</option>
+    </select>
+    <button class="nav-cta" onclick="openOnboarding()" data-i18n="nav_cta">Get Started Free</button>
+  </div>
+</nav>
+
+<!-- ========== LANDING ========== -->
+<div id="page-landing" class="page active">
+  <div class="hero-section">
+  <section class="hero">
+    <div class="hero-badge">✦ <span data-i18n="hero_badge">Free to use · No bank connection needed</span></div>
+    <h1 data-i18n="hero_title">Finally know where<br/><span data-i18n="hero_title_span">your money goes</span></h1>
+    <p data-i18n="hero_sub">Enter your income and spending once a month. Flo tells you exactly what's eating your budget — and how to fix it.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="openOnboarding()" data-i18n="hero_cta1">Start for free</button>
+      <button class="btn-secondary" onclick="showPage('tools')" data-i18n="hero_cta2">Try free tools →</button>
+    </div>
+    <p class="hero-social-proof">✦ No sign-up · No bank connection · Works in your browser</p>
+    <div class="hero-preview">
+      <div class="preview-bar">
+        <div class="preview-dot" style="background:#ff5f57"></div>
+        <div class="preview-dot" style="background:#ffbd2e"></div>
+        <div class="preview-dot" style="background:#28c840"></div>
+        <div class="preview-url">app.getflo.io/dashboard</div>
+      </div>
+      <div class="preview-inner">
+        <div class="mini-card"><div class="mc-label">Health Score</div><div class="mc-val" style="color:var(--accent)">74</div><div class="mc-sub" style="color:var(--green)">▲ +6 this month</div></div>
+        <div class="mini-card"><div class="mc-label">Income</div><div class="mc-val">$4,200</div><div class="mc-sub" style="color:var(--muted)">This month</div></div>
+        <div class="mini-card"><div class="mc-label">Spent</div><div class="mc-val" style="color:var(--red)">$3,180</div><div class="mc-sub" style="color:var(--red)">75.7% of income</div></div>
+        <div class="mini-card"><div class="mc-label">Saved</div><div class="mc-val" style="color:var(--green)">$1,020</div><div class="mc-sub" style="color:var(--green)">24.3% rate</div></div>
+      </div>
+    </div>
+  </section>
+  </div><!-- /hero-section -->
+
+  <section class="features">
+    <div class="section-header">
+      <h2 data-i18n="feat_title">Everything you need, nothing you don't</h2>
+      <p data-i18n="feat_sub">Simple enough to actually use. Powerful enough to make a difference.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card" style="--fc-color:#7c6dfa"><div class="feature-icon" style="background:rgba(124,109,250,.15)">📊</div><h3>Monthly Breakdown</h3><p>Enter category totals once a month. See exactly where every dollar went with visual breakdowns.</p></div>
+      <div class="feature-card" style="--fc-color:#22c55e"><div class="feature-icon" style="background:rgba(34,197,94,.15)">💯</div><h3>Health Score</h3><p>A single 0–100 score tells you how well you're doing. Watch it improve month over month.</p></div>
+      <div class="feature-card" style="--fc-color:#f59e0b"><div class="feature-icon" style="background:rgba(245,158,11,.15)">📱</div><h3>Subscription Leak</h3><p>See how much you're really paying for subscriptions every year. Most people are shocked.</p></div>
+      <div class="feature-card" style="--fc-color:#ef4444"><div class="feature-icon" style="background:rgba(239,68,68,.15)">🧾</div><h3>Tax Estimator</h3><p>Quick income tax estimate for 14 countries. Good enough to plan, fast enough to use.</p></div>
+      <div class="feature-card" style="--fc-color:#a855f7"><div class="feature-icon" style="background:rgba(168,85,247,.15)">💱</div><h3>Currency Converter</h3><p>Live rates for 30+ currencies. See your budget in any currency instantly.</p></div>
+      <div class="feature-card" style="--fc-color:#06b6d4"><div class="feature-icon" style="background:rgba(6,182,212,.15)">📉</div><h3>Salary Reality Check</h3><p>See how much your salary needs to grow to keep up with inflation — with real numbers.</p></div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="section-header">
+      <h2 data-i18n="price_title">Free forever, upgrade when ready</h2>
+      <p data-i18n="price_sub">Core features are completely free. Upgrade for AI insights and advanced tracking.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price" id="priceFree">$0 <span>/ month</span></div>
+        <div class="plan-desc">Everything to get started.</div>
+        <ul class="plan-features">
+          <li>Monthly budget tracker</li>
+          <li>Financial health score</li>
+          <li>12 spending categories</li>
+          <li>All free tools (tax, debt, emergency…)</li>
+          <li>Currency converter (30+ currencies)</li>
+          <li>Monthly report card + badges</li>
+          <li>2 months history</li>
+          <li class="locked">Smart Insights</li>
+          <li class="locked">12-month history</li>
+          <li class="locked">Spending forecast</li>
+          <li class="locked">CSV export</li>
+        </ul>
+        <button class="btn-plan btn-plan-free" onclick="openOnboarding()" data-i18n="btn_start_free">Start free</button>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">⭐ Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price" id="pricePro">$6 <span>/ month</span></div>
+        <div class="plan-desc">For people serious about their money.</div>
+        <ul class="plan-features">
+          <li>Everything in Free</li>
+          <li>12 months history</li>
+          <li>Smart Insights (month-over-month trends)</li>
+          <li>Next month spending forecast</li>
+          <li>6-month trend chart</li>
+          <li>CSV export</li>
+          <li>Budget templates (Student, Freelancer…)</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn-plan btn-plan-pro" onclick="openProModal()" data-i18n="btn_get_pro">Get Pro</button>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>© 2026 Flo · <a href="#" onclick="showPage('privacy');return false;">Privacy Policy</a> · <a href="#" onclick="showPage('terms');return false;">Terms</a> · Built for people who want to understand their money</p>
+    <p style="margin-top:8px">Part of <a href="https://tota-finance.com" target="_blank" rel="noopener" style="color:var(--accent)">Tota Finance</a> — your financial home on the web</p>
+  </footer>
+</div>
+
+<!-- ========== DASHBOARD ========== -->
+<div id="page-dashboard" class="page">
+  <div class="dashboard">
+    <div class="premium-banner">
+      <div class="pb-text"><h4>✦ Unlock AI Insights & Full History</h4><p>Spending forecasts, 12-month trends, and personalized tips with Flo Pro.</p></div>
+      <button class="btn-upgrade" onclick="openProModal()">Upgrade to Pro</button>
+    </div>
+
+    <div class="dash-top">
+      <div class="dash-title" data-i18n="dash_title">Monthly Overview</div>
+      <div class="dash-controls">
+        <select class="ctrl-select" id="dashCurrency" onchange="onCurrencyChange()">
+          <option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option>
+          <option value="GBP">🇬🇧 GBP</option><option value="TRY">🇹🇷 TRY</option>
+          <option value="JPY">🇯🇵 JPY</option><option value="CAD">🇨🇦 CAD</option>
+          <option value="AUD">🇦🇺 AUD</option><option value="CHF">🇨🇭 CHF</option>
+        </select>
+        <select class="ctrl-select" id="dashMonth">
+          <option value="2025-03">March 2025</option>
+          <option value="2025-02">February 2025</option>
+          <option value="2025-01">January 2025</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- INPUT SECTION -->
+    <div class="input-section">
+      <div class="input-header" onclick="toggleInput()">
+        <h3>✏️ <span data-i18n="inp_title">Enter This Month's Numbers</span></h3>
+        <button class="input-toggle" id="inputToggleBtn" onclick="toggleInput();event.stopPropagation()">Hide</button>
+      </div>
+      <div id="inputBody" class="input-body">
+        <!-- INCOME -->
+        <div class="input-group-label">💰 <span data-i18n="grp_income">Income</span></div>
+        <div class="income-grid">
+          <div class="income-card">
+            <div class="ic-label">💰 <span data-i18n="lbl_income">Monthly Income</span></div>
+            <input type="number" id="inp_income" placeholder="0" min="0" oninput="liveUpdate()"/>
+          </div>
+          <div class="income-card">
+            <div class="ic-label">➕ <span data-i18n="lbl_extra">Other Income</span></div>
+            <input type="number" id="inp_extra" placeholder="freelance, bonus…" min="0" oninput="liveUpdate()"/>
+          </div>
+        </div>
+
+        <!-- CATEGORY CARDS — rendered by JS so labels stay translated -->
+        <div class="input-group-label" style="margin-top:14px">📊 <span data-i18n="grp_essential">Categories</span> <span style="font-size:10px;color:var(--muted)">(optional: set goal below each)</span></div>
+        <div class="cat-card-grid" id="catCardGrid"></div>
+      </div>
+
+        <div class="goals-warn" id="goalsWarn"></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;margin-bottom:4px">
+          <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px" data-i18n="stat_income">Income</div>
+            <div id="liveIncome" style="font-size:16px;font-weight:700;color:var(--green)">—</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px" data-i18n="stat_spent">Spent</div>
+            <div id="liveSpent" style="font-size:16px;font-weight:700">—</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px" data-i18n="stat_saved">Saved</div>
+            <div id="liveSaved" style="font-size:16px;font-weight:700;color:var(--accent)">—</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px" data-i18n="stat_score">Score</div>
+            <div id="liveScore" style="font-size:16px;font-weight:700;color:var(--muted)">—</div>
+          </div>
+        </div>
+        <div class="unsaved-bar" id="unsavedBar">⚠️ <span>You have unsaved changes — will auto-save in 10s</span></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn-save" onclick="saveDashboard()" data-i18n="btn_save">✓ Calculate &amp; Save</button>
+          <button class="btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid" id="dashStats"></div>
+
+    <!-- MAIN ROW -->
+    <div class="main-row">
+      <div class="card">
+        <div class="card-title">Spending by Category <span id="totalSpentLabel" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0"></span></div>
+        <div id="categoryList"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:18px">
+          <div class="card-title">Health Score</div>
+          <div class="score-wrap">
+            <div class="score-big" id="scoreNum">—</div>
+            <div class="score-label" id="scoreLabel">Enter data to calculate</div>
+          </div>
+          <div class="score-bar-bg"><div class="score-bar-fill" id="scoreBar" style="width:0%"></div></div>
+          <div class="score-range"><span>0</span><span>50</span><span>100</span></div>
+          <div class="insights" id="insightsList"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" data-i18n="ct_report">Monthly Report</div>
+          <div class="share-card" id="reportCard">
+            <div class="sc-header"><div class="sc-logo">Flo</div><div class="sc-month" id="reportMonth">March 2025</div></div>
+            <div style="text-align:center;margin-bottom:12px">
+              <div class="sc-score-num" id="reportScore">—</div>
+              <div class="sc-score-lbl" data-i18n="score_label">Financial Health Score</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+              <div class="sc-stat"><div class="v" id="reportSaveRate">—</div><div class="l" data-i18n="report_save_rate">Save rate</div></div>
+              <div class="sc-stat"><div class="v" id="reportTopCat">—</div><div class="l" data-i18n="report_top_spend">Top spend</div></div>
+            </div>
+            <div id="reportBadges" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>
+          </div>
+          <div id="reportTip" style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5;background:var(--surface2);border-radius:8px;padding:10px;display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRO LOCKED -->
+    <div class="pro-locked">
+      <div class="lock-overlay">
+        <span style="font-size:15px;font-weight:700">🔒 Pro Features</span>
+        <span style="font-size:12px;color:var(--muted);text-align:center;max-width:260px">Trend analysis, smart insights & spending forecast — based on your real data</span>
+        <button onclick="openProModal()">Upgrade to Pro — $6/mo</button>
+      </div>
+      <div class="main-row pro-inner">
+        <div class="card">
+          <div class="card-title">📈 6-Month Trend</div>
+          <div style="height:160px;position:relative"><canvas id="trendChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">✦ Smart Insights</div>
+          <div class="insights" id="smartInsightsList">
+            <div class="insight-item"><div class="insight-icon">📊</div><div class="insight-text">Save your first month to unlock trend insights.</div></div>
+          </div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+            <div class="card-title" style="margin-bottom:10px">🔮 Next Month Forecast</div>
+            <div id="forecastList"><p style="font-size:12px;color:var(--muted)">Save previous months to unlock.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOOLS ========== -->
+<div id="page-tools" class="page">
+  <div class="tools-page">
+    <div class="tools-header"><h2>Free Financial Tools</h2><p>Quick calculators — no sign-up, no bank connection needed.</p></div>
+    <div class="tools-tabs">
+      <button class="tool-tab active" onclick="switchTool('networth',this)">💎 Net Worth</button>
+      <button class="tool-tab" onclick="switchTool('tax',this)" data-i18n="tab_tax">🧾 Tax</button>
+      <button class="tool-tab" onclick="switchTool('inflation',this)" data-i18n="tab_inflation">📉 Salary Check</button>
+      <button class="tool-tab" onclick="switchTool('subscriptions',this)" data-i18n="tab_subs">📱 Subscriptions</button>
+      <button class="tool-tab" onclick="switchTool('emergency',this)" data-i18n="tab_emergency">🛡️ Emergency Fund</button>
+      <button class="tool-tab" onclick="switchTool('debt',this)" data-i18n="tab_debt">💳 Debt Payoff</button>
+    </div>
+
+    <!-- NET WORTH -->
+    <div id="tool-networth" class="tool-panel active">
+      <div class="tool-card">
+        <h3>💎 Net Worth Tracker</h3>
+        <p class="tool-desc">Assets minus liabilities. This single number tells you your true financial position. Update it monthly to see real growth.</p>
+        <div class="nw-total">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Your Net Worth</div>
+          <div class="nw-net" id="nwTotal" style="color:var(--accent)">$0</div>
+          <div class="nw-sub" id="nwSub">Add assets and liabilities below</div>
+        </div>
+        <div class="nw-grid">
+          <div class="nw-section">
+            <div class="nw-section-title">
+              <span>✅ Assets</span>
+              <button class="btn-csv" style="padding:4px 10px;font-size:11px" onclick="addNwRow('assets')">+ Add</button>
+            </div>
+            <div id="nw-assets"></div>
+            <div style="font-size:12px;color:var(--green);font-weight:600;margin-top:8px">Total: <span id="nwAssetsTotal">$0</span></div>
+          </div>
+          <div class="nw-section">
+            <div class="nw-section-title">
+              <span>❌ Liabilities</span>
+              <button class="btn-csv" style="padding:4px 10px;font-size:11px" onclick="addNwRow('liabilities')">+ Add</button>
+            </div>
+            <div id="nw-liabilities"></div>
+            <div style="font-size:12px;color:var(--red);font-weight:600;margin-top:8px">Total: <span id="nwLiabTotal">$0</span></div>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcNetWorth()">Calculate Net Worth</button>
+      </div>
+    </div>
+
+    <!-- TAX -->
+    <div id="tool-tax" class="tool-panel">
+      <div class="tool-card">
+        <h3>🧾 Income Tax Estimator</h3>
+        <p class="tool-desc">Rough estimate of your tax bracket and take-home pay. For planning only — consult a tax professional for official filings.</p>
+        <div class="tool-form">
+          <div class="inp-field"><label>Annual Gross Income</label><input type="number" id="tax_income" placeholder="e.g. 60000"/></div>
+          <div class="inp-field"><label>Country</label>
+            <select id="tax_country" class="inp-field input" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;">
+              <option value="us">🇺🇸 United States</option>
+              <option value="uk">🇬🇧 United Kingdom</option>
+              <option value="de">🇩🇪 Germany</option>
+              <option value="fr">🇫🇷 France</option>
+              <option value="ca">🇨🇦 Canada</option>
+              <option value="au">🇦🇺 Australia</option>
+              <option value="tr">🇹🇷 Türkiye</option>
+              <option value="nl">🇳🇱 Netherlands</option>
+              <option value="es">🇪🇸 Spain</option>
+              <option value="it">🇮🇹 Italy</option>
+              <option value="jp">🇯🇵 Japan</option>
+              <option value="se">🇸🇪 Sweden</option>
+              <option value="pl">🇵🇱 Poland</option>
+              <option value="in">🇮🇳 India</option>
+            </select>
+          </div>
+          <div class="inp-field"><label>Filing Status</label>
+            <select id="tax_status" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;">
+              <option value="single">Single</option><option value="married">Married / Joint</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcTax()">Estimate Tax</button>
+        <div class="tool-result" id="taxResult" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- SALARY REALITY CHECK -->
+    <div id="tool-inflation" class="tool-panel">
+      <div class="tool-card">
+        <h3>📉 Salary Reality Check</h3>
+        <p class="tool-desc">Find out how much your salary needs to be <em>today</em> to match your past purchasing power. See exactly how much inflation has eaten your earnings.</p>
+        <div class="tool-form">
+          <div class="inp-field"><label>Your salary back then</label><input type="number" id="inf_amount" placeholder="e.g. 50000"/></div>
+          <div class="inp-field"><label>Year it was earned</label><input type="number" id="inf_from" placeholder="e.g. 2020" min="2000" max="2025"/></div>
+          <div class="inp-field"><label>Compare to year</label><input type="number" id="inf_to" value="2025" min="2001" max="2025"/></div>
+          <div class="inp-field"><label>Country / Region</label>
+            <select id="inf_region" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;">
+              <option value="us">🇺🇸 USA</option>
+              <option value="eu">🇪🇺 Eurozone</option>
+              <option value="uk">🇬🇧 UK</option>
+              <option value="tr">🇹🇷 Türkiye</option>
+              <option value="br">🇧🇷 Brazil</option>
+              <option value="in">🇮🇳 India</option>
+              <option value="jp">🇯🇵 Japan</option>
+              <option value="ca">🇨🇦 Canada</option>
+            </select>
+          </div>
+          <div class="inp-field"><label>Your current salary (optional)</label><input type="number" id="inf_current" placeholder="e.g. 58000"/></div>
+        </div>
+        <button class="btn-calc" onclick="calcInflation()">Check Reality</button>
+        <div class="tool-result" id="infResult" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTIONS -->
+    <div id="tool-subscriptions" class="tool-panel">
+      <div class="tool-card">
+        <h3>📱 Subscription Leak Calculator</h3>
+        <p class="tool-desc">Add all your recurring subscriptions and see the true annual cost. Most people underestimate this by 40%.</p>
+        <div id="sub_list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-calc btn-calc-ghost" onclick="addSubRow()">+ Add Service</button>
+          <button class="btn-calc" onclick="calcSubs()">Show Total</button>
+        </div>
+        <div class="tool-result" id="subResult" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- EMERGENCY -->
+    <div id="tool-emergency" class="tool-panel">
+      <div class="tool-card">
+        <h3>🛡️ Emergency Fund Calculator</h3>
+        <p class="tool-desc">How many months of runway do you have — and what's your target?</p>
+        <div class="tool-form">
+          <div class="inp-field"><label>Monthly Essential Expenses</label><input type="number" id="em_expenses" placeholder="e.g. 2500"/></div>
+          <div class="inp-field"><label>Current Savings</label><input type="number" id="em_savings" placeholder="e.g. 5000"/></div>
+          <div class="inp-field"><label>Job Security</label>
+            <select id="em_security" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;">
+              <option value="3">High (stable) → 3 months</option>
+              <option value="6" selected>Medium (normal) → 6 months</option>
+              <option value="9">Low (freelance) → 9 months</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcEmergency()">Check Runway</button>
+        <div class="tool-result" id="emResult" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- DEBT -->
+    <div id="tool-debt" class="tool-panel">
+      <div class="tool-card">
+        <h3>💳 Debt Payoff Planner</h3>
+        <p class="tool-desc">See exactly when you'll be debt-free and how much total interest you'll pay.</p>
+        <div class="tool-form">
+          <div class="inp-field"><label>Total Debt Balance</label><input type="number" id="debt_balance" placeholder="e.g. 15000"/></div>
+          <div class="inp-field"><label>Annual Interest Rate (%)</label><input type="number" id="debt_rate" placeholder="e.g. 18"/></div>
+          <div class="inp-field"><label>Monthly Payment</label><input type="number" id="debt_payment" placeholder="e.g. 500"/></div>
+        </div>
+        <button class="btn-calc" onclick="calcDebt()">Calculate Payoff</button>
+        <div class="tool-result" id="debtResult" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CURRENCY ========== -->
+<div id="page-currency" class="page">
+  <div class="tools-page">
+    <div class="tools-header"><h2 data-i18n="cur_title">Currency Converter & Live Rates</h2><p><span id="fx_rate_note" style="color:var(--yellow)">⟳ Fetching live rates…</span></p></div>
+    <div class="tool-card">
+      <div class="fx-converter">
+        <div class="inp-field"><label>Amount</label><input type="number" id="fx_amount" value="1000" oninput="convertFX()"/></div>
+        <button class="fx-swap-btn" onclick="swapFX()" title="Swap">⇄</button>
+        <div class="inp-field"><label>Result</label><input type="number" id="fx_result" readonly style="color:var(--accent)"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        <div class="inp-field"><label>From</label><select id="fx_from" onchange="convertFX()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:13px;outline:none;">
+          <option value="USD">🇺🇸 USD — US Dollar</option><option value="EUR">🇪🇺 EUR — Euro</option>
+          <option value="GBP">🇬🇧 GBP — British Pound</option><option value="TRY">🇹🇷 TRY — Turkish Lira</option>
+          <option value="JPY">🇯🇵 JPY — Japanese Yen</option><option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+          <option value="AUD">🇦🇺 AUD — Australian Dollar</option><option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+          <option value="CNY">🇨🇳 CNY — Chinese Yuan</option><option value="INR">🇮🇳 INR — Indian Rupee</option>
+          <option value="BRL">🇧🇷 BRL — Brazilian Real</option><option value="MXN">🇲🇽 MXN — Mexican Peso</option>
+          <option value="SGD">🇸🇬 SGD — Singapore Dollar</option><option value="HKD">🇭🇰 HKD — Hong Kong Dollar</option>
+          <option value="SEK">🇸🇪 SEK — Swedish Krona</option><option value="NOK">🇳🇴 NOK — Norwegian Krone</option>
+          <option value="DKK">🇩🇰 DKK — Danish Krone</option><option value="PLN">🇵🇱 PLN — Polish Zloty</option>
+          <option value="NZD">🇳🇿 NZD — New Zealand Dollar</option><option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+          <option value="KRW">🇰🇷 KRW — South Korean Won</option><option value="AED">🇦🇪 AED — UAE Dirham</option>
+          <option value="SAR">🇸🇦 SAR — Saudi Riyal</option><option value="THB">🇹🇭 THB — Thai Baht</option>
+          <option value="IDR">🇮🇩 IDR — Indonesian Rupiah</option><option value="MYR">🇲🇾 MYR — Malaysian Ringgit</option>
+          <option value="PHP">🇵🇭 PHP — Philippine Peso</option><option value="ILS">🇮🇱 ILS — Israeli Shekel</option>
+          <option value="NGN">🇳🇬 NGN — Nigerian Naira</option><option value="EGP">🇪🇬 EGP — Egyptian Pound</option>
+        </select></div>
+        <div class="inp-field"><label>To</label><select id="fx_to" onchange="convertFX()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:13px;outline:none;">
+          <option value="USD">🇺🇸 USD — US Dollar</option><option value="EUR" selected>🇪🇺 EUR — Euro</option>
+          <option value="GBP">🇬🇧 GBP — British Pound</option><option value="TRY">🇹🇷 TRY — Turkish Lira</option>
+          <option value="JPY">🇯🇵 JPY — Japanese Yen</option><option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+          <option value="AUD">🇦🇺 AUD — Australian Dollar</option><option value="CHF">🇨🇭 CHF — Swiss Franc</option>
+          <option value="CNY">🇨🇳 CNY — Chinese Yuan</option><option value="INR">🇮🇳 INR — Indian Rupee</option>
+          <option value="BRL">🇧🇷 BRL — Brazilian Real</option><option value="MXN">🇲🇽 MXN — Mexican Peso</option>
+          <option value="SGD">🇸🇬 SGD — Singapore Dollar</option><option value="HKD">🇭🇰 HKD — Hong Kong Dollar</option>
+          <option value="SEK">🇸🇪 SEK — Swedish Krona</option><option value="NOK">🇳🇴 NOK — Norwegian Krone</option>
+          <option value="DKK">🇩🇰 DKK — Danish Krone</option><option value="PLN">🇵🇱 PLN — Polish Zloty</option>
+          <option value="NZD">🇳🇿 NZD — New Zealand Dollar</option><option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+          <option value="KRW">🇰🇷 KRW — South Korean Won</option><option value="AED">🇦🇪 AED — UAE Dirham</option>
+          <option value="SAR">🇸🇦 SAR — Saudi Riyal</option><option value="THB">🇹🇭 THB — Thai Baht</option>
+          <option value="IDR">🇮🇩 IDR — Indonesian Rupiah</option><option value="MYR">🇲🇾 MYR — Malaysian Ringgit</option>
+          <option value="PHP">🇵🇭 PHP — Philippine Peso</option><option value="ILS">🇮🇱 ILS — Israeli Shekel</option>
+          <option value="NGN">🇳🇬 NGN — Nigerian Naira</option><option value="EGP">🇪🇬 EGP — Egyptian Pound</option>
+        </select></div>
+      </div>
+      <div class="rate-info" id="fx_rate_info"></div>
+      <div class="card-title">All Rates vs USD</div>
+      <table class="rate-table" id="rateTable"></table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PRIVACY ========== -->
+<div id="page-privacy" class="page">
+  <div class="privacy-page">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: March 2026</p>
+    <p>Flo ("we", "us", or "our") is committed to protecting your privacy. This policy explains what information we collect, how we use it, and your rights.</p>
+    <h2>1. Information We Collect</h2>
+    <ul>
+      <li><strong>Data you enter voluntarily:</strong> income amounts, spending categories, and financial figures you type into the app.</li>
+      <li><strong>Usage data:</strong> page views, tool usage, and general analytics (no personal identifiers).</li>
+      <li><strong>No bank data:</strong> We never connect to your bank account, credit card, or any financial institution.</li>
+    </ul>
+    <h2>2. How We Use Your Data</h2>
+    <ul>
+      <li>All calculations happen in your browser. Financial figures are stored locally in your device (localStorage) and never sent to our servers.</li>
+      <li>Anonymous usage analytics help us improve the product.</li>
+    </ul>
+    <h2>3. Data Storage</h2>
+    <p>Your budget data is stored exclusively in your browser's localStorage. Clearing your browser data will erase it. We do not have access to this data.</p>
+    <h2>4. Cookies</h2>
+    <p>We use minimal, essential cookies only (language preference, session state). We do not use advertising cookies or third-party tracking.</p>
+    <h2>5. Third-Party Services</h2>
+    <p>We may use anonymous analytics (e.g. Plausible Analytics, which is GDPR-compliant and cookie-free) and Chart.js for data visualization loaded from a CDN.</p>
+    <h2>6. Your Rights</h2>
+    <ul>
+      <li>You can clear all your data at any time by clearing your browser's localStorage.</li>
+      <li>GDPR / CCPA: You have the right to access, rectify, or erase your data. Contact us at privacy@getflo.io.</li>
+    </ul>
+    <h2>7. Children</h2>
+    <p>Flo is not directed at children under 13. We do not knowingly collect data from children.</p>
+    <h2>8. Changes</h2>
+    <p>We may update this policy. We'll note the date of the latest revision at the top of this page.</p>
+    <h2>9. Contact</h2>
+    <p>Questions? Email us at <a href="mailto:privacy@getflo.io" style="color:var(--accent)">privacy@getflo.io</a></p>
+    <p style="margin-top:32px"><a href="#" onclick="showPage('landing');return false;" style="color:var(--accent)">← Back to Home</a></p>
+  </div>
+</div>
+
+<!-- ========== TERMS ========== -->
+<div id="page-terms" class="page">
+  <div class="privacy-page">
+    <h1>Terms of Service</h1>
+    <p class="updated">Last updated: March 2026</p>
+    <p>By using Flo ("the app"), you agree to these terms. Please read them carefully.</p>
+    <h2>1. Use of Service</h2>
+    <p>Flo is a personal finance tool provided for informational purposes only. You may use it for personal, non-commercial budgeting and financial planning.</p>
+    <h2>2. No Financial Advice</h2>
+    <p>Nothing in Flo constitutes financial, tax, investment, or legal advice. All calculations are estimates only. Always consult a qualified professional for official financial decisions.</p>
+    <h2>3. Your Data</h2>
+    <ul>
+      <li>All financial data you enter is stored locally in your browser (localStorage). We do not transmit your personal financial data to our servers.</li>
+      <li>You are responsible for the accuracy of the data you enter.</li>
+      <li>Clearing your browser data will permanently delete your Flo data.</li>
+    </ul>
+    <h2>4. Pro Subscription</h2>
+    <ul>
+      <li>Pro features are available via a paid monthly subscription ($6/month).</li>
+      <li>Subscriptions are billed monthly and can be cancelled at any time.</li>
+      <li>Refunds are handled on a case-by-case basis. Contact us within 7 days of purchase.</li>
+      <li>License keys are non-transferable and for personal use only.</li>
+    </ul>
+    <h2>5. Acceptable Use</h2>
+    <p>You agree not to: reverse-engineer the app, attempt to bypass Pro restrictions, use the app for illegal purposes, or redistribute the app's code without permission.</p>
+    <h2>6. Disclaimer of Warranties</h2>
+    <p>The app is provided "as is" without warranty of any kind. We do not guarantee accuracy of tax brackets, exchange rates, or inflation figures. Use at your own risk.</p>
+    <h2>7. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, Flo and its creators are not liable for any financial losses or damages resulting from use of the app.</p>
+    <h2>8. Changes to Terms</h2>
+    <p>We may update these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms.</p>
+    <h2>9. Contact</h2>
+    <p>Questions? Email <a href="mailto:hello@tota-finance.com" style="color:var(--accent)">hello@tota-finance.com</a></p>
+    <p style="margin-top:32px"><a href="#" onclick="showPage('landing');return false;" style="color:var(--accent)">← Back to Home</a></p>
+  </div>
+</div>
+
+<!-- PRO UPGRADE MODAL -->
+<div class="modal-overlay" id="proModal">
+  <div class="modal" style="max-width:420px">
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="font-size:44px;margin-bottom:10px">⭐</div>
+      <h2 style="font-size:22px;margin-bottom:8px">Upgrade to Flo Pro</h2>
+      <p style="color:var(--muted);font-size:13px;line-height:1.6">Unlock 12-month history, Smart Insights,<br>Spending Forecast &amp; CSV export.</p>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(124,109,250,.1),rgba(168,85,247,.07));border:1px solid rgba(124,109,250,.25);border-radius:12px;padding:18px;margin-bottom:20px;text-align:center">
+      <div style="font-size:38px;font-weight:900;letter-spacing:-1px">$6<span style="font-size:14px;font-weight:400;color:var(--muted)">/month</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Cancel anytime · Instant activation</div>
+    </div>
+    <button class="btn-plan btn-plan-pro" style="margin-bottom:18px;font-size:15px;padding:13px" onclick="buyPro()">Buy Pro — $6/mo →</button>
+    <div style="border-top:1px solid var(--border);padding-top:16px">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Already have a license key?</p>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="licenseInput" placeholder="FLO-XXXX-XXXX-XXXX" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:12px;outline:none;font-family:monospace;letter-spacing:.5px"/>
+        <button onclick="activateLicense()" style="padding:9px 16px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Activate</button>
+      </div>
+    </div>
+    <button class="btn-modal-s" style="width:100%;margin-top:12px;text-align:center" onclick="closeProModal()">Maybe later</button>
+  </div>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div class="modal-overlay" id="onboardingModal">
+  <div class="modal">
+    <div class="ob-progress"><div class="ob-progress-fill" id="obProgress" style="width:33%"></div></div>
+    <div id="obStep1" class="ob-anim">
+      <span class="ob-step-icon">👋</span>
+      <h2 style="text-align:center;margin-bottom:6px">Welcome to Flo</h2>
+      <p style="text-align:center">60 seconds to set up. No bank connection, no credit card.</p>
+      <div class="modal-form">
+        <div class="inp-field"><label>Your name (optional)</label><input type="text" id="ob_name" placeholder="Alex"/></div>
+        <div class="inp-field"><label>Base currency</label>
+          <select id="ob_currency" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;">
+            <option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option>
+            <option value="TRY">🇹🇷 TRY</option><option value="JPY">🇯🇵 JPY</option><option value="CAD">🇨🇦 CAD</option>
+            <option value="AUD">🇦🇺 AUD</option><option value="CHF">🇨🇭 CHF</option>
+          </select>
+        </div>
+        <div class="inp-field"><label>Monthly income (approx.)</label><input type="number" id="ob_income" placeholder="e.g. 4000" min="0"/></div>
+      </div>
+      <div class="modal-actions"><button class="btn-modal-s" onclick="skipOnboarding()">Skip</button><button class="btn-modal-p" onclick="obStep2()">Next →</button></div>
+    </div>
+    <div id="obStep2" style="display:none" class="ob-anim">
+      <span class="ob-step-icon">💸</span>
+      <h2 style="text-align:center;margin-bottom:6px">Biggest expenses?</h2>
+      <p style="text-align:center">Helps personalize your health score.</p>
+      <div class="modal-form">
+        <div class="inp-field"><label>Monthly rent / mortgage</label><input type="number" id="ob_rent" placeholder="e.g. 1200" min="0"/></div>
+        <div class="inp-field"><label>Food (groceries + dining)</label><input type="number" id="ob_food" placeholder="e.g. 600" min="0"/></div>
+        <div class="inp-field"><label>Subscriptions (total/mo)</label><input type="number" id="ob_subs" placeholder="e.g. 80" min="0"/></div>
+      </div>
+      <div class="modal-actions"><button class="btn-modal-s" onclick="obBack()">← Back</button><button class="btn-modal-p" onclick="obStep3()">Next →</button></div>
+    </div>
+    <div id="obStep3" style="display:none" class="ob-anim">
+      <span class="ob-step-icon">🎉</span>
+      <h2 style="text-align:center;margin-bottom:6px">You're all set!</h2>
+      <p style="text-align:center">Dashboard pre-filled. Adjust any number anytime.</p>
+      <div style="background:var(--surface2);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;line-height:2;color:var(--muted)" id="ob_summary"></div>
+      <div class="modal-actions"><button class="btn-modal-p" onclick="finishOnboarding()">Go to Dashboard →</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-items">
+    <button class="mobile-nav-item active" id="mn-landing" onclick="showPage('landing')"><span class="mn-icon">🏠</span>Home</button>
+    <button class="mobile-nav-item" id="mn-dashboard" onclick="showPage('dashboard')"><span class="mn-icon">📊</span>Dashboard</button>
+    <button class="mobile-nav-item" id="mn-tools" onclick="showPage('tools')"><span class="mn-icon">🔧</span>Tools</button>
+    <button class="mobile-nav-item" id="mn-currency" onclick="showPage('currency')"><span class="mn-icon">💱</span>Rates</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== CONSTANTS ==========
+// Static fallback rates (USD base) — updated at app load via API
+let FX = {
+  USD:1,EUR:.919,GBP:.787,TRY:38.2,JPY:149.8,CAD:1.358,AUD:1.531,CHF:.896,
+  CNY:7.24,INR:83.1,BRL:5.72,MXN:17.2,SGD:1.34,HKD:7.82,
+  SEK:10.52,NOK:10.65,DKK:6.87,PLN:4.01,NZD:1.63,ZAR:18.7,
+  KRW:1340,AED:3.67,SAR:3.75,CZK:23.1,HUF:362,RON:4.58,
+  THB:35.1,IDR:15900,MYR:4.72,PHP:56.4,VND:25200,ILS:3.71,
+  CLP:973,COP:3950,ARS:870,UAH:38.5,NGN:1300,EGP:47.5
+};
+let FX_LOADED = false;
+let FX_UPDATED = '';
+const FX_CHANGE = {
+  USD:0,EUR:.2,GBP:-.1,TRY:-1.2,JPY:-.4,CAD:.1,AUD:.3,CHF:.05,
+  CNY:-.2,INR:-.1,BRL:.8,MXN:.3,SGD:.1,HKD:0,SEK:.2,NOK:.1,DKK:.1,PLN:.3,NZD:.4,ZAR:-.5
+};
+const SYM = {
+  USD:'$',EUR:'€',GBP:'£',TRY:'₺',JPY:'¥',CAD:'C$',AUD:'A$',CHF:'Fr',
+  CNY:'¥',INR:'₹',BRL:'R$',MXN:'$',SGD:'S$',HKD:'HK$',
+  SEK:'kr',NOK:'kr',DKK:'kr',PLN:'zł',NZD:'NZ$',ZAR:'R',
+  KRW:'₩',AED:'د.إ',SAR:'﷼',CZK:'Kč',HUF:'Ft',RON:'lei',
+  THB:'฿',IDR:'Rp',MYR:'RM',PHP:'₱',VND:'₫',ILS:'₪',
+  CLP:'$',COP:'$',ARS:'$',UAH:'₴',NGN:'₦',EGP:'£'
+};
+const FX_NAMES = {
+  EUR:'Euro',GBP:'British Pound',TRY:'Turkish Lira',JPY:'Japanese Yen',
+  CAD:'Canadian Dollar',AUD:'Australian Dollar',CHF:'Swiss Franc',CNY:'Chinese Yuan',
+  INR:'Indian Rupee',BRL:'Brazilian Real',MXN:'Mexican Peso',SGD:'Singapore Dollar',
+  HKD:'Hong Kong Dollar',SEK:'Swedish Krona',NOK:'Norwegian Krone',DKK:'Danish Krone',
+  PLN:'Polish Zloty',NZD:'New Zealand Dollar',ZAR:'South African Rand',
+  KRW:'South Korean Won',AED:'UAE Dirham',SAR:'Saudi Riyal',CZK:'Czech Koruna',
+  HUF:'Hungarian Forint',RON:'Romanian Leu',THB:'Thai Baht',IDR:'Indonesian Rupiah',
+  MYR:'Malaysian Ringgit',PHP:'Philippine Peso',VND:'Vietnamese Dong',
+  ILS:'Israeli Shekel',CLP:'Chilean Peso',COP:'Colombian Peso',ARS:'Argentine Peso',
+  UAH:'Ukrainian Hryvnia',NGN:'Nigerian Naira',EGP:'Egyptian Pound'
+};
+const FX_FLAGS = {
+  EUR:'🇪🇺',GBP:'🇬🇧',TRY:'🇹🇷',JPY:'🇯🇵',CAD:'🇨🇦',AUD:'🇦🇺',CHF:'🇨🇭',CNY:'🇨🇳',
+  INR:'🇮🇳',BRL:'🇧🇷',MXN:'🇲🇽',SGD:'🇸🇬',HKD:'🇭🇰',SEK:'🇸🇪',NOK:'🇳🇴',DKK:'🇩🇰',
+  PLN:'🇵🇱',NZD:'🇳🇿',ZAR:'🇿🇦',KRW:'🇰🇷',AED:'🇦🇪',SAR:'🇸🇦',CZK:'🇨🇿',HUF:'🇭🇺',
+  RON:'🇷🇴',THB:'🇹🇭',IDR:'🇮🇩',MYR:'🇲🇾',PHP:'🇵🇭',VND:'🇻🇳',ILS:'🇮🇱',
+  CLP:'🇨🇱',COP:'🇨🇴',ARS:'🇦🇷',UAH:'🇺🇦',NGN:'🇳🇬',EGP:'🇪🇬'
+};
+
+// ========== PRO FLAG ==========
+let isPro = false;
+function loadProStatus() {
+  const key = localStorage.getItem('flo_pro_key');
+  if (key && /^FLO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)) isPro = true;
+}
+function checkPro(featureName) {
+  if (isPro) return true;
+  openProModal();
+  return false;
+}
+function openProModal()  { document.getElementById('proModal').classList.add('open'); }
+function closeProModal() { document.getElementById('proModal').classList.remove('open'); }
+function buyPro() {
+  // Replace with real LemonSqueezy URL when product is created
+  window.open('https://flo.lemonsqueezy.com/buy/pro', '_blank');
+}
+function activateLicense() {
+  const raw = document.getElementById('licenseInput').value.trim().toUpperCase();
+  if (!/^FLO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(raw)) {
+    showToast('❌ Invalid key — format should be FLO-XXXX-XXXX-XXXX');
+    return;
+  }
+  localStorage.setItem('flo_pro_key', raw);
+  isPro = true;
+  closeProModal();
+  generateMonthOptions();
+  showToast('🎉 Pro activated! Welcome to Flo Pro.');
+}
+
+async function fetchLiveRates() {
+  try {
+    const r = await fetch('https://open.er-api.com/v6/latest/USD');
+    const d = await r.json();
+    if (d.result === 'success' && d.rates) {
+      Object.assign(FX, d.rates);
+      FX_LOADED = true;
+      const now = new Date();
+      FX_UPDATED = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      // Re-render if currency page visible
+      if (document.getElementById('page-currency').classList.contains('active')) {
+        renderRateTable(); convertFX();
+      }
+      const note = document.getElementById('fx_rate_note');
+      if (note) note.textContent = '● Live rates · Updated ' + FX_UPDATED;
+    }
+  } catch(e) { /* use fallback */ }
+}
+const CAT_CFG = [
+  {k:'housing',e:'🏠',c:'#7c6dfa'},
+  {k:'groceries',e:'🛒',c:'#22c55e'},
+  {k:'transport',e:'🚗',c:'#f59e0b'},
+  {k:'health',e:'❤️',c:'#ec4899'},
+  {k:'dining',e:'🍔',c:'#ef4444'},
+  {k:'subs',e:'📱',c:'#a855f7'},
+  {k:'shopping',e:'🛍️',c:'#f97316'},
+  {k:'entertainment',e:'🎭',c:'#06b6d4'},
+  {k:'taxes',e:'🧾',c:'#64748b'},
+  {k:'investments',e:'💹',c:'#0ea5e9'},
+  {k:'education',e:'📚',c:'#84cc16'},
+  {k:'other',e:'📦',c:'#6b7280'}
+];
+function catName(k){return(T[lang]&&T[lang]['cat_'+k])||k;}
+
+// PRO PRICING PER CURRENCY
+const PRO_PRICE = {
+  USD:'$6',EUR:'€5.50',GBP:'£5',TRY:'₺200',JPY:'¥900',CAD:'C$8',AUD:'A$9',CHF:'Fr5.50'
+};
+
+// ========== STATE ==========
+let S = {
+  income:0, extra:0, cats:{}, goals:{}, baseCurrency:'USD',
+  name:'', initialized:false
+};
+
+// ========== I18N ==========
+const T = {
+  en:{
+    nav_home:'Home',nav_dashboard:'Dashboard',nav_tools:'Tools',nav_currency:'Currencies',nav_cta:'Get Started Free',
+    hero_badge:'Free to use · No bank connection needed',hero_title:'Finally know where',hero_title_span:'your money goes',
+    hero_sub:"Enter your income and spending once a month. Flo tells you exactly what's eating your budget — and how to fix it.",
+    hero_cta1:'Start for free',hero_cta2:'Try free tools →',
+    feat_title:'Everything you need, nothing you don\'t',feat_sub:'Simple enough to actually use. Powerful enough to make a difference.',
+    price_title:'Free forever, upgrade when ready',price_sub:'Core features are completely free.',
+    btn_start_free:'Start free',btn_get_pro:'Get Pro',
+    dash_title:'Monthly Overview',inp_title:"Enter This Month's Numbers",
+    grp_income:'Income',grp_essential:'Essential',grp_lifestyle:'Lifestyle',grp_financial:'Financial',
+    lbl_income:'Monthly Income',lbl_extra:'Other Income',
+    lbl_housing:'Housing / Rent',lbl_groceries:'Groceries',lbl_transport:'Transport',lbl_health:'Health',
+    lbl_dining:'Dining Out',lbl_subs:'Subscriptions & Apps',lbl_shopping:'Shopping',lbl_entertainment:'Entertainment',
+    lbl_taxes:'Taxes / Fees',lbl_investments:'Investments',lbl_education:'Education',lbl_other:'Other',
+    btn_save:'✓ Calculate & Save',
+    stat_income:'Income',stat_spent:'Spent',stat_saved:'Saved',stat_score:'Score',
+    ct_breakdown:'Spending by Category',ct_score:'Health Score',ct_report:'Monthly Report',
+    score_label:'Financial Health Score',score_great:'Great financial shape',score_fair:'Fair — room to improve',score_needs:'Needs attention',score_empty:'Enter data to calculate',
+    report_save_rate:'Save rate',report_top_spend:'Top spend',report_no_badges:'Complete your budget to earn badges',
+    badge_super_saver:'Super Saver',badge_on_target:'On Target',badge_housing_hero:'Housing Hero',
+    badge_sub_slayer:'Sub Slayer',badge_investor:'Investor',badge_great_score:'Top Score',
+    cur_title:'Currency Converter & Live Rates',
+    cat_housing:'Housing / Rent',cat_groceries:'Groceries',cat_transport:'Transport',cat_health:'Health',
+    cat_dining:'Dining Out',cat_subs:'Subscriptions',cat_shopping:'Shopping',cat_entertainment:'Entertainment',
+    cat_taxes:'Taxes / Fees',cat_investments:'Investments',cat_education:'Education',cat_other:'Other',
+    tab_tax:'🧾 Tax',tab_inflation:'📉 Salary Check',tab_subs:'📱 Subscriptions',tab_emergency:'🛡️ Emergency Fund',tab_debt:'💳 Debt Payoff',
+    tools_title:'Free Financial Tools',tools_sub:'Quick calculators — no sign-up, no bank connection needed.',
+    mn_home:'Home',mn_dashboard:'Dashboard',mn_tools:'Tools',mn_rates:'Rates',
+    this_month:'This month',of_income:'% of income',enter_data:'Enter data above',
+    score_great_s:'✓ Great shape',score_fair_s:'⚠ Fair',score_needs_s:'✗ Needs work',
+    spent_of:'% of income',pro_feature:'Pro Feature'
+  },
+  tr:{
+    nav_home:'Ana Sayfa',nav_dashboard:'Panel',nav_tools:'Araçlar',nav_currency:'Döviz',nav_cta:'Ücretsiz Başla',
+    hero_badge:'Ücretsiz · Banka bağlantısı gerekmez',hero_title:'Paranızın nereye gittiğini',hero_title_span:'artık bilin',
+    hero_sub:'Aylık gelirinizi ve harcamalarınızı bir kez girin. Flo tam olarak neyin bütçenizi yediğini söyler.',
+    hero_cta1:'Ücretsiz Başla',hero_cta2:'Ücretsiz araçları dene →',
+    feat_title:'İhtiyacınız olan her şey, fazlası değil',feat_sub:'Gerçekten kullanılacak kadar basit. Fark yaratacak kadar güçlü.',
+    price_title:'Sonsuza kadar ücretsiz',price_sub:'Temel özellikler tamamen ücretsiz.',
+    btn_start_free:'Ücretsiz Başla',btn_get_pro:'Pro\'ya Geç',
+    dash_title:'Aylık Özet',inp_title:'Bu Ayın Rakamlarını Gir',
+    grp_income:'Gelir',grp_essential:'Zorunlu Giderler',grp_lifestyle:'Yaşam Tarzı',grp_financial:'Finansal',
+    lbl_income:'Aylık Gelir',lbl_extra:'Diğer Gelir',
+    lbl_housing:'Kira / Konut',lbl_groceries:'Market',lbl_transport:'Ulaşım',lbl_health:'Sağlık',
+    lbl_dining:'Dışarıda Yemek',lbl_subs:'Abonelikler ve Uygulamalar',lbl_shopping:'Alışveriş',lbl_entertainment:'Eğlence',
+    lbl_taxes:'Vergi / Harçlar',lbl_investments:'Yatırım',lbl_education:'Eğitim',lbl_other:'Diğer',
+    btn_save:'✓ Hesapla ve Kaydet',
+    stat_income:'Gelir',stat_spent:'Harcama',stat_saved:'Birikim',stat_score:'Skor',
+    ct_breakdown:'Kategoriye Göre Harcama',ct_score:'Finansal Sağlık Skoru',ct_report:'Aylık Rapor',
+    score_label:'Finansal Sağlık Skoru',score_great:'Harika bir ay',score_fair:'Fena değil — iyileştirilebilir',score_needs:'Dikkat gerekiyor',score_empty:'Skor için veri girin',
+    report_save_rate:'Birikim oranı',report_top_spend:'En büyük gider',report_no_badges:'Rozet kazanmak için bütçenizi tamamlayın',
+    badge_super_saver:'Süper Biriktirici',badge_on_target:'Hedefte',badge_housing_hero:'Kira Kahramanı',
+    badge_sub_slayer:'Abonelik Avcısı',badge_investor:'Yatırımcı',badge_great_score:'Yüksek Skor',
+    cur_title:'Döviz Çevirici ve Canlı Kurlar',
+    cat_housing:'Kira / Konut',cat_groceries:'Market',cat_transport:'Ulaşım',cat_health:'Sağlık',
+    cat_dining:'Dışarıda Yemek',cat_subs:'Abonelikler',cat_shopping:'Alışveriş',cat_entertainment:'Eğlence',
+    cat_taxes:'Vergi / Harçlar',cat_investments:'Yatırım',cat_education:'Eğitim',cat_other:'Diğer',
+    tab_tax:'🧾 Vergi',tab_inflation:'📉 Maaş Gerçeği',tab_subs:'📱 Abonelikler',tab_emergency:'🛡️ Acil Fon',tab_debt:'💳 Borç Planı',
+    tools_title:'Ücretsiz Finansal Araçlar',tools_sub:'Hızlı hesap makineleri — kayıt yok, banka bağlantısı yok.',
+    mn_home:'Ana Sayfa',mn_dashboard:'Panel',mn_tools:'Araçlar',mn_rates:'Kurlar',
+    this_month:'Bu ay',of_income:'% gelir',enter_data:'Yukarıya veri girin',
+    score_great_s:'✓ Harika',score_fair_s:'⚠ Fena değil',score_needs_s:'✗ Dikkat gerek',
+    spent_of:'% gelir',pro_feature:'Pro Özellik'
+  },
+  es:{
+    nav_home:'Inicio',nav_dashboard:'Panel',nav_tools:'Herramientas',nav_currency:'Divisas',nav_cta:'Empieza Gratis',
+    hero_badge:'Gratis · Sin conexión bancaria',hero_title:'Por fin sabe adónde',hero_title_span:'va tu dinero',
+    hero_sub:'Introduce tus ingresos y gastos una vez al mes. Flo te dice exactamente qué consume tu presupuesto.',
+    hero_cta1:'Empezar gratis',hero_cta2:'Probar herramientas →',
+    feat_title:'Todo lo que necesitas',feat_sub:'Lo suficientemente simple para usarlo de verdad.',
+    price_title:'Gratis para siempre',price_sub:'Las funciones principales son completamente gratuitas.',
+    btn_start_free:'Empezar gratis',btn_get_pro:'Obtener Pro',
+    dash_title:'Resumen Mensual',inp_title:'Ingresa los Números del Mes',
+    grp_income:'Ingresos',grp_essential:'Esencial',grp_lifestyle:'Estilo de Vida',grp_financial:'Financiero',
+    lbl_income:'Ingreso Mensual',lbl_extra:'Otros Ingresos',
+    lbl_housing:'Alquiler / Vivienda',lbl_groceries:'Supermercado',lbl_transport:'Transporte',lbl_health:'Salud',
+    lbl_dining:'Restaurantes',lbl_subs:'Suscripciones',lbl_shopping:'Compras',lbl_entertainment:'Entretenimiento',
+    lbl_taxes:'Impuestos',lbl_investments:'Inversiones',lbl_education:'Educación',lbl_other:'Otros',
+    btn_save:'✓ Calcular y Guardar',
+    stat_income:'Ingresos',stat_spent:'Gastado',stat_saved:'Ahorrado',stat_score:'Puntuación',
+    ct_breakdown:'Gastos por Categoría',ct_score:'Puntuación Financiera',ct_report:'Informe Mensual',
+    score_label:'Puntuación de Salud Financiera',score_great:'Excelente forma financiera',score_fair:'Regular — puede mejorar',score_needs:'Necesita atención',score_empty:'Ingresa datos para calcular',
+    report_save_rate:'Tasa de ahorro',report_top_spend:'Mayor gasto',report_no_badges:'Completa tu presupuesto para ganar insignias',
+    badge_super_saver:'Super Ahorrador',badge_on_target:'En Objetivo',badge_housing_hero:'Héroe del Alquiler',
+    badge_sub_slayer:'Cazador de Suscripciones',badge_investor:'Inversor',badge_great_score:'Puntuación Alta',
+    cur_title:'Convertidor de Divisas y Tasas en Vivo',
+    cat_housing:'Alquiler',cat_groceries:'Supermercado',cat_transport:'Transporte',cat_health:'Salud',
+    cat_dining:'Restaurantes',cat_subs:'Suscripciones',cat_shopping:'Compras',cat_entertainment:'Entretenimiento',
+    cat_taxes:'Impuestos',cat_investments:'Inversiones',cat_education:'Educación',cat_other:'Otros',
+    tab_tax:'🧾 Impuestos',tab_inflation:'📉 Salario Real',tab_subs:'📱 Suscripciones',tab_emergency:'🛡️ Fondo Emergencia',tab_debt:'💳 Deuda',
+    tools_title:'Herramientas Financieras Gratuitas',tools_sub:'Calculadoras rápidas — sin registro ni conexión bancaria.',
+    mn_home:'Inicio',mn_dashboard:'Panel',mn_tools:'Herramientas',mn_rates:'Tasas',
+    this_month:'Este mes',of_income:'% de ingresos',enter_data:'Ingresa datos arriba',
+    score_great_s:'✓ Excelente',score_fair_s:'⚠ Regular',score_needs_s:'✗ Atención',
+    spent_of:'% ingresos',pro_feature:'Función Pro'
+  },
+  fr:{
+    nav_home:'Accueil',nav_dashboard:'Tableau',nav_tools:'Outils',nav_currency:'Devises',nav_cta:'Commencer Gratuitement',
+    hero_badge:'Gratuit · Sans connexion bancaire',hero_title:'Sachez enfin où va',hero_title_span:'votre argent',
+    hero_sub:"Entrez vos revenus et dépenses une fois par mois. Flo vous dit exactement ce qui grignote votre budget.",
+    hero_cta1:'Commencer gratuitement',hero_cta2:'Essayer les outils →',
+    feat_title:'Tout ce dont vous avez besoin',feat_sub:'Assez simple pour être vraiment utilisé.',
+    price_title:'Gratuit pour toujours',price_sub:'Les fonctionnalités de base sont entièrement gratuites.',
+    btn_start_free:'Commencer gratis',btn_get_pro:'Obtenir Pro',
+    dash_title:'Vue Mensuelle',inp_title:'Entrez les Chiffres du Mois',
+    grp_income:'Revenus',grp_essential:'Essentiel',grp_lifestyle:'Mode de Vie',grp_financial:'Financier',
+    lbl_income:'Revenu Mensuel',lbl_extra:'Autres Revenus',
+    lbl_housing:'Loyer / Logement',lbl_groceries:'Courses',lbl_transport:'Transport',lbl_health:'Santé',
+    lbl_dining:'Restaurants',lbl_subs:'Abonnements',lbl_shopping:'Shopping',lbl_entertainment:'Divertissement',
+    lbl_taxes:'Impôts / Taxes',lbl_investments:'Investissements',lbl_education:'Éducation',lbl_other:'Autre',
+    btn_save:'✓ Calculer et Sauvegarder',
+    stat_income:'Revenus',stat_spent:'Dépensé',stat_saved:'Épargné',stat_score:'Score',
+    ct_breakdown:'Dépenses par Catégorie',ct_score:'Score de Santé',ct_report:'Rapport Mensuel',
+    score_label:'Score de Santé Financière',score_great:'Excellente forme',score_fair:'Correct — améliorable',score_needs:'Nécessite attention',score_empty:'Entrez des données pour calculer',
+    report_save_rate:"Taux d'épargne",report_top_spend:'Principale dépense',report_no_badges:'Complétez votre budget pour gagner des badges',
+    badge_super_saver:'Super Épargnant',badge_on_target:'Dans les Clous',badge_housing_hero:'Héros du Loyer',
+    badge_sub_slayer:'Chasseur d\'Abos',badge_investor:'Investisseur',badge_great_score:'Top Score',
+    cur_title:'Convertisseur de Devises et Taux en Direct',
+    cat_housing:'Loyer',cat_groceries:'Courses',cat_transport:'Transport',cat_health:'Santé',
+    cat_dining:'Restaurants',cat_subs:'Abonnements',cat_shopping:'Shopping',cat_entertainment:'Divertissement',
+    cat_taxes:'Impôts',cat_investments:'Investissements',cat_education:'Éducation',cat_other:'Autre',
+    tab_tax:'🧾 Impôts',tab_inflation:'📉 Réalité Salariale',tab_subs:'📱 Abonnements',tab_emergency:'🛡️ Fonds Urgence',tab_debt:'💳 Dette',
+    tools_title:'Outils Financiers Gratuits',tools_sub:'Calculatrices rapides — sans inscription ni banque.',
+    mn_home:'Accueil',mn_dashboard:'Tableau',mn_tools:'Outils',mn_rates:'Taux',
+    this_month:'Ce mois',of_income:'% du revenu',enter_data:'Entrez des données',
+    score_great_s:'✓ Excellent',score_fair_s:'⚠ Correct',score_needs_s:'✗ Attention',
+    spent_of:'% revenu',pro_feature:'Fonction Pro'
+  },
+  de:{
+    nav_home:'Start',nav_dashboard:'Dashboard',nav_tools:'Tools',nav_currency:'Währungen',nav_cta:'Kostenlos Starten',
+    hero_badge:'Kostenlos · Keine Bankverbindung nötig',hero_title:'Endlich wissen wohin',hero_title_span:'Ihr Geld geht',
+    hero_sub:'Geben Sie einmal im Monat Einnahmen und Ausgaben ein. Flo sagt genau, was Ihr Budget aufbraucht.',
+    hero_cta1:'Kostenlos starten',hero_cta2:'Tools ausprobieren →',
+    feat_title:'Alles was Sie brauchen',feat_sub:'Einfach genug, um es wirklich zu nutzen.',
+    price_title:'Für immer kostenlos',price_sub:'Kernfunktionen sind völlig kostenlos.',
+    btn_start_free:'Kostenlos starten',btn_get_pro:'Pro holen',
+    dash_title:'Monatsübersicht',inp_title:'Zahlen dieses Monats eingeben',
+    grp_income:'Einnahmen',grp_essential:'Grundausgaben',grp_lifestyle:'Lebensstil',grp_financial:'Finanziell',
+    lbl_income:'Monatliches Einkommen',lbl_extra:'Sonstige Einnahmen',
+    lbl_housing:'Miete / Wohnen',lbl_groceries:'Lebensmittel',lbl_transport:'Transport',lbl_health:'Gesundheit',
+    lbl_dining:'Restaurants',lbl_subs:'Abonnements',lbl_shopping:'Einkaufen',lbl_entertainment:'Unterhaltung',
+    lbl_taxes:'Steuern / Gebühren',lbl_investments:'Investitionen',lbl_education:'Bildung',lbl_other:'Sonstiges',
+    btn_save:'✓ Berechnen und Speichern',
+    stat_income:'Einnahmen',stat_spent:'Ausgegeben',stat_saved:'Gespart',stat_score:'Score',
+    ct_breakdown:'Ausgaben nach Kategorie',ct_score:'Gesundheitsscore',ct_report:'Monatsbericht',
+    score_label:'Finanzgesundheitsscore',score_great:'Hervorragende Form',score_fair:'Geht so — verbesserbar',score_needs:'Braucht Aufmerksamkeit',score_empty:'Daten eingeben zum Berechnen',
+    report_save_rate:'Sparrate',report_top_spend:'Größte Ausgabe',report_no_badges:'Budget vervollständigen für Abzeichen',
+    badge_super_saver:'Super-Sparer',badge_on_target:'Auf Kurs',badge_housing_hero:'Miet-Held',
+    badge_sub_slayer:'Abo-Jäger',badge_investor:'Investor',badge_great_score:'Top Score',
+    cur_title:'Währungsrechner und Live-Kurse',
+    cat_housing:'Miete',cat_groceries:'Lebensmittel',cat_transport:'Transport',cat_health:'Gesundheit',
+    cat_dining:'Restaurants',cat_subs:'Abonnements',cat_shopping:'Einkaufen',cat_entertainment:'Unterhaltung',
+    cat_taxes:'Steuern',cat_investments:'Investitionen',cat_education:'Bildung',cat_other:'Sonstiges',
+    tab_tax:'🧾 Steuern',tab_inflation:'📉 Gehalt Realität',tab_subs:'📱 Abonnements',tab_emergency:'🛡️ Notfonds',tab_debt:'💳 Schulden',
+    tools_title:'Kostenlose Finanztools',tools_sub:'Schnelle Rechner — keine Anmeldung, keine Bank.',
+    mn_home:'Start',mn_dashboard:'Dashboard',mn_tools:'Tools',mn_rates:'Kurse',
+    this_month:'Diesen Monat',of_income:'% Einkommen',enter_data:'Daten eingeben',
+    score_great_s:'✓ Ausgezeichnet',score_fair_s:'⚠ Geht so',score_needs_s:'✗ Achtung',
+    spent_of:'% Einkommen',pro_feature:'Pro-Funktion'
+  },
+  pt:{
+    nav_home:'Início',nav_dashboard:'Painel',nav_tools:'Ferramentas',nav_currency:'Câmbio',nav_cta:'Começar Grátis',
+    hero_badge:'Grátis · Sem conexão bancária',hero_title:'Finalmente saiba onde',hero_title_span:'seu dinheiro vai',
+    hero_sub:'Insira seus rendimentos e gastos uma vez por mês. O Flo diz exatamente o que está consumindo seu orçamento.',
+    hero_cta1:'Começar grátis',hero_cta2:'Testar ferramentas →',
+    feat_title:'Tudo que você precisa',feat_sub:'Simples o suficiente para realmente usar.',
+    price_title:'Gratuito para sempre',price_sub:'Recursos principais são completamente gratuitos.',
+    btn_start_free:'Começar grátis',btn_get_pro:'Obter Pro',
+    dash_title:'Visão Mensal',inp_title:'Insira os Números do Mês',
+    grp_income:'Renda',grp_essential:'Essencial',grp_lifestyle:'Estilo de Vida',grp_financial:'Financeiro',
+    lbl_income:'Renda Mensal',lbl_extra:'Outras Rendas',
+    lbl_housing:'Aluguel / Moradia',lbl_groceries:'Supermercado',lbl_transport:'Transporte',lbl_health:'Saúde',
+    lbl_dining:'Restaurantes',lbl_subs:'Assinaturas',lbl_shopping:'Compras',lbl_entertainment:'Entretenimento',
+    lbl_taxes:'Impostos',lbl_investments:'Investimentos',lbl_education:'Educação',lbl_other:'Outros',
+    btn_save:'✓ Calcular e Salvar',
+    stat_income:'Renda',stat_spent:'Gasto',stat_saved:'Poupado',stat_score:'Pontuação',
+    ct_breakdown:'Gastos por Categoria',ct_score:'Pontuação de Saúde',ct_report:'Relatório Mensal',
+    score_label:'Pontuação de Saúde Financeira',score_great:'Ótima forma financeira',score_fair:'Regular — pode melhorar',score_needs:'Precisa de atenção',score_empty:'Insira dados para calcular',
+    report_save_rate:'Taxa de poupança',report_top_spend:'Maior gasto',report_no_badges:'Complete seu orçamento para ganhar emblemas',
+    badge_super_saver:'Super Poupador',badge_on_target:'No Alvo',badge_housing_hero:'Herói do Aluguel',
+    badge_sub_slayer:'Caçador de Assinaturas',badge_investor:'Investidor',badge_great_score:'Pontuação Alta',
+    cur_title:'Conversor de Moedas e Taxas ao Vivo',
+    cat_housing:'Aluguel',cat_groceries:'Supermercado',cat_transport:'Transporte',cat_health:'Saúde',
+    cat_dining:'Restaurantes',cat_subs:'Assinaturas',cat_shopping:'Compras',cat_entertainment:'Entretenimento',
+    cat_taxes:'Impostos',cat_investments:'Investimentos',cat_education:'Educação',cat_other:'Outros',
+    tab_tax:'🧾 Impostos',tab_inflation:'📉 Realidade Salarial',tab_subs:'📱 Assinaturas',tab_emergency:'🛡️ Fundo Emergência',tab_debt:'💳 Dívida',
+    tools_title:'Ferramentas Financeiras Gratuitas',tools_sub:'Calculadoras rápidas — sem cadastro, sem banco.',
+    mn_home:'Início',mn_dashboard:'Painel',mn_tools:'Ferramentas',mn_rates:'Taxas',
+    this_month:'Este mês',of_income:'% da renda',enter_data:'Insira dados acima',
+    score_great_s:'✓ Excelente',score_fair_s:'⚠ Regular',score_needs_s:'✗ Atenção',
+    spent_of:'% renda',pro_feature:'Função Pro'
+  },
+  zh:{
+    nav_home:'首页',nav_dashboard:'仪表板',nav_tools:'工具',nav_currency:'汇率',nav_cta:'免费开始',
+    hero_badge:'免费使用 · 无需银行连接',hero_title:'终于知道',hero_title_span:'您的钱去哪了',
+    hero_sub:'每月输入一次收入和支出，Flo 告诉您预算的每分钱去向。',
+    hero_cta1:'免费开始',hero_cta2:'试用免费工具 →',
+    feat_title:'您需要的一切',feat_sub:'简单到真正可以使用。',
+    price_title:'永久免费',price_sub:'核心功能完全免费。',
+    btn_start_free:'免费开始',btn_get_pro:'获取专业版',
+    dash_title:'月度概览',inp_title:'输入本月数据',
+    grp_income:'收入',grp_essential:'基本支出',grp_lifestyle:'生活方式',grp_financial:'财务',
+    lbl_income:'月收入',lbl_extra:'其他收入',
+    lbl_housing:'房租 / 住房',lbl_groceries:'食品杂货',lbl_transport:'交通',lbl_health:'健康',
+    lbl_dining:'餐饮外食',lbl_subs:'订阅服务',lbl_shopping:'购物',lbl_entertainment:'娱乐',
+    lbl_taxes:'税款 / 费用',lbl_investments:'投资',lbl_education:'教育',lbl_other:'其他',
+    btn_save:'✓ 计算并保存',
+    stat_income:'收入',stat_spent:'支出',stat_saved:'储蓄',stat_score:'评分',
+    ct_breakdown:'按类别支出',ct_score:'健康评分',ct_report:'月度报告',
+    score_label:'财务健康评分',score_great:'财务状况良好',score_fair:'一般 — 可改善',score_needs:'需要关注',score_empty:'输入数据以计算',
+    report_save_rate:'储蓄率',report_top_spend:'最大支出',report_no_badges:'完成预算以获得徽章',
+    badge_super_saver:'超级节省者',badge_on_target:'达标',badge_housing_hero:'房租英雄',
+    badge_sub_slayer:'订阅猎手',badge_investor:'投资者',badge_great_score:'高分',
+    cur_title:'货币换算器和实时汇率',
+    cat_housing:'房租',cat_groceries:'食品',cat_transport:'交通',cat_health:'健康',
+    cat_dining:'餐饮',cat_subs:'订阅',cat_shopping:'购物',cat_entertainment:'娱乐',
+    cat_taxes:'税款',cat_investments:'投资',cat_education:'教育',cat_other:'其他',
+    tab_tax:'🧾 税务',tab_inflation:'📉 薪资现实',tab_subs:'📱 订阅',tab_emergency:'🛡️ 应急基金',tab_debt:'💳 债务',
+    tools_title:'免费财务工具',tools_sub:'快速计算器 — 无需注册，无需银行。',
+    mn_home:'首页',mn_dashboard:'仪表板',mn_tools:'工具',mn_rates:'汇率',
+    this_month:'本月',of_income:'% 收入',enter_data:'请在上方输入数据',
+    score_great_s:'✓ 优秀',score_fair_s:'⚠ 一般',score_needs_s:'✗ 需改善',
+    spent_of:'% 收入',pro_feature:'专业功能'
+  },
+  ja:{
+    nav_home:'ホーム',nav_dashboard:'ダッシュボード',nav_tools:'ツール',nav_currency:'為替',nav_cta:'無料で始める',
+    hero_badge:'無料 · 銀行接続不要',hero_title:'ついにわかる',hero_title_span:'お金の使い道',
+    hero_sub:'毎月一度、収入と支出を入力するだけ。Floが予算のどこにお金が消えているかを教えます。',
+    hero_cta1:'無料で始める',hero_cta2:'無料ツールを試す →',
+    feat_title:'必要なものすべて',feat_sub:'本当に使えるほどシンプル。',
+    price_title:'永久無料',price_sub:'基本機能は完全無料。',
+    btn_start_free:'無料で始める',btn_get_pro:'Proを入手',
+    dash_title:'月次概要',inp_title:'今月の数字を入力',
+    grp_income:'収入',grp_essential:'必須支出',grp_lifestyle:'ライフスタイル',grp_financial:'財務',
+    lbl_income:'月収',lbl_extra:'その他の収入',
+    lbl_housing:'家賃 / 住宅',lbl_groceries:'食料品',lbl_transport:'交通',lbl_health:'健康',
+    lbl_dining:'外食',lbl_subs:'サブスクリプション',lbl_shopping:'ショッピング',lbl_entertainment:'エンタメ',
+    lbl_taxes:'税金 / 手数料',lbl_investments:'投資',lbl_education:'教育',lbl_other:'その他',
+    btn_save:'✓ 計算して保存',
+    stat_income:'収入',stat_spent:'支出',stat_saved:'貯蓄',stat_score:'スコア',
+    ct_breakdown:'カテゴリ別支出',ct_score:'健康スコア',ct_report:'月次レポート',
+    score_label:'財務健康スコア',score_great:'財務状態良好',score_fair:'普通 — 改善余地あり',score_needs:'要注意',score_empty:'データを入力して計算',
+    report_save_rate:'貯蓄率',report_top_spend:'最大支出',report_no_badges:'バッジを獲得するには予算を完成させてください',
+    badge_super_saver:'スーパーセーバー',badge_on_target:'目標達成',badge_housing_hero:'家賃ヒーロー',
+    badge_sub_slayer:'サブスク狩人',badge_investor:'投資家',badge_great_score:'高スコア',
+    cur_title:'通貨換算とライブレート',
+    cat_housing:'家賃',cat_groceries:'食料品',cat_transport:'交通',cat_health:'健康',
+    cat_dining:'外食',cat_subs:'サブスク',cat_shopping:'ショッピング',cat_entertainment:'娯楽',
+    cat_taxes:'税金',cat_investments:'投資',cat_education:'教育',cat_other:'その他',
+    tab_tax:'🧾 税金',tab_inflation:'📉 給与の現実',tab_subs:'📱 サブスク',tab_emergency:'🛡️ 緊急資金',tab_debt:'💳 借金',
+    tools_title:'無料財務ツール',tools_sub:'クイック計算機 — 登録不要、銀行接続不要。',
+    mn_home:'ホーム',mn_dashboard:'ダッシュ',mn_tools:'ツール',mn_rates:'レート',
+    this_month:'今月',of_income:'% 収入',enter_data:'上記にデータを入力',
+    score_great_s:'✓ 優秀',score_fair_s:'⚠ 普通',score_needs_s:'✗ 要改善',
+    spent_of:'% 収入',pro_feature:'プロ機能'
+  },
+  ar:{
+    nav_home:'الرئيسية',nav_dashboard:'لوحة التحكم',nav_tools:'الأدوات',nav_currency:'العملات',nav_cta:'ابدأ مجاناً',
+    hero_badge:'مجاني · لا حاجة لربط البنك',hero_title:'اعرف أخيراً أين',hero_title_span:'يذهب مالك',
+    hero_sub:'أدخل دخلك وإنفاقك مرة واحدة في الشهر. يخبرك فلو بالضبط ما يستهلك ميزانيتك.',
+    hero_cta1:'ابدأ مجاناً',hero_cta2:'جرب الأدوات المجانية →',
+    feat_title:'كل ما تحتاجه',feat_sub:'بسيط بما يكفي للاستخدام الفعلي.',
+    price_title:'مجاني للأبد',price_sub:'الميزات الأساسية مجانية تماماً.',
+    btn_start_free:'ابدأ مجاناً',btn_get_pro:'احصل على Pro',
+    dash_title:'نظرة شهرية',inp_title:'أدخل أرقام هذا الشهر',
+    grp_income:'الدخل',grp_essential:'الأساسيات',grp_lifestyle:'نمط الحياة',grp_financial:'مالي',
+    lbl_income:'الدخل الشهري',lbl_extra:'دخل آخر',
+    lbl_housing:'الإيجار / السكن',lbl_groceries:'البقالة',lbl_transport:'المواصلات',lbl_health:'الصحة',
+    lbl_dining:'المطاعم',lbl_subs:'الاشتراكات',lbl_shopping:'التسوق',lbl_entertainment:'الترفيه',
+    lbl_taxes:'الضرائب / الرسوم',lbl_investments:'الاستثمارات',lbl_education:'التعليم',lbl_other:'أخرى',
+    btn_save:'✓ احسب واحفظ',
+    stat_income:'الدخل',stat_spent:'المصروف',stat_saved:'المدخر',stat_score:'النقاط',
+    ct_breakdown:'الإنفاق حسب الفئة',ct_score:'نقاط الصحة',ct_report:'التقرير الشهري',
+    score_label:'نقاط الصحة المالية',score_great:'وضع مالي ممتاز',score_fair:'مقبول — قابل للتحسين',score_needs:'يحتاج اهتماماً',score_empty:'أدخل البيانات للحساب',
+    report_save_rate:'معدل الادخار',report_top_spend:'أكبر إنفاق',report_no_badges:'أكمل ميزانيتك للحصول على شارات',
+    badge_super_saver:'مدخر خارق',badge_on_target:'في الهدف',badge_housing_hero:'بطل الإيجار',
+    badge_sub_slayer:'صائد الاشتراكات',badge_investor:'مستثمر',badge_great_score:'نقاط عالية',
+    cur_title:'محول العملات والأسعار المباشرة',
+    cat_housing:'الإيجار',cat_groceries:'البقالة',cat_transport:'المواصلات',cat_health:'الصحة',
+    cat_dining:'المطاعم',cat_subs:'الاشتراكات',cat_shopping:'التسوق',cat_entertainment:'الترفيه',
+    cat_taxes:'الضرائب',cat_investments:'الاستثمارات',cat_education:'التعليم',cat_other:'أخرى',
+    tab_tax:'🧾 الضرائب',tab_inflation:'📉 حقيقة الراتب',tab_subs:'📱 الاشتراكات',tab_emergency:'🛡️ صندوق الطوارئ',tab_debt:'💳 الديون',
+    tools_title:'أدوات مالية مجانية',tools_sub:'حاسبات سريعة — بدون تسجيل أو بنك.',
+    mn_home:'الرئيسية',mn_dashboard:'اللوحة',mn_tools:'الأدوات',mn_rates:'الأسعار',
+    this_month:'هذا الشهر',of_income:'% من الدخل',enter_data:'أدخل البيانات أعلاه',
+    score_great_s:'✓ ممتاز',score_fair_s:'⚠ مقبول',score_needs_s:'✗ يحتاج اهتمام',
+    spent_of:'% دخل',pro_feature:'ميزة Pro'
+  }
+};
+// ========== i18n HELPER ==========
+function t(key) { return (T[lang]&&T[lang][key]) || (T['en']&&T['en'][key]) || key; }
+
+let lang = 'en';
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('langSelect').value = l;
+  document.documentElement.lang = l;
+  document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
+  // Update all static data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = T[l]?.[key] || T['en']?.[key];
+    if (val) el.textContent = val;
+  });
+  // Update tool tabs (they're rendered with JS-inserted text too)
+  const tabs = document.querySelectorAll('.tool-tab');
+  const tabKeys = ['tab_tax','tab_inflation','tab_subs','tab_emergency','tab_debt'];
+  tabs.forEach((tab, i) => { if (tabKeys[i] && T[l]?.[tabKeys[i]]) tab.textContent = T[l][tabKeys[i]]; });
+  // Update tools page header
+  const th = document.querySelector('.tools-header h2');
+  if (th && T[l]?.tools_title) th.textContent = T[l].tools_title;
+  const tp = document.querySelector('.tools-header p');
+  if (tp && T[l]?.tools_sub) tp.textContent = T[l].tools_sub;
+  // Update mobile nav
+  ['landing','dashboard','tools','currency'].forEach((p,i) => {
+    const keys = ['mn_home','mn_dashboard','mn_tools','mn_rates'];
+    const mn = document.querySelectorAll('.mobile-nav-item')[i];
+    if (mn && T[l]?.[keys[i]]) {
+      const icon = mn.querySelector('.mn-icon');
+      mn.textContent = T[l][keys[i]];
+      if (icon) mn.prepend(icon);
+    }
+  });
+  // Refresh card labels + dynamic sections
+  refreshCardLabels?.();
+  const activePage = document.querySelector('.page.active');
+  if (activePage?.id === 'page-dashboard') renderDashboard();
+  if (activePage?.id === 'page-currency') renderRateTable();
+}
+
+// ========== UTILS ==========
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function fmt(n, cur) {
+  cur = cur || S.baseCurrency;
+  const s = SYM[cur] || '$';
+  const abs = Math.abs(n);
+  const formatted = abs >= 10000 ? s + Math.round(abs).toLocaleString('en-US') :
+    abs >= 100 ? s + Math.round(abs).toLocaleString('en-US') :
+    s + abs.toFixed(1);
+  return n < 0 ? '-' + formatted : formatted;
+}
+
+function getRate(from, to) {
+  return (FX[to] || 1) / (FX[from] || 1);
+}
+
+function convert(val, from, to) {
+  return val * getRate(from, to);
+}
+
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  const idx = {landing:0,dashboard:1,tools:2,currency:3};
+  if (idx[p] !== undefined) {
+    document.querySelectorAll('.nav-link')[idx[p]]?.classList.add('active');
+    document.querySelectorAll('.mobile-nav-item')[idx[p]]?.classList.add('active');
+  }
+  if (p === 'dashboard') renderDashboard();
+  if (p === 'tools') initSubRows();
+  if (p === 'currency') { renderRateTable(); convertFX(); }
+  window.scrollTo(0, 0);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ========== UNSAVED CHANGES ==========
+let unsavedChanges = false;
+let autoSaveTimer = null;
+function markUnsaved() {
+  unsavedChanges = true;
+  const bar = document.getElementById('unsavedBar');
+  if (bar) bar.classList.add('show');
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(() => { if (unsavedChanges) saveDashboard(); }, 10000);
+}
+function markSaved() {
+  unsavedChanges = false;
+  const bar = document.getElementById('unsavedBar');
+  if (bar) bar.classList.remove('show');
+  clearTimeout(autoSaveTimer);
+}
+
+// ========== INPUT TOGGLE ==========
+let inputOpen = true;
+function toggleInput() {
+  inputOpen = !inputOpen;
+  const body = document.getElementById('inputBody');
+  const btn = document.getElementById('inputToggleBtn');
+  body.style.display = inputOpen ? '' : 'none';
+  btn.textContent = inputOpen ? 'Hide' : 'Show';
+}
+
+// ========== CURRENCY CHANGE ==========
+function onCurrencyChange() {
+  renderDashboard();
+  updatePricing();
+}
+
+function updatePricing() {
+  const cur = document.getElementById('dashCurrency')?.value || 'USD';
+  const pro = PRO_PRICE[cur] || '$6';
+  const el = document.getElementById('pricePro');
+  if (el) el.innerHTML = `${pro} <span>/ month</span>`;
+}
+
+// ========== ONBOARDING ==========
+function openOnboarding() { document.getElementById('onboardingModal').classList.add('open'); }
+function closeOnboarding() { document.getElementById('onboardingModal').classList.remove('open'); }
+function skipOnboarding() { closeOnboarding(); showPage('dashboard'); }
+function finishOnboarding() {
+  closeOnboarding();
+  const sel = document.getElementById('dashCurrency');
+  if (sel) sel.value = S.baseCurrency;
+  saveMonthData(currentMonth);
+  syncInputsFromState();
+  updateCardStates();
+  showPage('dashboard');
+  renderDashboard();
+  liveUpdate();
+  // Open input section so user sees their pre-filled data
+  if (!inputOpen) toggleInput();
+  showToast('👋 Welcome! Your data is pre-filled below.');
+}
+
+// ========== LIVE UPDATE ==========
+let liveTimer = null;
+function liveUpdate() {
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(() => {
+    const displayCur = document.getElementById('dashCurrency')?.value || S.baseCurrency;
+    const income = Math.max(0,(parseFloat(document.getElementById('inp_income').value)||0)+(parseFloat(document.getElementById('inp_extra').value)||0));
+    const cats = {};
+    CAT_CFG.forEach(c => {
+      const el = document.getElementById('cat_'+c.k);
+      cats[c.k] = el ? Math.max(0, parseFloat(el.value)||0) : 0;
+    });
+    const total = Object.values(cats).reduce((a,b)=>a+b,0);
+    const saved = income - total;
+    const sr = income > 0 ? saved/income*100 : 0;
+    const score = calcScore(income, cats);
+    const scoreColor = score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--red)';
+    const sym = SYM[displayCur]||'$';
+    const fv = v => v>0?(sym+Math.round(v).toLocaleString('en-US')):'—';
+    const statIncome = document.getElementById('liveIncome');
+    const statSpent  = document.getElementById('liveSpent');
+    const statSaved  = document.getElementById('liveSaved');
+    const statScore  = document.getElementById('liveScore');
+    if(statIncome) statIncome.textContent = fv(income);
+    if(statSpent)  { statSpent.textContent = fv(total); statSpent.style.color = total>income&&income>0?'var(--red)':'var(--text)'; }
+    if(statSaved)  { statSaved.textContent = fv(saved); statSaved.style.color = saved>=0?'var(--accent)':'var(--red)'; }
+    if(statScore)  { statScore.textContent = income>0?score:'—'; statScore.style.color = income>0?scoreColor:'var(--muted)'; }
+  }, 200);
+}
+
+// ========== DASHBOARD ==========
+function saveDashboard() {
+  // Will be overridden by the new version below — kept as placeholder
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const displayCur = document.getElementById('dashCurrency')?.value || S.baseCurrency;
+  const rate = getRate(S.baseCurrency || 'USD', displayCur);
+
+  const income = (S.income + (S.extra || 0)) * rate;
+  const cats = {};
+  CAT_CFG.forEach(c => { cats[c.k] = (S.cats[c.k] || 0) * rate; });
+  const totalSpent = Object.values(cats).reduce((a,b) => a+b, 0);
+  const saved = income - totalSpent;
+  const saveRate = income > 0 ? saved / income * 100 : 0;
+  const score = calcScore(income, cats);
+  const scoreColor = score >= 70 ? 'var(--green)' : score >= 50 ? 'var(--yellow)' : 'var(--red)';
+
+  // Stats
+  document.getElementById('dashStats').innerHTML = `
+    <div class="stat-card income">
+      <div class="stat-label">Income</div>
+      <div class="stat-value" style="color:var(--green)">${income > 0 ? fmt(income, displayCur) : '—'}</div>
+      <div class="stat-sub">${displayCur} · ${t('this_month')}</div>
+    </div>
+    <div class="stat-card spent">
+      <div class="stat-label">Total Spent</div>
+      <div class="stat-value" style="color:${totalSpent > income && income > 0 ? 'var(--red)' : 'var(--text)'}">${totalSpent > 0 ? fmt(totalSpent, displayCur) : '—'}</div>
+      <div class="stat-sub">${income > 0 ? (totalSpent/income*100).toFixed(1)+t('of_income') : t('enter_data')}</div>
+    </div>
+    <div class="stat-card saved">
+      <div class="stat-label">Saved</div>
+      <div class="stat-value" style="color:${saved >= 0 ? 'var(--accent)' : 'var(--red)'}">${income > 0 ? fmt(saved, displayCur) : '—'}</div>
+      <div class="stat-sub" style="color:${saveRate >= 20 ? 'var(--green)' : saveRate >= 10 ? 'var(--yellow)' : 'var(--red)'}">${income > 0 ? saveRate.toFixed(1)+t('of_income') : ''}</div>
+    </div>
+    <div class="stat-card score">
+      <div class="stat-label">Health Score</div>
+      <div class="stat-value" style="color:${scoreColor}">${income > 0 ? score : '—'}</div>
+      <div class="stat-sub">${income > 0 ? (score >= 70 ? t('score_great_s') : score >= 50 ? t('score_fair_s') : t('score_needs_s')) : ''}</div>
+    </div>
+  `;
+
+  // Category list
+  document.getElementById('totalSpentLabel').textContent = totalSpent > 0 ? fmt(totalSpent, displayCur) + ' total' : '';
+  const sorted = CAT_CFG.filter(c => cats[c.k] > 0).sort((a,b) => cats[b.k] - cats[a.k]);
+  document.getElementById('categoryList').innerHTML = sorted.length === 0
+    ? `<div class="empty-state"><div class="es-icon">👆</div><h3>No spending data yet</h3><p>Enter your numbers in the form above and hit <strong>Calculate &amp; Save</strong> to see your breakdown here.</p></div>`
+    : sorted.map(c => {
+        const pct = totalSpent > 0 ? (cats[c.k] / totalSpent * 100) : 0;
+        return `<div class="cat-item">
+          <div class="cat-emoji" style="background:${c.c}22">${c.e}</div>
+          <div class="cat-info">
+            <div class="cat-name">${catName(c.k)}</div>
+            <div class="cat-bar-bg"><div class="cat-bar-fill" style="width:${Math.min(pct,100)}%;background:${c.c}"></div></div>
+          </div>
+          <div class="cat-right">
+            <div class="cat-amount">${fmt(cats[c.k], displayCur)}</div>
+            <div class="cat-pct">${pct.toFixed(1)}%</div>
+          </div>
+        </div>`;
+      }).join('');
+
+  // Score
+  document.getElementById('scoreNum').textContent = income > 0 ? score : '—';
+  document.getElementById('scoreNum').style.color = scoreColor;
+  document.getElementById('scoreLabel').textContent = income > 0
+    ? (score >= 70 ? t('score_great') : score >= 50 ? t('score_fair') : t('score_needs'))
+    : t('score_empty');
+  document.getElementById('scoreBar').style.width = income > 0 ? score + '%' : '0%';
+  document.getElementById('scoreBar').style.background = `linear-gradient(90deg, ${score >= 70 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444'}, ${score >= 70 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626'})`;
+
+  // Insights
+  document.getElementById('insightsList').innerHTML = generateInsights(income, cats, saveRate, score, displayCur)
+    .map(i => `<div class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`).join('');
+
+  // Report Card
+  const [ry, rm] = currentMonth.split('-');
+  const reportMonthLabel = new Date(parseInt(ry), parseInt(rm)-1, 1).toLocaleString('en-US', {month:'long', year:'numeric'});
+  document.getElementById('reportMonth').textContent = reportMonthLabel;
+  document.getElementById('reportScore').textContent = income > 0 ? score : '—';
+  document.getElementById('reportScore').style.color = income > 0 ? (score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--red)') : 'var(--muted)';
+  document.getElementById('reportSaveRate').textContent = income > 0 ? saveRate.toFixed(1)+'%' : '—';
+  const topCat = sorted.length > 0 ? sorted[0] : null;
+  document.getElementById('reportTopCat').textContent = topCat ? catName(topCat.k) : '—';
+
+  // Badges
+  const badges = [];
+  if (income > 0) {
+    if (saveRate >= 30) badges.push({emoji:'🥇', label: T[lang]?.badge_super_saver||'Super Saver'});
+    else if (saveRate >= 20) badges.push({emoji:'🎯', label: T[lang]?.badge_on_target||'On Target'});
+    if (cats.housing > 0 && cats.housing/income < 0.30) badges.push({emoji:'🏠', label: T[lang]?.badge_housing_hero||'Housing Hero'});
+    if (cats.subs > 0 && cats.subs/income < 0.05) badges.push({emoji:'📱', label: T[lang]?.badge_sub_slayer||'Sub Slayer'});
+    if (cats.investments > 0) badges.push({emoji:'💹', label: T[lang]?.badge_investor||'Investor'});
+    if (score >= 85) badges.push({emoji:'⭐', label: T[lang]?.badge_great_score||'Top Score'});
+  }
+  document.getElementById('reportBadges').innerHTML = badges.length > 0
+    ? badges.map(b=>`<span style="background:rgba(124,109,250,.15);border:1px solid rgba(124,109,250,.25);border-radius:100px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--accent)">${b.emoji} ${b.label}</span>`).join('')
+    : `<span style="font-size:11px;color:var(--muted)">${T[lang]?.report_no_badges||'Complete your budget to earn badges'}</span>`;
+
+  // Pro section (always render — blurred for free users)
+  renderProSection();
+
+  // Tip
+  const tipEl = document.getElementById('reportTip');
+  if (income > 0 && sorted.length > 0) {
+    const topPct = (cats[sorted[0].k]/income*100).toFixed(0);
+    tipEl.style.display = 'block';
+    tipEl.innerHTML = `💡 <strong>${catName(sorted[0].k)}</strong> is your biggest spend at <strong>${topPct}% of income</strong>.${saveRate < 20 ? ` Reducing it by 10% would add <strong>${fmt(cats[sorted[0].k]*0.1, displayCur)}/month</strong> to savings.` : ' Keep tracking!'}`;
+  } else {
+    tipEl.style.display = 'none';
+  }
+}
+
+function calcScore(income, cats) {
+  if (income <= 0) return 0;
+  let s = 100;
+  const total = Object.values(cats).reduce((a,b) => a+b, 0);
+  const sr = Math.max(0, (income - total) / income);
+  if (sr >= .2) s -= 0; else if (sr >= .1) s -= 18; else if (sr >= 0) s -= 28; else s -= 45;
+  const hp = income > 0 ? cats.housing / income : 0;
+  if (hp > .5) s -= 22; else if (hp > .35) s -= 14; else if (hp > .3) s -= 6;
+  const sp = income > 0 ? cats.subs / income : 0;
+  if (sp > .1) s -= 10; else if (sp > .05) s -= 4;
+  if (total > income) s -= 20;
+  if (cats.investments > 0) s += 5;
+  return Math.max(0, Math.min(100, Math.round(s)));
+}
+
+function generateInsights(income, cats, saveRate, score, cur) {
+  const tl = T[lang] || T['en'];
+  if (income <= 0) return [{icon:'💡',text:`${tl.btn_save ? tl.inp_title||'Enter data' : 'Enter data above'} → <strong>${tl.btn_save||'Calculate & Save'}</strong>`}];
+  const ins = [];
+  const total = Object.values(cats).reduce((a,b)=>a+b,0);
+  if (saveRate < 0) ins.push({icon:'🚨',text:`<strong>${lang==='tr'?'Gelirinizden fazla harcıyorsunuz.':'You\'re spending more than you earn.'}</strong> ${lang==='tr'?'Hemen':'Cut'} ${fmt(Math.abs(total-income),cur)} ${lang==='tr'?'kısın.':'immediately.'}`});
+  else if (saveRate < 10) ins.push({icon:'⚠️',text:`${lang==='tr'?'Birikim oranı':'Save rate'}: <strong>${saveRate.toFixed(1)}%</strong>. ${lang==='tr'?'Hedef %20+ — küçük kesintiler bile büyür.':'Target 20%+ — even small cuts compound quickly.'}`});
+  else if (saveRate >= 20) ins.push({icon:'🎯',text:`<strong>${lang==='tr'?'Birikim oranı':'Save rate'}: ${saveRate.toFixed(1)}%</strong> — ${lang==='tr'?'%20 hedefinin üzerindesiniz. Harika!':'above the 20% benchmark. Solid!'}`});
+  if (income > 0 && cats.housing > 0 && cats.housing/income > .35) ins.push({icon:'🏠',text:`${lang==='tr'?'Kira gelirinizin':'Housing is'} <strong>${(cats.housing/income*100).toFixed(0)}%${lang==='tr'?'\'ini alıyor':' of income'}</strong>. ${lang==='tr'?'Güvenli tavan %30 — en büyük fırsatınız.':'Safe ceiling is 30% — your biggest lever.'}`});
+  if (cats.subs > 0) ins.push({icon:'📱',text:`${lang==='tr'?'Abonelikler yılda':'Subscriptions cost'} <strong>${fmt(cats.subs*12,cur)}/${lang==='tr'?'yıl':'year'}</strong>${lang==='tr'?'. Gizli sızıntıları bulmak için Abonelik aracını kullanın.':'. Use the Subscription tool to find hidden leaks.'}`});
+  if (income > 0 && cats.dining > 0 && cats.dining/income > .12) ins.push({icon:'🍔',text:`${lang==='tr'?'Dışarıda yemek gelirinizin':'Dining out is'} <strong>${(cats.dining/income*100).toFixed(0)}%${lang==='tr'?'\'i':' of income'}</strong>. ${lang==='tr'?'%20 kesmek':'Cutting 20% saves'} ${fmt(cats.dining*.2,cur)}/${lang==='tr'?'ay kazandırır.':'month.'}`});
+  if (cats.investments === 0 && saveRate > 0) ins.push({icon:'💹',text:lang==='tr'?'Yatırım takip edilmiyor. Aylık küçük miktarlar bile zaman içinde önemli ölçüde büyür.':'No investments tracked. Even small amounts invested monthly grow significantly over time.'});
+  return ins.slice(0,3);
+}
+
+// ========== PRO SECTION ==========
+function getSmartInsights() {
+  const now = new Date();
+  const months = [];
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    const raw = localStorage.getItem('flo_' + key);
+    if (raw) { try { months.push({key, ...JSON.parse(raw)}); } catch(e) {} }
+  }
+  const sym = SYM[S.baseCurrency]||'$';
+  const f = v => sym + Math.round(Math.abs(v)).toLocaleString();
+  const insights = [];
+  if (months.length === 0) {
+    insights.push({icon:'📊', text:'Save your first month to start seeing trend insights.'});
+    return insights;
+  }
+  if (months.length < 2) {
+    insights.push({icon:'📊', text:'Save data for <strong>one more month</strong> to unlock trend comparisons.'});
+    const m = months[0];
+    const inc = (m.income||0)+(m.extra||0);
+    const spent = Object.values(m.cats||{}).reduce((a,b)=>a+b,0);
+    if (inc > 0) {
+      const sr = (inc-spent)/inc*100;
+      if (sr > 20) insights.push({icon:'🎯', text:`Saving <strong>${sr.toFixed(0)}%</strong> of income — above the 20% benchmark!`});
+    }
+    return insights;
+  }
+  const cur = months[0], prev = months[1];
+  const curInc = (cur.income||0)+(cur.extra||0);
+  const prevInc = (prev.income||0)+(prev.extra||0);
+  const curCats = cur.cats||{}, prevCats = prev.cats||{};
+  const curTotal = Object.values(curCats).reduce((a,b)=>a+b,0);
+  const prevTotal = Object.values(prevCats).reduce((a,b)=>a+b,0);
+  // Overall spending change
+  if (prevTotal > 50) {
+    const chg = (curTotal - prevTotal) / prevTotal * 100;
+    if (chg > 3)  insights.push({icon:'📈', text:`Spending <strong>up ${chg.toFixed(0)}%</strong> vs last month (+${f(curTotal-prevTotal)}).`});
+    else if (chg < -3) insights.push({icon:'📉', text:`Spending <strong>down ${Math.abs(chg).toFixed(0)}%</strong> vs last month — great discipline!`});
+  }
+  // Biggest category change
+  const catChanges = CAT_CFG.map(c => {
+    const cv = curCats[c.k]||0, pv = prevCats[c.k]||0;
+    if (pv > 10 && cv > 0) return {k:c.k, e:c.e, chg:(cv-pv)/pv*100, abs:cv-pv};
+    return null;
+  }).filter(Boolean).sort((a,b) => Math.abs(b.chg)-Math.abs(a.chg));
+  if (catChanges.length > 0) {
+    const top = catChanges[0];
+    if (top.chg > 15) insights.push({icon:top.e, text:`<strong>${catName(top.k)}</strong> up <strong>${top.chg.toFixed(0)}%</strong> vs last month (+${f(top.abs)}).`});
+    else if (top.chg < -15) insights.push({icon:'🎉', text:`<strong>${catName(top.k)}</strong> cut by <strong>${Math.abs(top.chg).toFixed(0)}%</strong>. Saved ${f(Math.abs(top.abs))}!`});
+  }
+  // Save rate trend
+  if (curInc > 0 && prevInc > 0) {
+    const curSR = (curInc-curTotal)/curInc*100;
+    const prevSR = (prevInc-prevTotal)/prevInc*100;
+    if (curSR > prevSR+3) insights.push({icon:'🎯', text:`Save rate improved: <strong>${prevSR.toFixed(0)}%</strong> → <strong>${curSR.toFixed(0)}%</strong>. Keep it up!`});
+    else if (curSR < prevSR-5) insights.push({icon:'⚠️', text:`Save rate dropped: <strong>${prevSR.toFixed(0)}%</strong> → <strong>${curSR.toFixed(0)}%</strong>. Review expenses.`});
+  }
+  // Year-end projection
+  if (curInc > 0) {
+    const avgSaved = months.slice(0,2).map(m => {
+      const inc = (m.income||0)+(m.extra||0);
+      return inc - Object.values(m.cats||{}).reduce((a,b)=>a+b,0);
+    }).reduce((a,b)=>a+b,0) / 2;
+    const remaining = 12 - (new Date().getMonth()+1);
+    if (remaining > 0 && avgSaved > 0) insights.push({icon:'🔮', text:`At current pace, you'll save <strong>${f(avgSaved*remaining)}</strong> in the remaining ${remaining} months of the year.`});
+  }
+  return insights.slice(0,4);
+}
+
+function getSpendingForecast() {
+  const now = new Date();
+  const months = [];
+  for (let i = 1; i <= 3; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    const raw = localStorage.getItem('flo_' + key);
+    if (raw) { try { months.push(JSON.parse(raw)); } catch(e) {} }
+  }
+  if (months.length === 0) return null;
+  const forecast = {};
+  CAT_CFG.forEach(c => {
+    const vals = months.map(m => (m.cats||{})[c.k]||0).filter(v=>v>0);
+    if (vals.length > 0) forecast[c.k] = vals.reduce((a,b)=>a+b,0)/vals.length;
+  });
+  return Object.keys(forecast).length > 0 ? forecast : null;
+}
+
+function renderTrendChart() {
+  const canvas = document.getElementById('trendChart');
+  if (!canvas || typeof Chart === 'undefined') return;
+  const now = new Date();
+  const labels=[], incData=[], spentData=[], savedData=[];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    const key = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    labels.push(d.toLocaleString('en-US',{month:'short'}));
+    const raw = localStorage.getItem('flo_'+key);
+    if (raw) {
+      const dt = JSON.parse(raw);
+      const inc = (dt.income||0)+(dt.extra||0);
+      const spent = Object.values(dt.cats||{}).reduce((a,b)=>a+b,0);
+      incData.push(inc); spentData.push(spent); savedData.push(Math.max(0,inc-spent));
+    } else { incData.push(0); spentData.push(0); savedData.push(0); }
+  }
+  if (window._trendChart) { window._trendChart.destroy(); window._trendChart=null; }
+  const isLight = document.documentElement.getAttribute('data-theme')==='light';
+  const tc = isLight?'#6666aa':'#7777aa', gc = isLight?'rgba(0,0,0,.06)':'rgba(255,255,255,.06)';
+  window._trendChart = new Chart(canvas.getContext('2d'), {
+    type:'bar',
+    data:{labels, datasets:[
+      {label:'Income', data:incData, backgroundColor:'rgba(34,197,94,.4)', borderColor:'#22c55e', borderWidth:1, borderRadius:4},
+      {label:'Spent',  data:spentData, backgroundColor:'rgba(239,68,68,.4)', borderColor:'#ef4444', borderWidth:1, borderRadius:4},
+      {label:'Saved',  data:savedData, backgroundColor:'rgba(124,109,250,.4)', borderColor:'#7c6dfa', borderWidth:1, borderRadius:4},
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:tc,font:{size:11}}}, tooltip:{mode:'index',intersect:false}},
+      scales:{
+        x:{ticks:{color:tc}, grid:{color:gc}},
+        y:{ticks:{color:tc, callback:v=>v>=1000?Math.round(v/1000)+'k':v}, grid:{color:gc}}
+      }
+    }
+  });
+}
+
+function renderProSection() {
+  // Smart Insights
+  const insights = getSmartInsights();
+  const insEl = document.getElementById('smartInsightsList');
+  if (insEl) insEl.innerHTML = insights.map(i =>
+    `<div class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+  // Spending Forecast
+  const forecast = getSpendingForecast();
+  const fcEl = document.getElementById('forecastList');
+  if (fcEl) {
+    if (forecast) {
+      const sym = SYM[S.baseCurrency]||'$';
+      const f = v => sym+Math.round(v).toLocaleString();
+      const sorted = CAT_CFG.filter(c=>forecast[c.k]).sort((a,b)=>(forecast[b.k]||0)-(forecast[a.k]||0)).slice(0,5);
+      fcEl.innerHTML = sorted.map(c=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px">${c.e} ${catName(c.k)}</span>
+          <span style="font-size:13px;font-weight:700;color:var(--accent)">${f(forecast[c.k])}</span>
+        </div>`).join('');
+    } else {
+      fcEl.innerHTML = '<p style="font-size:12px;color:var(--muted)">Save previous months to unlock forecasts.</p>';
+    }
+  }
+  // Trend Chart
+  renderTrendChart();
+}
+
+// ========== TOOLS ==========
+function switchTool(t, btn) {
+  document.querySelectorAll('.tool-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tool-' + t).classList.add('active');
+}
+
+function calcTax() {
+  const income = parseFloat(document.getElementById('tax_income').value) || 0;
+  const country = document.getElementById('tax_country').value;
+  const status = document.getElementById('tax_status').value;
+  if (income <= 0) { showToast('Please enter your income.'); return; }
+  // 2024/2025 tax brackets — federal/national only, pre-deduction estimates
+  const brackets = {
+    us: status==='married'
+      ? [[0,23200,.1],[23200,94300,.12],[94300,201050,.22],[201050,383900,.24],[383900,487450,.32],[487450,731200,.35],[731200,Infinity,.37]]
+      : [[0,11600,.1],[11600,47150,.12],[47150,100525,.22],[100525,191950,.24],[191950,243725,.32],[243725,609350,.35],[609350,Infinity,.37]],
+    uk:[[0,12570,0],[12570,50270,.2],[50270,125140,.4],[125140,Infinity,.45]],
+    de:[[0,11604,0],[11604,17005,.14],[17005,66760,.24],[66760,277826,.42],[277826,Infinity,.45]],
+    fr:[[0,11294,0],[11294,28797,.11],[28797,82341,.3],[82341,177106,.41],[177106,Infinity,.45]],
+    ca:[[0,55867,.15],[55867,111733,.205],[111733,154906,.26],[154906,220000,.29],[220000,Infinity,.33]],
+    au:[[0,18200,0],[18200,45000,.16],[45000,135000,.30],[135000,190000,.37],[190000,Infinity,.45]],
+    tr:[[0,158000,.15],[158000,330000,.2],[330000,800000,.27],[800000,4300000,.35],[4300000,Infinity,.4]],
+    nl:[[0,73031,.3697],[73031,Infinity,.495]],
+    es:[[0,12450,.19],[12450,20200,.24],[20200,35200,.3],[35200,60000,.37],[60000,300000,.45],[300000,Infinity,.47]],
+    it:[[0,28000,.23],[28000,50000,.35],[50000,Infinity,.43]],
+    jp:[[0,1950000,.05],[1950000,3300000,.10],[3300000,6950000,.20],[6950000,9000000,.23],[9000000,18000000,.33],[18000000,40000000,.40],[40000000,Infinity,.45]],
+    se:[[0,Infinity,.32]],  // ~32% flat municipal + state above SEK 598500
+    pl:[[0,120000,.12],[120000,Infinity,.32]],
+    in:[[0,300000,0],[300000,700000,.05],[700000,1000000,.1],[1000000,1200000,.15],[1200000,1500000,.2],[1500000,Infinity,.3]]
+  };
+  let tax = 0;
+  const br = brackets[country] || brackets.us;
+  for (const [low,high,rate] of br) {
+    if (income <= low) break;
+    tax += (Math.min(income, high) - low) * rate;
+  }
+  const eff = income > 0 ? tax/income*100 : 0;
+  const net = income - tax;
+  document.getElementById('taxResult').style.display = 'block';
+  document.getElementById('taxResult').innerHTML = `
+    <div class="result-row"><span class="result-label">Estimated Annual Tax</span><span class="result-value" style="color:var(--red)">$${Math.round(tax).toLocaleString()}</span></div>
+    <div class="result-row"><span class="result-label">Effective Tax Rate</span><span class="result-value" style="color:var(--yellow)">${eff.toFixed(1)}%</span></div>
+    <div class="result-row"><span class="result-label">Take-Home (Annual)</span><span class="result-value" style="color:var(--green)">$${Math.round(net).toLocaleString()}</span></div>
+    <div class="result-row"><span class="result-label">Take-Home (Monthly)</span><span class="result-value result-highlight">$${Math.round(net/12).toLocaleString()}</span></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Approximate only. Excludes deductions, local taxes, and credits.</p>
+  `;
+}
+
+function calcInflation() {
+  const amount = parseFloat(document.getElementById('inf_amount').value) || 0;
+  const from = parseInt(document.getElementById('inf_from').value) || 0;
+  const to = parseInt(document.getElementById('inf_to').value) || 2025;
+  const region = document.getElementById('inf_region').value;
+  const current = parseFloat(document.getElementById('inf_current').value) || 0;
+  if (amount <= 0) { showToast('Please enter a salary.'); return; }
+  if (from >= to || from < 2000 || to > 2025) { showToast('Check your years.'); return; }
+  // Average annual CPI rates (compound, sourced from World Bank / IMF data)
+  const AVG_INF = {us:.038,eu:.034,uk:.042,tr:.42,br:.065,in:.055,jp:.008,ca:.036};
+  const rate = AVG_INF[region] || .038;
+  const years = to - from;
+  const required = amount * Math.pow(1 + rate, years);
+  const diff = required - amount;
+  const diffPct = diff / amount * 100;
+  const behind = current > 0 ? required - current : null;
+  const sym = region==='tr'?'₺':region==='br'?'R$':region==='in'?'₹':region==='jp'?'¥':'$';
+  const f = v => sym + Math.round(v).toLocaleString();
+  document.getElementById('infResult').style.display = 'block';
+  document.getElementById('infResult').innerHTML = `
+    <div class="result-row"><span class="result-label">Your ${from} salary</span><span class="result-value">${f(amount)}</span></div>
+    <div class="result-row"><span class="result-label">Equivalent in ${to}</span><span class="result-value result-highlight">${f(required)}</span></div>
+    <div class="result-row"><span class="result-label">Raise needed to keep up</span><span class="result-value" style="color:var(--red)">+${f(diff)} (+${diffPct.toFixed(1)}%)</span></div>
+    <div class="result-row"><span class="result-label">Avg annual inflation (${region.toUpperCase()})</span><span class="result-value" style="color:var(--yellow)">${(rate*100).toFixed(1)}%/yr</span></div>
+    ${behind !== null ? `<div class="result-row"><span class="result-label">Your salary gap</span><span class="result-value" style="color:${behind>0?'var(--red)':'var(--green)'}">${behind>0?'Behind by '+f(behind):'Ahead by '+f(-behind)} 🎉</span></div>` : ''}
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Based on avg ${(rate*100).toFixed(1)}% annual inflation (${from}–${to}). Actual CPI varies by year and region.</p>
+  `;
+}
+
+let subsInit = false;
+function saveSubRows() {
+  const rows = [];
+  for (const row of document.getElementById('sub_list').children) {
+    rows.push({name:row.children[0].value, amt:row.children[1].value});
+  }
+  localStorage.setItem('flo_subs', JSON.stringify(rows));
+}
+function initSubRows() {
+  if (subsInit) return;
+  subsInit = true;
+  const raw = localStorage.getItem('flo_subs');
+  if (raw) {
+    try {
+      const rows = JSON.parse(raw);
+      rows.forEach(r => addSubRow(r.name, r.amt));
+      return;
+    } catch(e) {}
+  }
+  [['Netflix',18],['Spotify',10],['ChatGPT Plus',20],['Amazon Prime',15]].forEach(([n,p]) => addSubRow(n, p));
+}
+function addSubRow(name='', price='') {
+  const div = document.createElement('div');
+  div.style.cssText = 'display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;';
+  div.innerHTML = `
+    <input type="text" placeholder="Service name" value="${escapeHtml(name)}" oninput="saveSubRows()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 11px;font-size:13px;outline:none;"/>
+    <input type="number" placeholder="$/mo" value="${escapeHtml(String(price))}" oninput="saveSubRows()" style="width:80px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 10px;font-size:13px;outline:none;"/>
+    <button onclick="this.parentElement.remove();saveSubRows()" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:12px;transition:color .2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕</button>
+  `;
+  document.getElementById('sub_list').appendChild(div);
+}
+function calcSubs() {
+  let total = 0, items = [];
+  for (const row of document.getElementById('sub_list').children) {
+    const name = row.children[0].value.trim() || 'Unknown';
+    const amt = parseFloat(row.children[1].value) || 0;
+    if (amt > 0) { total += amt; items.push({name, amt}); }
+  }
+  if (total === 0) { showToast('Add at least one subscription.'); return; }
+  items.sort((a,b) => b.amt - a.amt);
+  document.getElementById('subResult').style.display = 'block';
+  document.getElementById('subResult').innerHTML = `
+    <div class="result-row"><span class="result-label">Monthly total</span><span class="result-value" style="color:var(--red)">$${total.toFixed(2)}</span></div>
+    <div class="result-row"><span class="result-label">Annual total</span><span class="result-value result-highlight">$${(total*12).toFixed(0)}/year</span></div>
+    <div class="result-row"><span class="result-label">Per day</span><span class="result-value" style="color:var(--yellow)">$${(total*12/365).toFixed(2)}/day</span></div>
+    ${items.map(i=>`<div class="result-row"><span class="result-label">${escapeHtml(i.name)}</span><span class="result-value" style="font-size:13px">$${i.amt.toFixed(2)}/mo</span></div>`).join('')}
+  `;
+}
+
+function calcEmergency() {
+  const exp = parseFloat(document.getElementById('em_expenses').value) || 0;
+  const sav = parseFloat(document.getElementById('em_savings').value) || 0;
+  const tgt = parseInt(document.getElementById('em_security').value);
+  if (exp <= 0) { showToast('Enter monthly expenses.'); return; }
+  const target = exp * tgt;
+  const runway = sav / exp;
+  const gap = Math.max(0, target - sav);
+  const ok = runway >= tgt;
+  document.getElementById('emResult').style.display = 'block';
+  document.getElementById('emResult').innerHTML = `
+    <div class="result-row"><span class="result-label">Current runway</span><span class="result-value" style="color:${ok?'var(--green)':runway>=tgt*.5?'var(--yellow)':'var(--red)'}">${runway.toFixed(1)} months</span></div>
+    <div class="result-row"><span class="result-label">Recommended</span><span class="result-value">${tgt} months ($${target.toLocaleString()})</span></div>
+    <div class="result-row"><span class="result-label">${gap>0?'Gap':'Status'}</span><span class="result-value" style="color:${gap>0?'var(--red)':'var(--green)'}">${gap>0?'$'+gap.toLocaleString()+' to go':'✓ Fully funded'}</span></div>
+    ${gap>0?`<p style="font-size:12px;color:var(--muted);margin-top:10px">Save $${Math.round(gap/12).toLocaleString()}/mo to reach your target in 12 months.</p>`:'<p style="font-size:12px;color:var(--green);margin-top:10px">Emergency fund goal achieved!</p>'}
+  `;
+}
+
+function calcDebt() {
+  const bal = parseFloat(document.getElementById('debt_balance').value) || 0;
+  const rate = parseFloat(document.getElementById('debt_rate').value) || 0;
+  const pmt = parseFloat(document.getElementById('debt_payment').value) || 0;
+  if (!bal || !rate || !pmt) { showToast('Fill in all fields.'); return; }
+  const mr = rate / 100 / 12;
+  if (pmt <= bal * mr) { showToast('Payment too low — increase it to cover interest.'); return; }
+  let months = 0, rem = bal, interest = 0;
+  while (rem > 0.01 && months < 600) {
+    const i = rem * mr; interest += i; rem = rem + i - pmt; months++;
+  }
+  const yrs = Math.floor(months/12), mo = months%12;
+  document.getElementById('debtResult').style.display = 'block';
+  document.getElementById('debtResult').innerHTML = `
+    <div class="result-row"><span class="result-label">Debt-free in</span><span class="result-value result-highlight">${yrs>0?yrs+'y ':''}${mo}mo</span></div>
+    <div class="result-row"><span class="result-label">Total interest paid</span><span class="result-value" style="color:var(--red)">$${Math.round(interest).toLocaleString()}</span></div>
+    <div class="result-row"><span class="result-label">Total paid</span><span class="result-value">$${Math.round(bal+interest).toLocaleString()}</span></div>
+    <div class="result-row"><span class="result-label">Interest/Principal</span><span class="result-value" style="color:var(--yellow)">${(interest/bal*100).toFixed(1)}%</span></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">Adding $${Math.round(pmt*.1).toLocaleString()}/mo extra would save significant interest — try adjusting the payment.</p>
+  `;
+}
+
+// ========== CURRENCY ==========
+function convertFX() {
+  const from = document.getElementById('fx_from').value;
+  const to = document.getElementById('fx_to').value;
+  const amt = parseFloat(document.getElementById('fx_amount').value) || 0;
+  const rate = getRate(from, to);
+  const result = amt * rate;
+  const dp = ['JPY','KRW','IDR','VND'].includes(to) ? 0 : 4;
+  document.getElementById('fx_result').value = result.toFixed(dp);
+  document.getElementById('fx_rate_info').textContent = `1 ${from} = ${rate.toFixed(6)} ${to}  ·  1 ${to} = ${(1/rate).toFixed(6)} ${from}  ·  Indicative rates`;
+}
+function swapFX() {
+  const f = document.getElementById('fx_from'), t = document.getElementById('fx_to');
+  [f.value, t.value] = [t.value, f.value];
+  convertFX();
+}
+function renderRateTable() {
+  const curs = ['EUR','GBP','TRY','JPY','CAD','AUD','CHF','CNY','INR','BRL','MXN','SGD','HKD',
+                'SEK','NOK','DKK','PLN','NZD','ZAR','KRW','AED','SAR','CZK','HUF','RON',
+                'THB','IDR','MYR','PHP','ILS','CLP','COP','NGN','EGP'];
+  let h = `<thead><tr>
+    <th style="min-width:180px">Currency</th>
+    <th>1 USD =</th>
+    <th>1 X = USD</th>
+    <th>Trend</th>
+  </tr></thead><tbody>`;
+  curs.forEach(c => {
+    const r = FX[c] || 1;
+    const ch = FX_CHANGE[c] || 0;
+    const cls = ch >= 0 ? 'pos' : 'neg';
+    const flag = FX_FLAGS[c] || '';
+    const name = FX_NAMES[c] || c;
+    const rateDisplay = r >= 1000 ? Math.round(r).toLocaleString() : r >= 10 ? r.toFixed(2) : r.toFixed(4);
+    const inverseDisplay = (1/r) < 0.001 ? (1/r).toFixed(6) : (1/r).toFixed(4);
+    h += `<tr>
+      <td>
+        <span style="font-size:18px;margin-right:8px">${flag}</span>
+        <strong>${c}</strong>
+        <span style="color:var(--muted);font-size:12px;display:block;padding-left:28px;margin-top:-2px">${name}</span>
+      </td>
+      <td style="color:var(--accent);font-weight:600">${rateDisplay}</td>
+      <td style="color:var(--muted)">${inverseDisplay}</td>
+      <td class="${cls}" style="font-weight:600">${ch>=0?'▲':'▼'} ${Math.abs(ch)}%</td>
+    </tr>`;
+  });
+  h += '</tbody>';
+  document.getElementById('rateTable').innerHTML = h;
+}
+
+// ========== DARK/LIGHT MODE ==========
+let currentTheme = localStorage.getItem('flo_theme') || 'dark';
+function applyTheme(t) {
+  currentTheme = t;
+  document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : '');
+  document.getElementById('themeBtn').textContent = t === 'light' ? '🌙' : '☀️';
+  localStorage.setItem('flo_theme', t);
+}
+function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+
+// ========== MONTH MANAGEMENT ==========
+let currentMonth = new Date().toISOString().slice(0,7); // "2025-03"
+
+function generateMonthOptions() {
+  const sel = document.getElementById('dashMonth');
+  if (!sel) return;
+  const opts = [];
+  const now = new Date();
+  const limit = isPro ? 12 : 2;
+  for (let i = 0; i < limit; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const val = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    const lbl = d.toLocaleString('en-US', {month:'long', year:'numeric'});
+    opts.push(`<option value="${val}"${val===currentMonth?' selected':''}>${lbl}</option>`);
+  }
+  if (!isPro) opts.push(`<option disabled>── Pro: unlock 10 more months ──</option>`);
+  sel.innerHTML = opts.join('');
+}
+
+function onMonthChange() {
+  currentMonth = document.getElementById('dashMonth').value;
+  loadMonthData(currentMonth);
+  syncInputsFromState();
+  renderDashboard();
+}
+
+// ========== LOCALSTORAGE ==========
+function saveMonthData(month) {
+  const data = {income:S.income, extra:S.extra, cats:{...S.cats}, goals:{...S.goals}, baseCurrency:S.baseCurrency};
+  localStorage.setItem('flo_' + month, JSON.stringify(data));
+  localStorage.setItem('flo_profile', JSON.stringify({name:S.name, baseCurrency:S.baseCurrency}));
+  localStorage.setItem('flo_lastMonth', month);
+}
+
+function loadMonthData(month) {
+  const raw = localStorage.getItem('flo_' + month);
+  if (raw) {
+    const d = JSON.parse(raw);
+    S.income = d.income || 0;
+    S.extra = d.extra || 0;
+    S.cats = d.cats || {};
+    S.goals = d.goals || {};
+    S.baseCurrency = d.baseCurrency || S.baseCurrency;
+    return true;
+  }
+  // No data for this month — reset cats but keep currency/name
+  S.income = 0; S.extra = 0;
+  S.cats = {}; S.goals = {};
+  return false;
+}
+
+function loadProfile() {
+  const raw = localStorage.getItem('flo_profile');
+  if (raw) { const d = JSON.parse(raw); S.name = d.name||''; S.baseCurrency = d.baseCurrency||'USD'; }
+  const lastMonth = localStorage.getItem('flo_lastMonth');
+  if (lastMonth) currentMonth = lastMonth;
+  loadMonthData(currentMonth);
+}
+
+function syncInputsFromState() {
+  document.getElementById('inp_income').value = S.income || '';
+  document.getElementById('inp_extra').value = S.extra || '';
+  CAT_CFG.forEach(c => {
+    const vi = document.getElementById('cat_v_'+c.k);
+    if (vi) vi.value = S.cats[c.k] || '';
+    const gi = document.getElementById('cat_g_'+c.k);
+    if (gi) gi.value = S.goals[c.k] || '';
+  });
+  updateCardStates();
+}
+
+// ========== CATEGORY CARDS RENDER ==========
+function renderCatCards() {
+  const grid = document.getElementById('catCardGrid');
+  if (!grid) return;
+  grid.innerHTML = CAT_CFG.map(c => `
+    <div class="cat-card" id="card_${c.k}" style="--c-color:${c.c}">
+      <div class="cat-card-top">
+        <span class="cat-card-emoji">${c.e}</span>
+        <span class="cat-card-over-icon">⚠️</span>
+      </div>
+      <div class="cat-card-label" id="clbl_${c.k}">${catName(c.k)}</div>
+      <input type="number" id="cat_v_${c.k}" placeholder="0" min="0"
+        oninput="updateCardState('${c.k}');liveUpdate()" />
+      <div class="goal-row">
+        <span>Goal:</span>
+        <input type="number" id="cat_g_${c.k}" placeholder="max…" min="0"
+          oninput="updateCardState('${c.k}')" />
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateCardState(k) {
+  const card = document.getElementById('card_' + k);
+  const val = parseFloat(document.getElementById('cat_v_'+k)?.value) || 0;
+  const goal = parseFloat(document.getElementById('cat_g_'+k)?.value) || 0;
+  if (!card) return;
+  card.classList.toggle('has-val', val > 0);
+  card.classList.toggle('over-goal', goal > 0 && val > goal);
+}
+
+function updateCardStates() { CAT_CFG.forEach(c => updateCardState(c.k)); }
+
+function refreshCardLabels() {
+  CAT_CFG.forEach(c => {
+    const el = document.getElementById('clbl_'+c.k);
+    if (el) el.textContent = catName(c.k);
+  });
+}
+
+// ========== SAVE (updated) ==========
+// Override saveDashboard to also persist goals + use new input IDs
+const _origSave = saveDashboard;
+saveDashboard = function() {
+  S.baseCurrency = document.getElementById('dashCurrency').value;
+  S.income = Math.max(0, parseFloat(document.getElementById('inp_income').value)||0);
+  S.extra  = Math.max(0, parseFloat(document.getElementById('inp_extra').value)||0);
+  CAT_CFG.forEach(c => {
+    S.cats[c.k]  = Math.max(0, parseFloat(document.getElementById('cat_v_'+c.k)?.value)||0);
+    S.goals[c.k] = Math.max(0, parseFloat(document.getElementById('cat_g_'+c.k)?.value)||0);
+  });
+  saveMonthData(currentMonth);
+  renderDashboard();
+  checkGoals();
+  markSaved();
+  showToast('✓ Saved!');
+};
+
+// ========== LIVE UPDATE (updated for new IDs) ==========
+liveUpdate = function() {
+  markUnsaved();
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(() => {
+    const displayCur = document.getElementById('dashCurrency')?.value || S.baseCurrency;
+    const income = Math.max(0,(parseFloat(document.getElementById('inp_income').value)||0)+(parseFloat(document.getElementById('inp_extra').value)||0));
+    const cats = {};
+    CAT_CFG.forEach(c => { cats[c.k] = Math.max(0, parseFloat(document.getElementById('cat_v_'+c.k)?.value)||0); });
+    const total = Object.values(cats).reduce((a,b)=>a+b,0);
+    const saved = income - total;
+    const score = calcScore(income, cats);
+    const sym = SYM[displayCur]||'$';
+    const fv = v => v>0?(sym+Math.round(v).toLocaleString('en-US')):'—';
+    const scoreColor = score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--red)';
+    const e = id => document.getElementById(id);
+    if(e('liveIncome')) e('liveIncome').textContent = fv(income);
+    if(e('liveSpent'))  { e('liveSpent').textContent = fv(total); e('liveSpent').style.color = total>income&&income>0?'var(--red)':'var(--text)'; }
+    if(e('liveSaved'))  { e('liveSaved').textContent = fv(saved); e('liveSaved').style.color = saved>=0?'var(--accent)':'var(--red)'; }
+    if(e('liveScore'))  { e('liveScore').textContent = income>0?score:'—'; e('liveScore').style.color = income>0?scoreColor:'var(--muted)'; }
+    updateCardStates();
+  }, 150);
+};
+
+// ========== GOALS CHECK ==========
+function checkGoals() {
+  const overList = [];
+  CAT_CFG.forEach(c => {
+    const v = S.cats[c.k] || 0;
+    const g = S.goals[c.k] || 0;
+    if (g > 0 && v > g) {
+      const sym = SYM[S.baseCurrency]||'$';
+      overList.push(`${c.e} ${catName(c.k)}: ${sym}${Math.round(v).toLocaleString()} / goal ${sym}${Math.round(g).toLocaleString()} (+${sym}${Math.round(v-g).toLocaleString()})`);
+    }
+  });
+  const el = document.getElementById('goalsWarn');
+  if (!el) return;
+  if (overList.length > 0) {
+    el.style.display = 'block';
+    el.innerHTML = '⚠️ <strong>Budget goals exceeded:</strong><br>' + overList.join('<br>');
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ========== CSV EXPORT ==========
+function exportCSV() {
+  if (!checkPro('CSV Export')) return;
+  const month = currentMonth;
+  const cur = S.baseCurrency;
+  const income = S.income + (S.extra||0);
+  const total = CAT_CFG.reduce((s,c)=>s+(S.cats[c.k]||0),0);
+  const saved = income - total;
+  let csv = `Flo Export — ${month}\n`;
+  csv += `Currency,${cur}\n`;
+  csv += `Month Income,${income}\n`;
+  csv += `Total Spent,${total}\n`;
+  csv += `Saved,${saved}\n`;
+  csv += `Save Rate,${income>0?(saved/income*100).toFixed(1)+'%':'—'}\n\n`;
+  csv += `Category,Amount,Goal\n`;
+  CAT_CFG.forEach(c => {
+    csv += `${catName(c.k)},${S.cats[c.k]||0},${S.goals[c.k]||''}\n`;
+  });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `flo-${month}.csv`;
+  a.click();
+  showToast('✓ CSV downloaded!');
+}
+
+// ========== NET WORTH ==========
+let nwAssets = [{name:'Savings account',val:0},{name:'Investments',val:0},{name:'Property',val:0}];
+let nwLiabs  = [{name:'Mortgage',val:0},{name:'Car loan',val:0},{name:'Credit cards',val:0}];
+
+function renderNwRows() {
+  ['assets','liabilities'].forEach(type => {
+    const list = type === 'assets' ? nwAssets : nwLiabs;
+    document.getElementById('nw-'+type).innerHTML = list.map((r,i) => `
+      <div class="nw-row">
+        <input type="text" placeholder="Label" value="${escapeHtml(r.name)}" oninput="${type==='assets'?'nwAssets':'nwLiabs'}[${i}].name=this.value" />
+        <input type="number" placeholder="0" value="${r.val||''}" oninput="${type==='assets'?'nwAssets':'nwLiabs'}[${i}].val=parseFloat(this.value)||0;calcNetWorth()" />
+        <button class="nw-del" onclick="${type==='assets'?'nwAssets':'nwLiabs'}.splice(${i},1);renderNwRows();calcNetWorth()">✕</button>
+      </div>`).join('');
+  });
+}
+function addNwRow(type) {
+  if (type==='assets') nwAssets.push({name:'',val:0});
+  else nwLiabs.push({name:'',val:0});
+  renderNwRows(); calcNetWorth();
+}
+function saveNetWorth() {
+  localStorage.setItem('flo_networth', JSON.stringify({assets:nwAssets, liabs:nwLiabs}));
+}
+function loadNetWorth() {
+  const raw = localStorage.getItem('flo_networth');
+  if (!raw) return;
+  try {
+    const d = JSON.parse(raw);
+    if (d.assets && d.assets.length) nwAssets = d.assets;
+    if (d.liabs  && d.liabs.length)  nwLiabs  = d.liabs;
+  } catch(e) {}
+}
+function calcNetWorth() {
+  const assets = nwAssets.reduce((s,r)=>s+r.val,0);
+  const liabs  = nwLiabs.reduce((s,r)=>s+r.val,0);
+  const net = assets - liabs;
+  const sym = SYM[S.baseCurrency]||'$';
+  const f = v => sym + Math.abs(Math.round(v)).toLocaleString();
+  document.getElementById('nwTotal').textContent = (net<0?'-':'')+f(net);
+  document.getElementById('nwTotal').style.color = net>=0?'var(--green)':'var(--red)';
+  document.getElementById('nwSub').textContent = `Assets ${f(assets)} − Liabilities ${f(liabs)}`;
+  document.getElementById('nwAssetsTotal').textContent = f(assets);
+  document.getElementById('nwLiabTotal').textContent = f(liabs);
+  saveNetWorth();
+}
+
+// ========== ONBOARDING PROGRESS ==========
+function obStep2() {
+  S.name = document.getElementById('ob_name').value.trim();
+  S.baseCurrency = document.getElementById('ob_currency').value;
+  S.income = Math.max(0, parseFloat(document.getElementById('ob_income').value)||0);
+  document.getElementById('obStep1').style.display = 'none';
+  const s2 = document.getElementById('obStep2');
+  s2.style.display = 'block'; s2.classList.add('ob-anim');
+  document.getElementById('obProgress').style.width = '66%';
+}
+function obBack() {
+  document.getElementById('obStep2').style.display = 'none';
+  const s1 = document.getElementById('obStep1');
+  s1.style.display = 'block'; s1.classList.add('ob-anim');
+  document.getElementById('obProgress').style.width = '33%';
+}
+function obStep3() {
+  const rent = Math.max(0, parseFloat(document.getElementById('ob_rent').value)||0);
+  const food = Math.max(0, parseFloat(document.getElementById('ob_food').value)||0);
+  const subs = Math.max(0, parseFloat(document.getElementById('ob_subs').value)||0);
+  S.cats = {housing:rent, groceries:food*.6, dining:food*.4, subs, health:0, transport:0, entertainment:0, shopping:0, education:0, taxes:0, investments:0, other:0};
+  const total = rent + food + subs;
+  const saved = S.income - total;
+  const cur = S.baseCurrency; const sym = SYM[cur]||'$'; const f = v=>sym+Math.round(v).toLocaleString();
+  document.getElementById('ob_summary').innerHTML = `
+    <span style="color:var(--text)">Income:</span> ${f(S.income)}&nbsp;&nbsp;
+    <span style="color:var(--text)">Expenses:</span> ${f(total)}&nbsp;&nbsp;
+    <span style="color:var(--text)">Saved:</span> <span style="color:${saved>=0?'var(--green)':'var(--red)'}">${f(saved)}</span>&nbsp;&nbsp;
+    <span style="color:var(--text)">Currency:</span> ${cur}
+  `;
+  document.getElementById('obStep2').style.display = 'none';
+  const s3 = document.getElementById('obStep3');
+  s3.style.display = 'block'; s3.classList.add('ob-anim');
+  document.getElementById('obProgress').style.width = '100%';
+}
+
+// ========== INIT ==========
+applyTheme(currentTheme);
+loadProStatus();
+loadProfile();
+// Show Tota Finance link on desktop
+if (window.innerWidth > 640) { const tl = document.getElementById('totaLink'); if (tl) tl.style.display = 'flex'; }
+renderCatCards();
+generateMonthOptions();
+syncInputsFromState();
+loadNetWorth();
+renderNwRows();
+calcNetWorth();
+// Hook month selector
+document.getElementById('dashMonth').addEventListener('change', onMonthChange);
+showPage('landing');
+renderDashboard();
+fetchLiveRates().then(() => {
+  const note = document.getElementById('fx_rate_note');
+  if (note && !FX_LOADED) { note.textContent = '● Fallback rates — check your connection'; note.style.color='var(--yellow)'; }
+  if (note && FX_LOADED)  { note.style.color = 'var(--green)'; showToast('✓ Live rates loaded'); }
+});
+</script>
+</body>
+</html>
