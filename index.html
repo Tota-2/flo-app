@@ -1005,7 +1005,7 @@ footer a:hover{color:var(--text);}
     <div style="border-top:1px solid var(--border);padding-top:16px">
       <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Already have a license key?</p>
       <div style="display:flex;gap:8px">
-        <input type="text" id="licenseInput" placeholder="FLO-XXXX-XXXX-XXXX" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:12px;outline:none;font-family:monospace;letter-spacing:.5px"/>
+        <input type="text" id="licenseInput" placeholder="Paste your Gumroad license key" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:12px;outline:none;font-family:monospace;letter-spacing:.5px"/>
         <button onclick="activateLicense()" style="padding:9px 16px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Activate</button>
       </div>
     </div>
@@ -1116,7 +1116,7 @@ const FX_FLAGS = {
 let isPro = false;
 function loadProStatus() {
   const key = localStorage.getItem('flo_pro_key');
-  if (key && /^FLO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)) isPro = true;
+  if (key && key.length >= 8) isPro = true;
 }
 function checkPro(featureName) {
   if (isPro) return true;
@@ -1129,17 +1129,37 @@ function buyPro() {
   // Replace with real LemonSqueezy URL when product is created
   window.open('https://yigitguler.gumroad.com/l/odnyt', '_blank');
 }
-function activateLicense() {
-  const raw = document.getElementById('licenseInput').value.trim().toUpperCase();
-  if (!/^FLO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(raw)) {
-    showToast('❌ Invalid key — format should be FLO-XXXX-XXXX-XXXX');
+async function activateLicense() {
+  const raw = document.getElementById('licenseInput').value.trim();
+  if (!raw || raw.length < 8) {
+    showToast('❌ Please enter your license key');
     return;
   }
-  localStorage.setItem('flo_pro_key', raw);
-  isPro = true;
-  closeProModal();
-  generateMonthOptions();
-  showToast('🎉 Pro activated! Welcome to Flo Pro.');
+  const btn = document.querySelector('#proModal .btn-modal-s[onclick="closeProModal()"]');
+  const activateBtn = document.querySelector('#proModal button[onclick="activateLicense()"]');
+  if (activateBtn) { activateBtn.textContent = '⏳ Verifying...'; activateBtn.disabled = true; }
+  try {
+    const res = await fetch('/api/verify-license', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: raw })
+    });
+    const data = await res.json();
+    if (data.valid) {
+      localStorage.setItem('flo_pro_key', raw);
+      isPro = true;
+      closeProModal();
+      generateMonthOptions();
+      renderDashboard();
+      showToast('🎉 Pro activated! Welcome to Flo Pro.');
+    } else {
+      showToast('❌ Invalid key — purchase at flo.tota-finance.com');
+    }
+  } catch (e) {
+    showToast('❌ Verification failed — check your connection and try again');
+  } finally {
+    if (activateBtn) { activateBtn.textContent = 'Activate'; activateBtn.disabled = false; }
+  }
 }
 
 async function fetchLiveRates() {

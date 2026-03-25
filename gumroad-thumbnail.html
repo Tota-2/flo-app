@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gumroad Thumbnail — 1280×720</title>
+<style>
+body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;font-family:sans-serif;}
+canvas{box-shadow:0 20px 60px rgba(0,0,0,.7);}
+button{background:#7c6dfa;color:#fff;border:none;padding:12px 32px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;}
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<button onclick="dl()">⬇ Save gumroad-thumbnail.png</button>
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const W=1280,H=720;
+
+// BG
+ctx.fillStyle='#07070f'; ctx.fillRect(0,0,W,H);
+
+// Grid
+ctx.strokeStyle='rgba(124,109,250,0.035)'; ctx.lineWidth=1;
+for(let x=0;x<W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+for(let y=0;y<H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+// Glow left
+const g1=ctx.createRadialGradient(0,H/2,0,0,H/2,500);
+g1.addColorStop(0,'rgba(124,109,250,0.1)'); g1.addColorStop(1,'transparent');
+ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+
+// Glow right
+const g2=ctx.createRadialGradient(W,H,0,W,H,600);
+g2.addColorStop(0,'rgba(168,85,247,0.08)'); g2.addColorStop(1,'transparent');
+ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+
+// Decorative candlesticks right side
+ctx.save(); ctx.globalAlpha=0.08;
+[[900,200,80,true],[970,160,120,false],[1040,120,160,true],[1110,80,200,true],[1180,140,140,false]].forEach(([x,y,h,up])=>{
+  ctx.fillStyle=up?'#7c6dfa':'#a855f7';
+  ctx.fillRect(x,y,36,h);
+  ctx.fillRect(x+16,y-24,4,24);
+  ctx.fillRect(x+16,y+h,4,20);
+});
+ctx.restore();
+
+// Left accent line
+const lb=ctx.createLinearGradient(0,60,0,660);
+lb.addColorStop(0,'transparent'); lb.addColorStop(0.3,'rgba(124,109,250,.8)');
+lb.addColorStop(0.7,'rgba(168,85,247,.8)'); lb.addColorStop(1,'transparent');
+ctx.fillStyle=lb; ctx.fillRect(80,60,4,600);
+
+// "Flo" big
+ctx.save();
+ctx.shadowColor='rgba(124,109,250,.6)'; ctx.shadowBlur=40;
+const fg=ctx.createLinearGradient(100,60,380,220);
+fg.addColorStop(0,'#c4b5fd'); fg.addColorStop(0.5,'#7c6dfa'); fg.addColorStop(1,'#a855f7');
+ctx.fillStyle=fg; ctx.font='bold 160px Georgia,serif';
+ctx.textBaseline='top'; ctx.fillText('Flo',100,50);
+ctx.restore();
+
+// "Pro" badge
+ctx.save();
+ctx.fillStyle='rgba(124,109,250,0.15)';
+roundRect(ctx,100,222,120,38,8); ctx.fill();
+ctx.strokeStyle='rgba(124,109,250,.5)'; ctx.lineWidth=1.5;
+roundRect(ctx,100,222,120,38,8); ctx.stroke();
+ctx.fillStyle='#a78bfa'; ctx.font='bold 14px Arial,sans-serif';
+ctx.textAlign='center'; ctx.textBaseline='middle';
+ctx.fillText('⭐ PRO LIFETIME',160,241);
+ctx.restore();
+
+// Headline
+ctx.fillStyle='rgba(240,240,255,.95)';
+ctx.font='bold 38px "Helvetica Neue",Arial,sans-serif';
+ctx.textAlign='left'; ctx.textBaseline='top';
+ctx.fillText('Unlock everything. Pay once.',100,290);
+
+// Price box
+ctx.save();
+const pb=ctx.createLinearGradient(100,350,320,420);
+pb.addColorStop(0,'rgba(124,109,250,.18)'); pb.addColorStop(1,'rgba(168,85,247,.12)');
+ctx.fillStyle=pb; roundRect(ctx,100,348,220,80,14); ctx.fill();
+ctx.strokeStyle='rgba(124,109,250,.35)'; ctx.lineWidth=1.5;
+roundRect(ctx,100,348,220,80,14); ctx.stroke();
+ctx.fillStyle='white'; ctx.font='bold 44px "Helvetica Neue",Arial,sans-serif';
+ctx.textAlign='center'; ctx.textBaseline='middle';
+ctx.fillText('$4.99',210,376);
+ctx.fillStyle='rgba(119,119,170,.8)'; ctx.font='400 14px Arial,sans-serif';
+ctx.fillText('one-time · use forever',210,404);
+ctx.restore();
+
+// Feature list
+const feats=['✓  12 months of history','✓  Smart Insights & trends','✓  Spending Forecast','✓  6-month Trend Chart','✓  CSV Export'];
+feats.forEach((f,i)=>{
+  ctx.fillStyle=i===0?'rgba(124,109,250,.9)':i===1?'rgba(168,85,247,.9)':i===2?'rgba(34,197,94,.9)':i===3?'rgba(245,158,11,.9)':'rgba(14,165,233,.9)';
+  ctx.font='500 18px "Helvetica Neue",Arial,sans-serif';
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillText(f,100,462+i*44);
+});
+
+// Divider
+ctx.strokeStyle='rgba(255,255,255,.07)'; ctx.lineWidth=1;
+ctx.beginPath(); ctx.moveTo(80,670); ctx.lineTo(W-80,670); ctx.stroke();
+
+// Bottom
+ctx.fillStyle='rgba(124,109,250,.7)';
+ctx.font='bold 18px Arial,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='bottom';
+ctx.fillText('flo.tota-finance.com',80,H-22);
+ctx.fillStyle='rgba(71,85,105,.6)'; ctx.font='400 13px Arial,sans-serif';
+ctx.textAlign='right'; ctx.fillText('No subscription · No account · Browser-only',W-80,H-24);
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+}
+function dl(){const a=document.createElement('a');a.download='gumroad-thumbnail.png';a.href=cv.toDataURL('image/png');a.click();}
+</script>
+</body>
+</html>
