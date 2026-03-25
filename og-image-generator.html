@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Flo — og:image Generator (1200×630)</title>
+<style>
+  body{margin:0;background:#222;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:20px;font-family:sans-serif;}
+  canvas{box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+  .btn{background:#7c6dfa;color:#fff;border:none;padding:14px 36px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;}
+  .btn:hover{background:#9580ff;}
+  p{color:#666;font-size:12px;margin:0;}
+</style>
+</head>
+<body>
+<canvas id="c" width="1200" height="630"></canvas>
+<button class="btn" onclick="download()">⬇ Save as og-image.png</button>
+<p>After saving, add this file to your flo-app repo root and push to GitHub</p>
+
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const W=1200,H=630;
+
+// Background
+ctx.fillStyle='#07070f'; ctx.fillRect(0,0,W,H);
+
+// Radial glow
+const glow=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,500);
+glow.addColorStop(0,'rgba(124,109,250,0.12)');
+glow.addColorStop(0.5,'rgba(168,85,247,0.06)');
+glow.addColorStop(1,'rgba(0,0,0,0)');
+ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+
+// Subtle grid
+ctx.strokeStyle='rgba(124,109,250,0.04)'; ctx.lineWidth=1;
+for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+// Left accent bar
+const bar=ctx.createLinearGradient(0,100,0,530);
+bar.addColorStop(0,'rgba(124,109,250,0)');
+bar.addColorStop(0.3,'rgba(124,109,250,0.9)');
+bar.addColorStop(0.7,'rgba(168,85,247,0.9)');
+bar.addColorStop(1,'rgba(168,85,247,0)');
+ctx.fillStyle=bar; ctx.fillRect(72,100,4,430);
+
+// "Flo" — big wordmark
+ctx.save();
+ctx.shadowColor='rgba(124,109,250,0.5)'; ctx.shadowBlur=40;
+const fg=ctx.createLinearGradient(100,120,400,300);
+fg.addColorStop(0,'#c4b5fd'); fg.addColorStop(0.5,'#7c6dfa'); fg.addColorStop(1,'#a855f7');
+ctx.fillStyle=fg;
+ctx.font='bold 180px Georgia,serif';
+ctx.textBaseline='top';
+ctx.fillText('Flo',96,110);
+ctx.restore();
+
+// Tagline
+ctx.fillStyle='rgba(240,240,255,0.92)';
+ctx.font='500 38px "Helvetica Neue",Arial,sans-serif';
+ctx.textBaseline='top';
+ctx.fillText('Know Where Your Money Goes',96,318);
+
+// Sub-tagline
+ctx.fillStyle='rgba(119,119,170,0.9)';
+ctx.font='400 22px "Helvetica Neue",Arial,sans-serif';
+ctx.fillText('No bank sync · No sign-up · Works in your browser · Free to start',96,376);
+
+// Pills row
+const pills=[
+  {label:'No Login',     color:'#7c6dfa', bg:'rgba(124,109,250,0.15)', border:'rgba(124,109,250,0.4)'},
+  {label:'No Ads',       color:'#a855f7', bg:'rgba(168,85,247,0.15)',  border:'rgba(168,85,247,0.4)'},
+  {label:'No Bank Sync', color:'#22c55e', bg:'rgba(34,197,94,0.15)',   border:'rgba(34,197,94,0.4)'},
+  {label:'Free to Start',color:'#f59e0b', bg:'rgba(245,158,11,0.15)',  border:'rgba(245,158,11,0.4)'},
+];
+let px=96;
+pills.forEach(({label,color,bg,border})=>{
+  const pad=20, h=44;
+  ctx.font='bold 16px "Helvetica Neue",Arial,sans-serif';
+  const tw=ctx.measureText(label).width;
+  const w=tw+pad*2;
+  // bg
+  ctx.fillStyle=bg;
+  roundRect(ctx,px,440,w,h,10); ctx.fill();
+  // border
+  ctx.strokeStyle=border; ctx.lineWidth=1.5;
+  roundRect(ctx,px,440,w,h,10); ctx.stroke();
+  // text
+  ctx.fillStyle=color;
+  ctx.textBaseline='middle';
+  ctx.fillText(label,px+pad,440+h/2);
+  px+=w+12;
+});
+
+// Right side — mini dashboard preview
+const rx=720, ry=80, rw=400, rh=460;
+// Card BG
+ctx.fillStyle='rgba(17,17,24,0.9)';
+roundRect(ctx,rx,ry,rw,rh,16); ctx.fill();
+ctx.strokeStyle='rgba(124,109,250,0.2)'; ctx.lineWidth=1.5;
+roundRect(ctx,rx,ry,rw,rh,16); ctx.stroke();
+
+// Score circle
+ctx.save();
+ctx.shadowColor='rgba(34,197,94,0.4)'; ctx.shadowBlur=20;
+ctx.strokeStyle='rgba(34,197,94,0.15)'; ctx.lineWidth=12;
+ctx.beginPath(); ctx.arc(rx+rw/2,ry+115,72,0,Math.PI*2); ctx.stroke();
+ctx.strokeStyle='#22c55e'; ctx.lineWidth=12;
+ctx.lineCap='round';
+ctx.beginPath(); ctx.arc(rx+rw/2,ry+115,-Math.PI/2,-Math.PI/2+Math.PI*2*0.78,false); ctx.stroke();
+ctx.restore();
+ctx.fillStyle='rgba(240,240,255,0.95)';
+ctx.font='bold 36px "Helvetica Neue",Arial,sans-serif';
+ctx.textAlign='center'; ctx.textBaseline='middle';
+ctx.fillText('78',rx+rw/2,ry+108);
+ctx.fillStyle='rgba(34,197,94,0.8)';
+ctx.font='bold 13px "Helvetica Neue",Arial,sans-serif';
+ctx.fillText('GOOD',rx+rw/2,ry+135);
+
+// Mini bars
+const cats=[['Housing','#7c6dfa',0.65],['Food','#a855f7',0.42],['Transport','#22c55e',0.28],['Savings','#f59e0b',0.55]];
+cats.forEach(([name,color,pct],i)=>{
+  const by=ry+215+i*52;
+  ctx.fillStyle='rgba(240,240,255,0.5)';
+  ctx.font='500 13px "Helvetica Neue",Arial,sans-serif';
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText(name,rx+24,by+10);
+  // bar bg
+  ctx.fillStyle='rgba(255,255,255,0.05)';
+  roundRect(ctx,rx+24,by+24,rw-48,10,5); ctx.fill();
+  // bar fill
+  ctx.fillStyle=color+'99';
+  roundRect(ctx,rx+24,by+24,(rw-48)*pct,10,5); ctx.fill();
+});
+
+// Bottom URL
+ctx.fillStyle='rgba(124,109,250,0.8)';
+ctx.font='bold 20px "Helvetica Neue",Arial,sans-serif';
+ctx.textAlign='left'; ctx.textBaseline='bottom';
+ctx.fillText('flo.tota-finance.com',96,H-38);
+
+// Tota Finance tag
+ctx.fillStyle='rgba(119,119,170,0.5)';
+ctx.font='400 14px "Helvetica Neue",Arial,sans-serif';
+ctx.textAlign='right';
+ctx.fillText('Part of Tota Finance',W-72,H-40);
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function download(){
+  const a=document.createElement('a');
+  a.download='og-image.png';
+  a.href=cv.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>
