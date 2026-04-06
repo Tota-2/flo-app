@@ -6,6 +6,10 @@
 <title>Flo — Know Where Your Money Goes</title>
 <meta name="description" content="Track your monthly budget, get a financial health score, and use free tools — no bank connection, no sign-up needed."/>
 <meta name="keywords" content="budget tracker, personal finance, financial health, spending tracker, free budget app"/>
+<meta name="google-site-verification" content="m9RjHga4r2hEWUy8HB8tqiNyF5AJpP9jGnV49lMJTn8" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+<meta name="robots" content="index, follow"/>
 <meta property="og:title" content="Flo — Know Where Your Money Goes"/>
 <meta property="og:description" content="Enter your income and spending once a month. Flo shows you exactly where your money goes and gives you a financial health score."/>
 <meta property="og:type" content="website"/>
@@ -20,6 +24,11 @@
 <meta name="twitter:description" content="Free budget tracker. No bank connection. No sign-up. Just enter your numbers and see where your money goes."/>
 <meta name="twitter:image" content="https://flo.tota-finance.com/og-image.png"/>
 <link rel="canonical" href="https://flo.tota-finance.com"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#0d0d1a"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Flo"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%237c6dfa'/><stop offset='100%25' stop-color='%23a855f7'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23g)'/><text y='.9em' font-size='72' font-family='Georgia,serif' font-weight='bold' fill='white' x='12'>F</text></svg>"/>
 <script defer src="/_vercel/insights/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -116,6 +125,111 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .ob-progress{height:3px;background:var(--border);border-radius:2px;margin-bottom:24px;overflow:hidden;}
 .ob-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s ease;}
 
+/* TRUST BAR — horizontal strip between hero and features */
+.trust-bar{border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);padding:0 20px;background:rgba(255,255,255,.015);}
+.trust-bar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);padding:14px 22px;white-space:nowrap;letter-spacing:.1px;}
+.trust-item svg{color:var(--accent);opacity:.8;flex-shrink:0;}
+.trust-divider{width:1px;height:16px;background:rgba(255,255,255,.08);flex-shrink:0;}
+[data-theme="light"] .trust-bar{background:rgba(124,109,250,.02);border-color:rgba(124,109,250,.08);}
+[data-theme="light"] .trust-divider{background:rgba(0,0,0,.08);}
+[data-theme="light"] .trust-item svg{color:var(--accent);}
+@media(max-width:700px){.trust-item{padding:10px 14px;font-size:11px;}.trust-divider{display:none;}}
+
+/* HOW IT WORKS */
+.hiw-section{padding:80px 20px;max-width:960px;margin:0 auto;}
+.hiw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+@media(max-width:640px){.hiw-grid{grid-template-columns:1fr;gap:12px;}}
+.hiw-step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.hiw-step:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.2);}
+.hiw-step::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:.5;transition:opacity .2s;}
+.hiw-step:hover::before{opacity:1;}
+.hiw-num{font-size:13px;font-weight:800;color:var(--accent);background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.2);border-radius:8px;padding:3px 10px;display:inline-block;margin-bottom:16px;letter-spacing:.5px;}
+.hiw-icon{display:none;}
+.hiw-step h3{font-size:16px;font-weight:800;margin-bottom:10px;letter-spacing:-.2px;}
+.hiw-step p{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* INTERACTIVE DEMO */
+.hero-preview input[type=range]{-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;background:rgba(255,255,255,.1);}
+.hero-preview input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:white;border:2px solid var(--accent);cursor:grab;transition:transform .15s;box-shadow:0 0 0 3px rgba(124,109,250,.2);}
+.hero-preview input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.2);}
+.demo-hint{text-align:center;margin-top:14px;font-size:10px;color:var(--muted);letter-spacing:.3px;opacity:.6;}
+
+/* LIGHT MODE — fixes */
+[data-theme="light"] .hero-preview{background:var(--surface);border-color:rgba(124,109,250,.25);}
+[data-theme="light"] .preview-url{background:var(--surface2);color:var(--muted);}
+[data-theme="light"] .hero-preview input[type=range]{background:var(--border);}
+
+/* ===== DASHBOARD ===== */
+.dash-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.dash-title{font-size:26px;font-weight:900;letter-spacing:-.5px;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:420px){.stats-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.25);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card.income::before{background:linear-gradient(90deg,#22c55e,#16a34a);}
+.stat-card.spent::before{background:linear-gradient(90deg,#ef4444,#dc2626);}
+.stat-card.saved::before{background:linear-gradient(90deg,#7c6dfa,#a855f7);}
+.stat-card.score::before{background:linear-gradient(90deg,#f59e0b,#d97706);}
+.stat-card-icon{display:none;}
+.stat-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.stat-value{font-size:28px;font-weight:900;margin-bottom:5px;line-height:1;letter-spacing:-.5px;}
+.stat-sub{font-size:11px;color:var(--muted);}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;}
+.card-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:18px;}
+
+/* SCORE SHARE */
+#scoreShareRow{margin-top:16px;border-top:1px solid var(--border);padding-top:16px;}
+
+/* INPUT SECTION */
+.input-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.input-header{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;cursor:pointer;user-select:none;border-bottom:1px solid transparent;transition:border-color .2s;}
+.input-header:hover{border-bottom-color:var(--border);}
+.input-header h3{font-size:14px;font-weight:700;letter-spacing:-.1px;}
+.input-toggle{font-size:11px;color:var(--muted);background:var(--surface2);padding:4px 12px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-weight:600;transition:all .2s;}
+.input-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.input-body{padding:0 22px 22px;}
+.input-group-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:18px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.btn-save{padding:11px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(124,109,250,.3);}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,109,250,.45);}
+
+/* ===== TOOLS ===== */
+.tools-page{padding:32px 28px;max-width:1100px;margin:0 auto;}
+@media(max-width:640px){.tools-page{padding:20px 16px;}}
+.tools-header{margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid var(--border);}
+.tools-header h2{font-size:26px;font-weight:900;letter-spacing:-.5px;margin-bottom:6px;}
+.tools-header p{color:var(--muted);font-size:14px;}
+.tools-tabs{display:flex;gap:6px;margin-bottom:28px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+.tools-tabs::-webkit-scrollbar{display:none;}
+.tool-tab{padding:9px 20px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;letter-spacing:.1px;}
+.tool-tab:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,109,250,.05);}
+.tool-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border-color:transparent;box-shadow:0 2px 14px rgba(124,109,250,.4);}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.tool-card h3{font-size:20px;font-weight:900;margin-bottom:8px;letter-spacing:-.4px;}
+.tool-desc{color:var(--muted);font-size:14px;margin-bottom:26px;line-height:1.7;max-width:560px;}
+.tool-form{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:22px;}
+@media(max-width:520px){.tool-form{grid-template-columns:1fr;}}
+.inp-field label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.2px;margin-bottom:6px;display:block;}
+.inp-field input,.inp-field select{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:10px 13px;font-size:14px;outline:none;transition:border-color .2s;width:100%;}
+.inp-field input:focus,.inp-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,109,250,.1);}
+.btn-calc{padding:12px 26px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(124,109,250,.3);letter-spacing:.1px;}
+.btn-calc:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,109,250,.45);}
+.btn-calc-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);box-shadow:none;}
+.btn-calc-ghost:hover{transform:none;box-shadow:none;border-color:var(--accent);color:var(--accent);}
+.tool-result{background:linear-gradient(135deg,rgba(124,109,250,.04),rgba(168,85,247,.02));border:1px solid rgba(124,109,250,.15);border-radius:12px;padding:22px;margin-top:22px;}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.result-row:last-child{border-bottom:none;}
+.result-label{font-size:13px;color:var(--muted);}
+.result-value{font-size:15px;font-weight:700;}
+.result-highlight{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
 /* MOBILE NAV FIX */
 @media(max-width:640px){
   .mobile-nav{display:block;}
@@ -133,19 +247,20 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;backg
 .nav-logo{display:flex;flex-direction:column;line-height:1;cursor:pointer;flex-shrink:0;transition:opacity .2s;gap:2px;}
 .nav-logo:hover{opacity:.85;}
 .nav-logo-text{font-size:24px;font-weight:900;letter-spacing:-.8px;background:linear-gradient(135deg,#c4b5fd,var(--accent),#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(124,109,250,.4));}
-.nav-logo-text::before{content:'✦ ';font-size:13px;opacity:.6;}
+.nav-logo-text::before{content:'';}
 .nav-logo-sub{font-size:8px;font-weight:500;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;padding-left:2px;opacity:.7;}
-.nav-links{display:flex;gap:2px;background:rgba(255,255,255,.03);border:1px solid rgba(124,109,250,.12);border-radius:10px;padding:4px;position:absolute;left:50%;transform:translateX(-50%);}
-.nav-link{padding:6px 14px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:12.5px;font-weight:500;transition:all .2s;border:none;background:none;display:flex;align-items:center;gap:5px;white-space:nowrap;}
-.nav-link .nl-icon{font-size:13px;line-height:1;}
+.nav-links{display:flex;gap:1px;background:rgba(255,255,255,.03);border:1px solid rgba(124,109,250,.12);border-radius:10px;padding:3px;position:absolute;left:50%;transform:translateX(-50%);}
+.nav-link{padding:6px 16px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.3px;transition:all .2s;border:none;background:none;white-space:nowrap;}
+.nav-link .nl-icon{display:none;}
 .nav-link:hover{color:var(--text);background:rgba(124,109,250,.08);}
-.nav-link.active{color:var(--text);background:rgba(124,109,250,.14);box-shadow:inset 0 0 0 1px rgba(124,109,250,.25);}
+.nav-link.active{color:#fff;background:linear-gradient(135deg,rgba(124,109,250,.7),rgba(168,85,247,.5));box-shadow:inset 0 0 0 1px rgba(124,109,250,.3),0 2px 8px rgba(124,109,250,.2);}
+.nav-pro-badge{display:none;align-items:center;gap:4px;padding:2px 7px;background:linear-gradient(135deg,#7c6dfa,#a855f7);border-radius:5px;font-size:9px;font-weight:800;color:#fff;letter-spacing:.5px;margin-left:4px;}
 .nav-right{display:flex;align-items:center;gap:8px;}
 .nav-divider{width:1px;height:20px;background:var(--border);margin:0 4px;}
 .lang-select{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;padding:5px 8px;font-size:12px;cursor:pointer;outline:none;transition:border-color .2s;}
 .lang-select:hover{border-color:var(--accent);color:var(--text);}
-.nav-cta{padding:7px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s;white-space:nowrap;box-shadow:0 0 0 0 rgba(124,109,250,.4);}
-.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,109,250,.4);}
+.nav-cta{padding:7px 16px;background:#fff;color:#1a1a2e;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;transition:all .2s;white-space:nowrap;box-shadow:0 2px 12px rgba(255,255,255,0.15);}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,255,255,0.25);background:#f0f0ff;}
 @media(max-width:640px){
   .nav-links{display:none;}
   nav{padding:0 16px;height:58px;}
@@ -193,7 +308,11 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;backg
 .section-header{text-align:center;margin-bottom:52px;}
 .section-header h2{font-size:36px;font-weight:900;margin-bottom:12px;letter-spacing:-.5px;}
 .section-header p{color:var(--muted);font-size:16px;}
-.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.feature-grid-top{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.feature-grid-bottom{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:860px){.feature-grid-top{grid-template-columns:1fr;}}.feature-grid-top .feature-card{padding:34px 32px;}
+@media(max-width:680px){.feature-grid-bottom{grid-template-columns:1fr 1fr;}}
+@media(max-width:380px){.feature-grid-bottom{grid-template-columns:1fr;}}
 .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden;}
 .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--fc-color,var(--accent));opacity:.6;transition:opacity .25s;}
 .feature-card:hover{border-color:var(--fc-color,var(--accent));transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2);}
@@ -218,8 +337,8 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;backg
 .plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
 .plan-features li{font-size:13px;display:flex;align-items:center;gap:8px;}
 .plan-features li::before{content:'✓';color:var(--green);font-weight:800;flex-shrink:0;font-size:12px;}
-.plan-features li.locked::before{content:'✗';color:var(--border);}
-.plan-features li.locked{color:var(--muted);}
+.plan-features li.locked::before{content:'🔒';font-size:10px;}
+.plan-features li.locked{color:var(--muted);opacity:.6;}
 .btn-plan{width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;letter-spacing:.2px;}
 .btn-plan-free{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
 .btn-plan-free:hover{border-color:var(--accent);background:rgba(124,109,250,.08);}
@@ -238,11 +357,11 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;backg
 .ctrl-select:focus{border-color:var(--accent);}
 
 /* PREMIUM BANNER */
-.premium-banner{background:linear-gradient(135deg,rgba(124,109,250,.1),rgba(168,85,247,.07));border:1px solid rgba(124,109,250,.25);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
-.pb-text h4{font-size:14px;font-weight:700;margin-bottom:2px;}
+.premium-banner{background:linear-gradient(135deg,rgba(124,109,250,.08),rgba(168,85,247,.05));border:1px solid rgba(124,109,250,.2);border-radius:var(--radius);padding:14px 20px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.pb-text h4{font-size:13px;font-weight:800;margin-bottom:2px;letter-spacing:-.1px;}
 .pb-text p{font-size:12px;color:var(--muted);}
-.btn-upgrade{padding:9px 18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
-.btn-upgrade:hover{opacity:.85;}
+.btn-upgrade{padding:8px 18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.2px;}
+.btn-upgrade:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(124,109,250,.4);}
 
 /* STAT CARDS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
@@ -289,9 +408,10 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;backg
 /* INSIGHTS */
 .insights{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
 .insight-item{display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:12px;}
-.insight-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
-.insight-text{font-size:12px;line-height:1.55;color:var(--muted);}
+.insight-icon{display:none;}
+.insight-text{font-size:13px;line-height:1.6;color:var(--muted);}
 .insight-text strong{color:var(--text);}
+.insight-item{display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:13px 14px;}
 
 /* SHARE CARD */
 .share-card{background:linear-gradient(135deg,#1a1730,#140e28);border:1px solid rgba(124,109,250,.3);border-radius:14px;padding:20px;margin-top:14px;}
@@ -425,18 +545,24 @@ footer a:hover{color:var(--text);}
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="showPage('landing')">
-    <span class="nav-logo-text">Flo</span>
-    <span class="nav-logo-sub">by Tota Finance</span>
+  <div class="nav-logo" onclick="showPage('landing')" style="display:flex;align-items:center;gap:8px;flex-direction:row">
+    <img src="/logo.png" alt="TF" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;opacity:.9">
+    <div style="display:flex;flex-direction:column;gap:1px">
+      <div style="display:flex;align-items:center;gap:5px">
+        <span class="nav-logo-text">Flo</span>
+        <span class="nav-pro-badge" id="navProBadge">PRO</span>
+      </div>
+      <span class="nav-logo-sub">by Tota Finance</span>
+    </div>
   </div>
   <div class="nav-links">
-    <button class="nav-link" id="nl-landing" onclick="showPage('landing')"><span class="nl-icon">🏠</span><span data-i18n="nav_home">Home</span></button>
-    <button class="nav-link" id="nl-dashboard" onclick="showPage('dashboard')"><span class="nl-icon">📊</span><span data-i18n="nav_dashboard">Dashboard</span></button>
-    <button class="nav-link" id="nl-tools" onclick="showPage('tools')"><span class="nl-icon">🛠</span><span data-i18n="nav_tools">Tools</span></button>
-    <button class="nav-link" id="nl-currency" onclick="showPage('currency')"><span class="nl-icon">💱</span><span data-i18n="nav_currency">Currencies</span></button>
+    <button class="nav-link" id="nl-landing" onclick="showPage('landing')"><span class="nl-icon"></span><span data-i18n="nav_home">Home</span></button>
+    <button class="nav-link" id="nl-dashboard" onclick="showPage('dashboard')"><span class="nl-icon"></span><span data-i18n="nav_dashboard">Dashboard</span></button>
+    <button class="nav-link" id="nl-tools" onclick="showPage('tools')"><span class="nl-icon"></span><span data-i18n="nav_tools">Tools</span></button>
+    <button class="nav-link" id="nl-currency" onclick="showPage('currency')"><span class="nl-icon"></span><span data-i18n="nav_currency">Currencies</span></button>
   </div>
   <div class="nav-right">
-    <a href="https://tota-finance.com" target="_blank" rel="noopener" style="font-size:12px;color:var(--muted);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:7px;transition:all .2s;white-space:nowrap;display:none" id="totaLink" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← Tota Finance</a>
+    <a href="https://tota-finance.com" target="_blank" rel="noopener" style="font-size:12px;font-weight:700;color:#fff;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,#3b82f6 0%,#6c5ce7 100%);box-shadow:0 0 12px rgba(59,130,246,0.35)" id="totaLink" onmouseover="this.style.boxShadow='0 0 18px rgba(59,130,246,0.55)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='0 0 12px rgba(59,130,246,0.35)';this.style.transform=''">&larr; Tota Finance</a>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
     <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
       <option value="en">🌐 EN</option>
@@ -449,6 +575,7 @@ footer a:hover{color:var(--text);}
       <option value="ja">日本語</option>
       <option value="ar">AR</option>
     </select>
+    <button id="whatsNewBtn" onclick="openWhatsNew()" style="display:none;align-items:center;gap:4px;padding:5px 10px;background:linear-gradient(135deg,rgba(124,109,250,.15),rgba(168,85,247,.1));border:1px solid rgba(124,109,250,.3);border-radius:7px;font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;animation:badgePulse 2s infinite">New</button>
     <button class="nav-cta" onclick="openOnboarding()" data-i18n="nav_cta">Get Started Free</button>
   </div>
 </nav>
@@ -457,43 +584,140 @@ footer a:hover{color:var(--text);}
 <div id="page-landing" class="page active">
   <div class="hero-section">
   <section class="hero">
-    <div class="hero-badge">✦ <span data-i18n="hero_badge">Free to use · No bank connection needed</span></div>
     <h1 data-i18n="hero_title">Finally know where<br/><span data-i18n="hero_title_span">your money goes</span></h1>
     <p data-i18n="hero_sub">Enter your income and spending once a month. Flo tells you exactly what's eating your budget — and how to fix it.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="openOnboarding()" data-i18n="hero_cta1">Start for free</button>
-      <button class="btn-secondary" onclick="showPage('tools')" data-i18n="hero_cta2">Try free tools →</button>
+      <button class="btn-secondary" onclick="showPage('tools')" data-i18n="hero_cta2">Explore free tools</button>
     </div>
-    <p class="hero-social-proof">✦ No sign-up · No bank connection · Works in your browser</p>
     <div class="hero-preview">
       <div class="preview-bar">
         <div class="preview-dot" style="background:#ff5f57"></div>
         <div class="preview-dot" style="background:#ffbd2e"></div>
         <div class="preview-dot" style="background:#28c840"></div>
-        <div class="preview-url">flo.tota-finance.com</div>
+        <div class="preview-url">flo.tota-finance.com · Dashboard</div>
       </div>
-      <div class="preview-inner">
-        <div class="mini-card"><div class="mc-label">Health Score</div><div class="mc-val" style="color:var(--accent)">74</div><div class="mc-sub" style="color:var(--green)">▲ +6 this month</div></div>
-        <div class="mini-card"><div class="mc-label">Income</div><div class="mc-val">$4,200</div><div class="mc-sub" style="color:var(--muted)">This month</div></div>
-        <div class="mini-card"><div class="mc-label">Spent</div><div class="mc-val" style="color:var(--red)">$3,180</div><div class="mc-sub" style="color:var(--red)">75.7% of income</div></div>
-        <div class="mini-card"><div class="mc-label">Saved</div><div class="mc-val" style="color:var(--green)">$1,020</div><div class="mc-sub" style="color:var(--green)">24.3% rate</div></div>
+      <div style="padding:20px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <!-- Left: interactive sliders -->
+          <div>
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Try it — drag the sliders</div>
+            <!-- Income -->
+            <div style="margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                <span style="font-size:11px;color:var(--text);font-weight:600">Monthly Income</span>
+                <span style="font-size:13px;font-weight:800;color:#22c55e" id="demoIncomeVal">$4,200</span>
+              </div>
+              <input type="range" id="demoIncome" min="500" max="12000" value="4200" step="100" oninput="updateDemo()" style="width:100%;accent-color:#22c55e"/>
+            </div>
+            <!-- Housing -->
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                <span style="font-size:10px;color:var(--muted)">Housing</span>
+                <span style="font-size:11px;font-weight:700;color:var(--text)" id="demoHousingVal">$1,200</span>
+              </div>
+              <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:3px"><div id="demoBarHousing" style="height:100%;width:29%;background:linear-gradient(90deg,#7c6dfa,#a855f7);border-radius:2px;transition:width .3s ease"></div></div>
+              <input type="range" id="demoHousing" min="0" max="5000" value="1200" step="50" oninput="updateDemo()" style="width:100%;accent-color:#7c6dfa"/>
+            </div>
+            <!-- Food -->
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                <span style="font-size:10px;color:var(--muted)">Food &amp; Dining</span>
+                <span style="font-size:11px;font-weight:700;color:var(--text)" id="demoFoodVal">$680</span>
+              </div>
+              <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:3px"><div id="demoBarFood" style="height:100%;width:16%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:2px;transition:width .3s ease"></div></div>
+              <input type="range" id="demoFood" min="0" max="3000" value="680" step="20" oninput="updateDemo()" style="width:100%;accent-color:#22c55e"/>
+            </div>
+            <!-- Transport -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                <span style="font-size:10px;color:var(--muted)">Transport</span>
+                <span style="font-size:11px;font-weight:700;color:var(--text)" id="demoTransportVal">$320</span>
+              </div>
+              <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:3px"><div id="demoBarTransport" style="height:100%;width:8%;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:2px;transition:width .3s ease"></div></div>
+              <input type="range" id="demoTransport" min="0" max="2000" value="320" step="20" oninput="updateDemo()" style="width:100%;accent-color:#f59e0b"/>
+            </div>
+          </div>
+          <!-- Right: live results -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:14px;text-align:center">
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Saved this month</div>
+              <div style="font-size:24px;font-weight:900;transition:color .3s" id="demoSaved">$1,020</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:3px" id="demoSaveRate">24.3% of income</div>
+            </div>
+            <div style="background:rgba(124,109,250,.07);border:1px solid rgba(124,109,250,.2);border-radius:12px;padding:14px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center">
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Health Score</div>
+              <div style="font-size:54px;font-weight:900;line-height:1;transition:color .3s" id="demoScoreNum">74</div>
+              <div style="font-size:11px;margin:5px 0 10px;transition:color .3s" id="demoScoreLabel" style="color:#22c55e">Great shape!</div>
+              <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+                <div id="demoScoreBar" style="height:100%;width:74%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:3px;transition:all .4s ease"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:4px"><span>0</span><span>50</span><span>100</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-hint">↕ Drag sliders above to see your score change in real time</div>
       </div>
     </div>
   </section>
   </div><!-- /hero-section -->
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>No Login Required</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100% Private</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>9 Languages</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>$0 Cost</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.27 15"/><path d="M16 2a4 4 0 0 1 4 4"/><path d="M16 6h.01"/></svg>Works Offline</div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>2 min to start</div>
+    </div>
+  </div>
 
   <section class="features">
     <div class="section-header">
       <h2 data-i18n="feat_title">Everything you need, nothing you don't</h2>
       <p data-i18n="feat_sub">Simple enough to actually use. Powerful enough to make a difference.</p>
     </div>
-    <div class="feature-grid">
-      <div class="feature-card" style="--fc-color:#7c6dfa"><div class="feature-icon" style="background:rgba(124,109,250,.15)">📊</div><h3>Monthly Breakdown</h3><p>Enter category totals once a month. See exactly where every dollar went with visual breakdowns.</p></div>
-      <div class="feature-card" style="--fc-color:#22c55e"><div class="feature-icon" style="background:rgba(34,197,94,.15)">💯</div><h3>Health Score</h3><p>A single 0–100 score tells you how well you're doing. Watch it improve month over month.</p></div>
-      <div class="feature-card" style="--fc-color:#f59e0b"><div class="feature-icon" style="background:rgba(245,158,11,.15)">📱</div><h3>Subscription Leak</h3><p>See how much you're really paying for subscriptions every year. Most people are shocked.</p></div>
-      <div class="feature-card" style="--fc-color:#ef4444"><div class="feature-icon" style="background:rgba(239,68,68,.15)">🧾</div><h3>Tax Estimator</h3><p>Quick income tax estimate for 14 countries. Good enough to plan, fast enough to use.</p></div>
-      <div class="feature-card" style="--fc-color:#a855f7"><div class="feature-icon" style="background:rgba(168,85,247,.15)">💱</div><h3>Currency Converter</h3><p>Live rates for 30+ currencies. See your budget in any currency instantly.</p></div>
-      <div class="feature-card" style="--fc-color:#06b6d4"><div class="feature-icon" style="background:rgba(6,182,212,.15)">📉</div><h3>Salary Reality Check</h3><p>See how much your salary needs to grow to keep up with inflation — with real numbers.</p></div>
+    <div class="feature-grid-top">
+      <div class="feature-card" style="--fc-color:#7c6dfa"><div class="feature-icon" style="background:rgba(124,109,250,.15);width:52px;height:52px;border-radius:14px;margin-bottom:20px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7c6dfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><h3 style="font-size:18px;margin-bottom:10px">Monthly Breakdown</h3><p style="font-size:14px;line-height:1.7">Enter your income and spending totals once a month. Flo shows exactly where every dollar went — with visual category bars, percentages, and a clear picture of your financial habits.</p></div>
+      <div class="feature-card" style="--fc-color:#22c55e"><div class="feature-icon" style="background:rgba(34,197,94,.15);width:52px;height:52px;border-radius:14px;margin-bottom:20px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3 style="font-size:18px;margin-bottom:10px">Financial Health Score</h3><p style="font-size:14px;line-height:1.7">A single 0–100 score that tells you how well you're doing. Based on your save rate, spending balance, and goals. Watch it climb month over month as you improve your habits.</p></div>
+    </div>
+    <div class="feature-grid-bottom">
+      <div class="feature-card" style="--fc-color:#f59e0b"><div class="feature-icon" style="background:rgba(245,158,11,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><h3>Subscription Leak</h3><p>See the true annual cost of all your subscriptions. Most people underestimate by 40%.</p></div>
+      <div class="feature-card" style="--fc-color:#ef4444"><div class="feature-icon" style="background:rgba(239,68,68,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><h3>Tax Estimator</h3><p>Quick income tax estimate for 14 countries. Good enough to plan, fast enough to use.</p></div>
+      <div class="feature-card" style="--fc-color:#a855f7"><div class="feature-icon" style="background:rgba(168,85,247,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div><h3>Currency Converter</h3><p>Live rates for 30+ currencies. See your budget in any currency instantly.</p></div>
+      <div class="feature-card" style="--fc-color:#06b6d4"><div class="feature-icon" style="background:rgba(6,182,212,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div><h3>Salary Reality Check</h3><p>See how much your salary needs to grow to beat inflation — with real data.</p></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="hiw-section">
+    <div class="section-header">
+      <h2>How it works</h2>
+      <p>Three steps. That's it. No setup, no bank login, no learning curve.</p>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-step">
+        <div class="hiw-num">1</div>
+        <h3>Enter your numbers</h3>
+        <p>Monthly income and spending totals — once a month. No bank login. No receipt scanning. Just type your numbers in under 2 minutes.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">2</div>
+        <h3>See the breakdown</h3>
+        <p>Flo instantly shows where every dollar went, your Financial Health Score (0–100), and personalized insights about your spending habits.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">3</div>
+        <h3>Watch your score grow</h3>
+        <p>Track your score month over month as you improve your habits. Compare trends, spot patterns, and build lasting financial health.</p>
+      </div>
     </div>
   </section>
 
@@ -509,12 +733,13 @@ footer a:hover{color:var(--text);}
         <div class="plan-desc">Everything to get started.</div>
         <ul class="plan-features">
           <li>Monthly budget tracker</li>
-          <li>Financial health score</li>
-          <li>12 spending categories</li>
+          <li>Health Score (number only)</li>
+          <li>9 spending categories <span style="font-size:10px;color:var(--muted);display:block;margin-top:2px;padding-left:4px">Housing · Food · Transport · Health · Personal · Shopping · Education · Savings · Other</span></li>
           <li>All free tools (tax, debt, emergency…)</li>
           <li>Currency converter (30+ currencies)</li>
-          <li>Monthly report card + badges</li>
           <li>2 months history</li>
+          <li class="locked">Health Score breakdown</li>
+          <li class="locked">Monthly Report card</li>
           <li class="locked">Smart Insights</li>
           <li class="locked">12-month history</li>
           <li class="locked">Spending forecast</li>
@@ -523,24 +748,40 @@ footer a:hover{color:var(--text);}
         <button class="btn-plan btn-plan-free" onclick="openOnboarding()" data-i18n="btn_start_free">Start free</button>
       </div>
       <div class="plan-card featured">
-        <div class="plan-badge">⭐ Lifetime Deal</div>
+        <div class="plan-badge">Lifetime Deal</div>
         <div class="plan-name">Pro</div>
         <div class="plan-price" id="pricePro">$4.99 <span>one-time</span></div>
+        <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:3px 9px;font-size:10px;color:#f59e0b;font-weight:700;margin-bottom:10px;letter-spacing:.2px">Intro price — may increase</div>
         <div class="plan-desc">Pay once. Use forever. No subscription.</div>
         <ul class="plan-features">
           <li>Everything in Free</li>
+          <li>Health Score breakdown</li>
+          <li>Monthly Report card</li>
+          <li>Smart Insights</li>
           <li>12 months history</li>
-          <li>Smart Insights (month-over-month trends)</li>
-          <li>Next month spending forecast</li>
-          <li>6-month trend chart</li>
+          <li>Spending forecast</li>
           <li>CSV export</li>
-          <li>Priority support</li>
+          <li>Email support</li>
         </ul>
         <button class="btn-plan btn-plan-pro" onclick="openProModal()" data-i18n="btn_get_pro">Get Lifetime Access →</button>
       </div>
     </div>
   </section>
+  <!-- Share section -->
+  <div style="padding:48px 20px 0;text-align:center">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:14px">Know someone who could use this?</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button onclick="shareFlo('twitter')" style="display:flex;align-items:center;gap:6px;padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Share on X</button>
+      <button onclick="shareFlo('whatsapp')" style="display:flex;align-items:center;gap:6px;padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='var(--border)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>
+      <button onclick="shareFlo('copy')" style="display:flex;align-items:center;gap:6px;padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" id="shareCopyBtn" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy link</button>
+    </div>
+  </div>
   <footer>
+    <!-- Logo row -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px">
+      <img src="/logo.png" alt="TF" style="width:28px;height:28px;border-radius:50%;object-fit:cover;opacity:.7">
+      <span style="font-size:13px;font-weight:700;color:var(--muted)">Tota Finance</span>
+    </div>
     <p>© 2026 Flo · <a href="#" onclick="showPage('privacy');return false;">Privacy Policy</a> · <a href="#" onclick="showPage('terms');return false;">Terms</a> · Built for people who want to understand their money</p>
     <p style="margin-top:8px">Part of <a href="https://tota-finance.com" target="_blank" rel="noopener" style="color:var(--accent)">Tota Finance</a> — your financial home on the web</p>
     <p style="margin-top:12px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
@@ -561,18 +802,21 @@ footer a:hover{color:var(--text);}
 <div id="page-dashboard" class="page">
   <div class="dashboard">
     <div class="premium-banner" id="premiumBanner">
-      <div class="pb-text"><h4>✦ Unlock Smart Insights & Full History</h4><p>12-month history, trend chart, spending forecast & CSV export — one-time $4.99.</p></div>
+      <div class="pb-text"><h4>Unlock Smart Insights &amp; Full History</h4><p>12-month history, trend chart, spending forecast &amp; CSV export — one-time $4.99.</p></div>
       <button class="btn-upgrade" onclick="openProModal()">Get Lifetime Access →</button>
     </div>
 
     <div class="dash-top">
-      <div class="dash-title" data-i18n="dash_title">Monthly Overview</div>
+      <div>
+        <div class="dash-title" id="dashMonthLabel">March 2026</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Financial overview for this period</div>
+      </div>
       <div class="dash-controls">
         <select class="ctrl-select" id="dashCurrency" onchange="onCurrencyChange()">
-          <option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option>
-          <option value="GBP">🇬🇧 GBP</option><option value="TRY">🇹🇷 TRY</option>
-          <option value="JPY">🇯🇵 JPY</option><option value="CAD">🇨🇦 CAD</option>
-          <option value="AUD">🇦🇺 AUD</option><option value="CHF">🇨🇭 CHF</option>
+          <option value="USD">USD</option><option value="EUR">EUR</option>
+          <option value="GBP">GBP</option><option value="TRY">TRY</option>
+          <option value="JPY">JPY</option><option value="CAD">CAD</option>
+          <option value="AUD">AUD</option><option value="CHF">CHF</option>
         </select>
         <select class="ctrl-select" id="dashMonth">
           <option value="2025-03">March 2025</option>
@@ -585,27 +829,69 @@ footer a:hover{color:var(--text);}
     <!-- INPUT SECTION -->
     <div class="input-section">
       <div class="input-header" onclick="toggleInput()">
-        <h3>✏️ <span data-i18n="inp_title">Enter This Month's Numbers</span></h3>
-        <button class="input-toggle" id="inputToggleBtn" onclick="toggleInput();event.stopPropagation()">Hide</button>
+        <h3><span data-i18n="inp_title">Enter This Month's Numbers</span></h3>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button onclick="copyFromLastMonth();event.stopPropagation()" style="font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 9px;cursor:pointer;white-space:nowrap" title="Copy last month's data into this month">Copy last month</button>
+          <button class="input-toggle" id="inputToggleBtn" onclick="toggleInput();event.stopPropagation()">Hide</button>
+        </div>
       </div>
       <div id="inputBody" class="input-body">
         <!-- INCOME -->
-        <div class="input-group-label">💰 <span data-i18n="grp_income">Income</span></div>
+        <div class="input-group-label"><span data-i18n="grp_income">Income</span></div>
         <div class="income-grid">
           <div class="income-card">
-            <div class="ic-label">💰 <span data-i18n="lbl_income">Monthly Income</span></div>
+            <div class="ic-label"><span data-i18n="lbl_income">Monthly Income</span></div>
             <input type="number" id="inp_income" placeholder="0" min="0" oninput="liveUpdate()"/>
           </div>
           <div class="income-card">
-            <div class="ic-label">➕ <span data-i18n="lbl_extra">Other Income</span></div>
+            <div class="ic-label"><span data-i18n="lbl_extra">Other Income</span></div>
             <input type="number" id="inp_extra" placeholder="freelance, bonus…" min="0" oninput="liveUpdate()"/>
           </div>
         </div>
 
         <!-- CATEGORY CARDS — rendered by JS so labels stay translated -->
-        <div class="input-group-label" style="margin-top:14px">📊 <span data-i18n="grp_essential">Categories</span> <span style="font-size:10px;color:var(--muted)">(optional: set goal below each)</span></div>
+        <div class="input-group-label" style="margin-top:14px"><span data-i18n="grp_essential">Spending Categories</span> <span style="font-size:10px;color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(set budget goals below each)</span></div>
         <div class="cat-card-grid" id="catCardGrid"></div>
       </div>
+
+        <!-- Savings Goal -->
+        <div style="margin-top:16px;padding:14px 16px;background:rgba(124,109,250,.05);border:1px solid rgba(124,109,250,.15);border-radius:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:12px;font-weight:700;color:var(--text)">Monthly Savings Goal</div>
+            <div style="font-size:11px;color:var(--muted)" id="goalProgressLabel"></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="number" id="inp_savingsGoal" placeholder="Target amount (e.g. 500)" min="0" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 11px;font-size:14px;outline:none;" oninput="liveUpdate()"/>
+            <div style="font-size:11px;color:var(--muted);white-space:nowrap">per month</div>
+          </div>
+          <div id="goalProgressBar" style="display:none;margin-top:10px">
+            <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+              <div id="goalProgressFill" style="height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:3px;transition:width .7s ease"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div style="margin-top:12px">
+          <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.2px">Monthly Note <span style="font-size:10px;font-weight:400;opacity:.6">(optional)</span></div>
+          <textarea id="inp_notes" placeholder="e.g. Paid off car loan this month · Had vacation expenses · Bonus received" rows="2" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:13px;outline:none;resize:vertical;font-family:inherit;line-height:1.5;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        </div>
+
+        <!-- RECURRING TRANSACTIONS -->
+        <div style="margin-top:14px;padding:12px 14px;background:rgba(168,85,247,.05);border:1px solid rgba(168,85,247,.18);border-radius:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:12px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px">🔁 Recurring Transactions <span style="font-size:10px;font-weight:400;color:var(--muted)">Auto-fill categories every month</span></div>
+            <button onclick="toggleRecurring()" id="recurringToggleBtn" style="font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 9px;cursor:pointer">Show</button>
+          </div>
+          <div id="recurringBody" style="display:none">
+            <div id="recurringList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
+            <button onclick="addRecurringRow()" style="font-size:11px;color:var(--accent);background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.25);border-radius:7px;padding:5px 12px;cursor:pointer;font-weight:600">+ Add recurring item</button>
+            <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+              <button onclick="applyRecurring()" style="font-size:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:7px;padding:6px 14px;cursor:pointer;font-weight:700">↓ Apply to this month</button>
+              <span style="font-size:10px;color:var(--muted);align-self:center">Adds recurring amounts to their categories</span>
+            </div>
+          </div>
+        </div>
 
         <div class="goals-warn" id="goalsWarn"></div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;margin-bottom:4px">
@@ -626,10 +912,12 @@ footer a:hover{color:var(--text);}
             <div id="liveScore" style="font-size:16px;font-weight:700;color:var(--muted)">—</div>
           </div>
         </div>
-        <div class="unsaved-bar" id="unsavedBar">⚠️ <span>You have unsaved changes — will auto-save in 10s</span></div>
+        <div class="unsaved-bar" id="unsavedBar">⚠️ <span>Unsaved changes — auto-saving in 5s…</span></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
           <button class="btn-save" onclick="saveDashboard()" data-i18n="btn_save">✓ Calculate &amp; Save</button>
           <button class="btn-csv btn-csv-pro" onclick="exportCSV()">⬇ Export CSV <span class="pro-badge-small">⭐ Pro</span></button>
+          <button onclick="exportBackup()" style="padding:8px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" title="Export all your data as JSON backup">💾 Backup</button>
+          <label style="padding:8px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" title="Restore from JSON backup">📂 Restore<input type="file" accept=".json" onchange="importBackup(event)" style="display:none"/></label>
         </div>
       </div>
     </div>
@@ -637,38 +925,74 @@ footer a:hover{color:var(--text);}
     <!-- STATS -->
     <div class="stats-grid" id="dashStats"></div>
 
+    <!-- EMPTY STATE -->
+    <div id="emptyState" style="display:none;text-align:center;padding:48px 24px;background:var(--surface);border:1px dashed var(--border);border-radius:16px;margin-top:16px">
+      <div style="font-size:48px;margin-bottom:12px">📊</div>
+      <h3 style="font-size:18px;margin-bottom:8px">Start tracking your money</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px;max-width:280px;margin-left:auto;margin-right:auto">Enter your income and spending above. Flo will calculate your health score and show where your money goes.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button onclick="if(!inputOpen)toggleInput();document.getElementById('inp_income').focus();" style="padding:10px 20px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer">✏️ Enter my data</button>
+        <button onclick="loadDemoData()" style="padding:10px 20px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:9px;font-size:13px;font-weight:600;cursor:pointer">👀 See sample data</button>
+      </div>
+    </div>
+
     <!-- MAIN ROW -->
     <div class="main-row">
       <div class="card">
         <div class="card-title">Spending by Category <span id="totalSpentLabel" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0"></span></div>
         <div id="categoryList"></div>
       </div>
-      <div>
-        <div class="card" style="margin-bottom:18px">
-          <div class="card-title">Health Score</div>
-          <div class="score-wrap">
-            <div class="score-big" id="scoreNum">—</div>
-            <div class="score-label" id="scoreLabel">Enter data to calculate</div>
-          </div>
-          <div class="score-bar-bg"><div class="score-bar-fill" id="scoreBar" style="width:0%"></div></div>
-          <div class="score-range"><span>0</span><span>50</span><span>100</span></div>
-          <div class="insights" id="insightsList"></div>
+      <div class="pro-locked" id="scoreReportLock">
+        <div class="lock-overlay">
+          <span style="font-size:14px;font-weight:800;letter-spacing:.3px;text-transform:uppercase">Pro</span>
+          <span style="font-size:12px;color:var(--muted);text-align:center;max-width:260px">Health Score breakdown & Monthly Report — unlock with Pro</span>
+          <button onclick="openProModal()">Get Lifetime Access — $4.99 →</button>
         </div>
-        <div class="card">
-          <div class="card-title" data-i18n="ct_report">Monthly Report</div>
-          <div class="share-card" id="reportCard">
-            <div class="sc-header"><div class="sc-logo">Flo</div><div class="sc-month" id="reportMonth">March 2025</div></div>
-            <div style="text-align:center;margin-bottom:12px">
-              <div class="sc-score-num" id="reportScore">—</div>
-              <div class="sc-score-lbl" data-i18n="score_label">Financial Health Score</div>
+        <div class="pro-inner" style="display:flex;flex-direction:column;gap:18px">
+          <div class="card">
+            <div class="card-title">Health Score</div>
+            <div class="score-wrap">
+              <div class="score-big" id="scoreNum">—</div>
+              <div class="score-label" id="scoreLabel">Enter data to calculate</div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
-              <div class="sc-stat"><div class="v" id="reportSaveRate">—</div><div class="l" data-i18n="report_save_rate">Save rate</div></div>
-              <div class="sc-stat"><div class="v" id="reportTopCat">—</div><div class="l" data-i18n="report_top_spend">Top spend</div></div>
+            <div class="score-bar-bg"><div class="score-bar-fill" id="scoreBar" style="width:0%"></div></div>
+            <div class="score-range"><span>0</span><span>50</span><span>100</span></div>
+            <div id="scoreShareRow" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px;display:none">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-align:center">Share your score</div>
+              <div style="display:flex;gap:7px">
+                <button onclick="shareScore('twitter')" style="flex:1;padding:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X
+                </button>
+                <button onclick="shareScore('whatsapp')" style="flex:1;padding:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px" onmouseover="this.style.borderColor='#22c55e'" onmouseout="this.style.borderColor='var(--border)'">
+                  WhatsApp
+                </button>
+                <button onclick="shareScore('copy')" style="flex:1;padding:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                  Copy link
+                </button>
+              </div>
             </div>
-            <div id="reportBadges" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>
+            <div class="insights" id="insightsList"></div>
           </div>
-          <div id="reportTip" style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5;background:var(--surface2);border-radius:8px;padding:10px;display:none"></div>
+          <div class="card">
+            <div class="card-title" data-i18n="ct_report">Monthly Report</div>
+            <div class="share-card" id="reportCard">
+              <div class="sc-header"><div class="sc-logo">Flo</div><div class="sc-month" id="reportMonth">March 2025</div></div>
+              <div style="text-align:center;margin-bottom:12px">
+                <div class="sc-score-num" id="reportScore">—</div>
+                <div class="sc-score-lbl" data-i18n="score_label">Financial Health Score</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+                <div class="sc-stat"><div class="v" id="reportSaveRate">—</div><div class="l" data-i18n="report_save_rate">Save rate</div></div>
+                <div class="sc-stat"><div class="v" id="reportTopCat">—</div><div class="l" data-i18n="report_top_spend">Top spend</div></div>
+              </div>
+              <div id="reportBadges" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>
+            </div>
+            <div id="reportTip" style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5;background:var(--surface2);border-radius:8px;padding:10px;display:none"></div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button onclick="downloadReport()" style="flex:1;padding:9px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">Download Image</button>
+              <button onclick="shareReport()" style="flex:1;padding:9px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">Share</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -676,22 +1000,22 @@ footer a:hover{color:var(--text);}
     <!-- PRO LOCKED -->
     <div class="pro-locked">
       <div class="lock-overlay">
-        <span style="font-size:15px;font-weight:700">🔒 Pro Features</span>
+        <span style="font-size:14px;font-weight:800;letter-spacing:.3px;text-transform:uppercase">Pro</span>
         <span style="font-size:12px;color:var(--muted);text-align:center;max-width:260px">Smart Insights, Trend Chart & Spending Forecast — based on your real data</span>
         <button onclick="openProModal()">Get Lifetime Access — $4.99 →</button>
       </div>
       <div class="main-row pro-inner">
         <div class="card">
-          <div class="card-title">📈 6-Month Trend</div>
+          <div class="card-title">6-Month Trend</div>
           <div style="height:160px;position:relative"><canvas id="trendChart"></canvas></div>
         </div>
         <div class="card">
-          <div class="card-title">✦ Smart Insights</div>
+          <div class="card-title">Smart Insights</div>
           <div class="insights" id="smartInsightsList">
-            <div class="insight-item"><div class="insight-icon">📊</div><div class="insight-text">Save your first month to unlock trend insights.</div></div>
+            <div class="insight-item"><div class="insight-text" style="color:var(--muted);font-size:12px">Save your first month to unlock trend insights.</div></div>
           </div>
           <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
-            <div class="card-title" style="margin-bottom:10px">🔮 Next Month Forecast</div>
+            <div class="card-title" style="margin-bottom:10px">Next Month Forecast</div>
             <div id="forecastList"><p style="font-size:12px;color:var(--muted)">Save previous months to unlock.</p></div>
           </div>
         </div>
@@ -703,20 +1027,23 @@ footer a:hover{color:var(--text);}
 <!-- ========== TOOLS ========== -->
 <div id="page-tools" class="page">
   <div class="tools-page">
-    <div class="tools-header"><h2>Free Financial Tools</h2><p>Quick calculators — no sign-up, no bank connection needed.</p></div>
+    <div class="tools-header">
+      <h2 data-i18n="tools_title">Free Financial Tools</h2>
+      <p data-i18n="tools_sub">Quick calculators — no sign-up, no bank connection needed.</p>
+    </div>
     <div class="tools-tabs">
-      <button class="tool-tab active" onclick="switchTool('networth',this)">💎 Net Worth</button>
-      <button class="tool-tab" onclick="switchTool('tax',this)" data-i18n="tab_tax">🧾 Tax</button>
-      <button class="tool-tab" onclick="switchTool('inflation',this)" data-i18n="tab_inflation">📉 Salary Check</button>
-      <button class="tool-tab" onclick="switchTool('subscriptions',this)" data-i18n="tab_subs">📱 Subscriptions</button>
-      <button class="tool-tab" onclick="switchTool('emergency',this)" data-i18n="tab_emergency">🛡️ Emergency Fund</button>
-      <button class="tool-tab" onclick="switchTool('debt',this)" data-i18n="tab_debt">💳 Debt Payoff</button>
+      <button class="tool-tab active" onclick="switchTool('networth',this)">Net Worth</button>
+      <button class="tool-tab" onclick="switchTool('tax',this)" data-i18n="tab_tax">Tax</button>
+      <button class="tool-tab" onclick="switchTool('inflation',this)" data-i18n="tab_inflation">Salary Check</button>
+      <button class="tool-tab" onclick="switchTool('subscriptions',this)" data-i18n="tab_subs">Subscriptions</button>
+      <button class="tool-tab" onclick="switchTool('emergency',this)" data-i18n="tab_emergency">Emergency Fund</button>
+      <button class="tool-tab" onclick="switchTool('debt',this)" data-i18n="tab_debt">Debt Payoff</button>
     </div>
 
     <!-- NET WORTH -->
     <div id="tool-networth" class="tool-panel active">
       <div class="tool-card">
-        <h3>💎 Net Worth Tracker</h3>
+        <h3>Net Worth Tracker</h3>
         <p class="tool-desc">Assets minus liabilities. This single number tells you your true financial position. Update it monthly to see real growth.</p>
         <div class="nw-total">
           <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Your Net Worth</div>
@@ -726,7 +1053,7 @@ footer a:hover{color:var(--text);}
         <div class="nw-grid">
           <div class="nw-section">
             <div class="nw-section-title">
-              <span>✅ Assets</span>
+              <span>Assets</span>
               <button class="btn-csv" style="padding:4px 10px;font-size:11px" onclick="addNwRow('assets')">+ Add</button>
             </div>
             <div id="nw-assets"></div>
@@ -734,7 +1061,7 @@ footer a:hover{color:var(--text);}
           </div>
           <div class="nw-section">
             <div class="nw-section-title">
-              <span>❌ Liabilities</span>
+              <span>Liabilities</span>
               <button class="btn-csv" style="padding:4px 10px;font-size:11px" onclick="addNwRow('liabilities')">+ Add</button>
             </div>
             <div id="nw-liabilities"></div>
@@ -748,7 +1075,7 @@ footer a:hover{color:var(--text);}
     <!-- TAX -->
     <div id="tool-tax" class="tool-panel">
       <div class="tool-card">
-        <h3>🧾 Income Tax Estimator</h3>
+        <h3>Income Tax Estimator</h3>
         <p class="tool-desc">Rough estimate of your tax bracket and take-home pay. For planning only — consult a tax professional for official filings.</p>
         <div class="tool-form">
           <div class="inp-field"><label>Annual Gross Income</label><input type="number" id="tax_income" placeholder="e.g. 60000"/></div>
@@ -984,73 +1311,186 @@ footer a:hover{color:var(--text);}
     <h2>8. Changes to Terms</h2>
     <p>We may update these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms.</p>
     <h2>9. Contact</h2>
-    <p>Questions? Email <a href="mailto:hello@tota-finance.com" style="color:var(--accent)">hello@tota-finance.com</a></p>
+    <p>Questions? Email <a href="mailto:totafinancehq@gmail.com" style="color:var(--accent)">totafinancehq@gmail.com</a></p>
     <p style="margin-top:32px"><a href="#" onclick="showPage('landing');return false;" style="color:var(--accent)">← Back to Home</a></p>
   </div>
 </div>
 
 <!-- PRO UPGRADE MODAL -->
 <div class="modal-overlay" id="proModal">
-  <div class="modal" style="max-width:420px">
-    <div style="text-align:center;margin-bottom:22px">
-      <div style="font-size:44px;margin-bottom:10px">⭐</div>
-      <h2 style="font-size:22px;margin-bottom:8px">Upgrade to Flo Pro</h2>
-      <p style="color:var(--muted);font-size:13px;line-height:1.6">Unlock 12-month history, Smart Insights,<br>Spending Forecast &amp; CSV export.</p>
-    </div>
-    <div style="background:linear-gradient(135deg,rgba(124,109,250,.1),rgba(168,85,247,.07));border:1px solid rgba(124,109,250,.25);border-radius:12px;padding:18px;margin-bottom:20px;text-align:center">
-      <div style="font-size:38px;font-weight:900;letter-spacing:-1px">$4.99<span style="font-size:14px;font-weight:400;color:var(--muted)"> one-time</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Pay once · Use forever · No subscription</div>
-    </div>
-    <button class="btn-plan btn-plan-pro" style="margin-bottom:18px;font-size:15px;padding:13px" onclick="buyPro()">Get Lifetime Access — $4.99 →</button>
-    <div style="border-top:1px solid var(--border);padding-top:16px">
-      <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Already have a license key?</p>
-      <div style="display:flex;gap:8px">
-        <input type="text" id="licenseInput" placeholder="Paste your Gumroad license key" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:12px;outline:none;font-family:monospace;letter-spacing:.5px"/>
-        <button onclick="activateLicense()" style="padding:9px 16px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Activate</button>
+  <div class="modal" style="max-width:460px;padding:0;overflow:hidden">
+    <!-- Header gradient -->
+    <div style="background:linear-gradient(135deg,#1a1730,#140e28);padding:24px 28px 18px;border-bottom:1px solid rgba(124,109,250,.2)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7c6dfa,#a855f7);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">⭐</div>
+        <div>
+          <div style="font-size:18px;font-weight:900;letter-spacing:-.3px">Unlock Flo Pro</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">One payment. Everything. Forever.</div>
+        </div>
+        <button onclick="closeProModal()" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:4px">×</button>
+      </div>
+      <!-- Price -->
+      <div style="display:flex;align-items:baseline;gap:8px">
+        <span style="font-size:42px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,#7c6dfa,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent">$4.99</span>
+        <div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.4">one-time<br/><span style="color:rgba(245,158,11,.8)">⚡ intro price</span></div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div style="font-size:10px;color:var(--muted);line-height:1.5">vs $15+/mo<br/>for Mint alternatives</div>
+        </div>
       </div>
     </div>
-    <button class="btn-modal-s" style="width:100%;margin-top:12px;text-align:center" onclick="closeProModal()">Maybe later</button>
+    <!-- Feature comparison -->
+    <div style="padding:18px 28px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px">
+        <div style="background:var(--surface2);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px 12px;font-size:12px">
+          <div style="color:#22c55e;font-weight:700;margin-bottom:3px">💯 Health Score Detail</div>
+          <div style="color:var(--muted);font-size:11px">Full breakdown by factor</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid rgba(124,109,250,.2);border-radius:10px;padding:10px 12px;font-size:12px">
+          <div style="color:var(--accent);font-weight:700;margin-bottom:3px">📈 12-Month History</div>
+          <div style="color:var(--muted);font-size:11px">Trend chart + forecast</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid rgba(168,85,247,.2);border-radius:10px;padding:10px 12px;font-size:12px">
+          <div style="color:#a855f7;font-weight:700;margin-bottom:3px">✦ Smart Insights</div>
+          <div style="color:var(--muted);font-size:11px">AI-style month analysis</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:10px 12px;font-size:12px">
+          <div style="color:#06b6d4;font-weight:700;margin-bottom:3px">📋 Monthly Report</div>
+          <div style="color:var(--muted);font-size:11px">Shareable card + badges</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:10px 12px;font-size:12px">
+          <div style="color:#f59e0b;font-weight:700;margin-bottom:3px">🔮 Spending Forecast</div>
+          <div style="color:var(--muted);font-size:11px">Next month prediction</div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 12px;font-size:12px">
+          <div style="color:#ef4444;font-weight:700;margin-bottom:3px">⬇ CSV Export</div>
+          <div style="color:var(--muted);font-size:11px">All your data, yours</div>
+        </div>
+      </div>
+      <!-- Social proof -->
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--muted);line-height:1.6;border-left:3px solid var(--accent)">
+        <span style="color:#fbbf24">★★★★★</span> <em>"$4.99 for lifetime is insane value. I was spending $15/mo on Mint alternatives."</em>
+      </div>
+      <button class="btn-plan btn-plan-pro" style="margin-bottom:12px;font-size:15px;padding:14px;letter-spacing:.2px" onclick="buyPro()">Get Lifetime Access — $4.99 →</button>
+      <!-- License input -->
+      <div style="border-top:1px solid var(--border);padding-top:12px">
+        <p style="font-size:11px;color:var(--muted);margin-bottom:7px">Already have a license key?</p>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="licenseInput" placeholder="Paste your Gumroad license key" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 11px;font-size:12px;outline:none;font-family:monospace;letter-spacing:.5px"/>
+          <button onclick="activateLicense()" style="padding:8px 14px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Activate</button>
+        </div>
+      </div>
+      <button class="btn-modal-s" style="width:100%;margin-top:8px;text-align:center;font-size:12px" onclick="closeProModal()">Maybe later</button>
+    </div>
   </div>
 </div>
 
 <!-- ONBOARDING MODAL -->
 <div class="modal-overlay" id="onboardingModal">
-  <div class="modal">
-    <div class="ob-progress"><div class="ob-progress-fill" id="obProgress" style="width:33%"></div></div>
+  <div class="modal" style="max-width:420px">
+    <!-- Step counter -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="display:flex;gap:6px" id="obDots">
+        <div style="width:24px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))" id="obDot1"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:var(--border)" id="obDot2"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:var(--border)" id="obDot3"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:var(--border)" id="obDot4"></div>
+      </div>
+      <span style="font-size:11px;color:var(--muted)" id="obStepLabel">Step 1 of 4</span>
+    </div>
+
+    <!-- Step 1: Welcome + currency -->
     <div id="obStep1" class="ob-anim">
-      <span class="ob-step-icon">👋</span>
-      <h2 style="text-align:center;margin-bottom:6px">Welcome to Flo</h2>
-      <p style="text-align:center">60 seconds to set up. No bank connection, no credit card.</p>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(124,109,250,.2),rgba(168,85,247,.1));border:1px solid rgba(124,109,250,.3);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px">👋</div>
+        <h2 style="font-size:20px;margin-bottom:6px">Welcome to Flo</h2>
+        <p style="color:var(--muted);font-size:13px">No bank connection. No account. 60 seconds to set up.</p>
+      </div>
       <div class="modal-form">
-        <div class="inp-field"><label>Your name (optional)</label><input type="text" id="ob_name" placeholder="Alex"/></div>
-        <div class="inp-field"><label>Base currency</label>
-          <select id="ob_currency" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;">
-            <option value="USD">🇺🇸 USD</option><option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option>
-            <option value="TRY">🇹🇷 TRY</option><option value="JPY">🇯🇵 JPY</option><option value="CAD">🇨🇦 CAD</option>
-            <option value="AUD">🇦🇺 AUD</option><option value="CHF">🇨🇭 CHF</option>
+        <div class="inp-field">
+          <label>Your name <span style="color:var(--muted)">(optional)</span></label>
+          <input type="text" id="ob_name" placeholder="Alex"/>
+        </div>
+        <div class="inp-field">
+          <label>What currency do you use?</label>
+          <select id="ob_currency" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-size:14px;outline:none;width:100%">
+            <option value="USD">🇺🇸 USD — US Dollar</option>
+            <option value="EUR">🇪🇺 EUR — Euro</option>
+            <option value="GBP">🇬🇧 GBP — British Pound</option>
+            <option value="TRY">🇹🇷 TRY — Turkish Lira</option>
+            <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+            <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+            <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+            <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
           </select>
         </div>
-        <div class="inp-field"><label>Monthly income (approx.)</label><input type="number" id="ob_income" placeholder="e.g. 4000" min="0"/></div>
       </div>
-      <div class="modal-actions"><button class="btn-modal-s" onclick="skipOnboarding()">Skip</button><button class="btn-modal-p" onclick="obStep2()">Next →</button></div>
+      <div class="modal-actions">
+        <button class="btn-modal-s" onclick="skipOnboarding()">Skip setup</button>
+        <button class="btn-modal-p" onclick="obGo(2)">Next →</button>
+      </div>
     </div>
+
+    <!-- Step 2: Income -->
     <div id="obStep2" style="display:none" class="ob-anim">
-      <span class="ob-step-icon">💸</span>
-      <h2 style="text-align:center;margin-bottom:6px">Biggest expenses?</h2>
-      <p style="text-align:center">Helps personalize your health score.</p>
-      <div class="modal-form">
-        <div class="inp-field"><label>Monthly rent / mortgage</label><input type="number" id="ob_rent" placeholder="e.g. 1200" min="0"/></div>
-        <div class="inp-field"><label>Food (groceries + dining)</label><input type="number" id="ob_food" placeholder="e.g. 600" min="0"/></div>
-        <div class="inp-field"><label>Subscriptions (total/mo)</label><input type="number" id="ob_subs" placeholder="e.g. 80" min="0"/></div>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="width:56px;height:56px;border-radius:16px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px">💰</div>
+        <h2 style="font-size:20px;margin-bottom:6px">Your income</h2>
+        <p style="color:var(--muted);font-size:13px">Rough numbers are fine — you can change them anytime.</p>
       </div>
-      <div class="modal-actions"><button class="btn-modal-s" onclick="obBack()">← Back</button><button class="btn-modal-p" onclick="obStep3()">Next →</button></div>
+      <div class="modal-form">
+        <div class="inp-field">
+          <label>Monthly salary / income</label>
+          <input type="number" id="ob_income" placeholder="e.g. 4000" min="0" oninput="obUpdatePreview()"/>
+        </div>
+        <div class="inp-field">
+          <label>Other income <span style="color:var(--muted)">(freelance, rental…)</span></label>
+          <input type="number" id="ob_extra" placeholder="e.g. 500" min="0" oninput="obUpdatePreview()"/>
+        </div>
+        <div id="obIncomeHint" style="font-size:12px;color:var(--green);display:none;background:rgba(34,197,94,.06);border-radius:8px;padding:8px 10px"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-s" onclick="obGo(1)">← Back</button>
+        <button class="btn-modal-p" onclick="obGo(3)">Next →</button>
+      </div>
     </div>
+
+    <!-- Step 3: Main expenses -->
     <div id="obStep3" style="display:none" class="ob-anim">
-      <span class="ob-step-icon">🎉</span>
-      <h2 style="text-align:center;margin-bottom:6px">You're all set!</h2>
-      <p style="text-align:center">Dashboard pre-filled. Adjust any number anytime.</p>
-      <div style="background:var(--surface2);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;line-height:2;color:var(--muted)" id="ob_summary"></div>
-      <div class="modal-actions"><button class="btn-modal-p" onclick="finishOnboarding()">Go to Dashboard →</button></div>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="width:56px;height:56px;border-radius:16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px">📊</div>
+        <h2 style="font-size:20px;margin-bottom:6px">Main expenses</h2>
+        <p style="color:var(--muted);font-size:13px">Fill what you know. Leave the rest blank.</p>
+      </div>
+      <div class="modal-form">
+        <div class="inp-field"><label>🏠 Housing (rent/mortgage)</label><input type="number" id="ob_rent" placeholder="e.g. 1200" min="0"/></div>
+        <div class="inp-field"><label>🛒 Food (groceries + dining)</label><input type="number" id="ob_food" placeholder="e.g. 600" min="0"/></div>
+        <div class="inp-field"><label>🚗 Transport</label><input type="number" id="ob_transport" placeholder="e.g. 200" min="0"/></div>
+        <div class="inp-field"><label>📱 Subscriptions (total/mo)</label><input type="number" id="ob_subs" placeholder="e.g. 80" min="0"/></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-s" onclick="obGo(2)">← Back</button>
+        <button class="btn-modal-p" onclick="obGo(4)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Summary + savings goal -->
+    <div id="obStep4" style="display:none" class="ob-anim">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(124,109,250,.2),rgba(168,85,247,.1));border:1px solid rgba(124,109,250,.3);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px">🎉</div>
+        <h2 style="font-size:20px;margin-bottom:4px">Your money snapshot</h2>
+      </div>
+      <div id="ob_summary" style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;line-height:1.8"></div>
+      <div class="inp-field" style="margin-bottom:16px">
+        <label>🎯 Monthly savings goal <span style="color:var(--muted)">(optional)</span></label>
+        <input type="number" id="ob_savingsGoal" placeholder="e.g. 500" min="0"/>
+        <span style="font-size:11px;color:var(--muted);margin-top:4px;display:block">Flo will show your progress toward this each month.</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-s" onclick="obGo(3)">← Back</button>
+        <button class="btn-modal-p" onclick="finishOnboarding()">Go to Dashboard →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1067,16 +1507,51 @@ footer a:hover{color:var(--text);}
 
 <div class="toast" id="toast"></div>
 
+<!-- WHAT'S NEW MODAL -->
+<div class="modal-overlay" id="whatsNewModal">
+  <div class="modal" style="max-width:420px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c6dfa,#a855f7);display:flex;align-items:center;justify-content:center;font-size:18px">✨</div>
+        <div>
+          <div style="font-size:16px;font-weight:800">What's New in Flo</div>
+          <div style="font-size:11px;color:var(--muted)">Version 1.3 · March 2026</div>
+        </div>
+      </div>
+      <button onclick="closeWhatsNew()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <div style="display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:11px 13px">
+        <div style="font-size:18px;flex-shrink:0">🎯</div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">Monthly Savings Goal</div><div style="font-size:12px;color:var(--muted)">Set a target savings amount — Flo tracks your progress with a live progress bar.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:11px 13px">
+        <div style="font-size:18px;flex-shrink:0">📝</div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">Monthly Notes</div><div style="font-size:12px;color:var(--muted)">Add a note to each month — "This month had holidays", "paid off loan" etc.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:11px 13px">
+        <div style="font-size:18px;flex-shrink:0">📋</div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">Copy from Last Month</div><div style="font-size:12px;color:var(--muted)">One click to copy last month's recurring expenses into the current month.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;background:var(--surface2);border-radius:10px;padding:11px 13px">
+        <div style="font-size:18px;flex-shrink:0">🚀</div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:2px">Improved Onboarding</div><div style="font-size:12px;color:var(--muted)">New 4-step setup: currency → income → expenses → summary. Done in 60 seconds.</div></div>
+      </div>
+    </div>
+    <button class="btn-plan btn-plan-pro" style="padding:11px;font-size:14px" onclick="closeWhatsNew()">Got it — show me the dashboard →</button>
+  </div>
+</div>
+
 <script>
 // ========== CONSTANTS ==========
-// Static fallback rates (USD base) — updated at app load via API
+// Static fallback rates (USD base, ~Mar 2026) — overwritten at load via open.er-api.com
 let FX = {
-  USD:1,EUR:.919,GBP:.787,TRY:38.2,JPY:149.8,CAD:1.358,AUD:1.531,CHF:.896,
-  CNY:7.24,INR:83.1,BRL:5.72,MXN:17.2,SGD:1.34,HKD:7.82,
-  SEK:10.52,NOK:10.65,DKK:6.87,PLN:4.01,NZD:1.63,ZAR:18.7,
-  KRW:1340,AED:3.67,SAR:3.75,CZK:23.1,HUF:362,RON:4.58,
-  THB:35.1,IDR:15900,MYR:4.72,PHP:56.4,VND:25200,ILS:3.71,
-  CLP:973,COP:3950,ARS:870,UAH:38.5,NGN:1300,EGP:47.5
+  USD:1,EUR:.922,GBP:.791,TRY:38.8,JPY:150.2,CAD:1.362,AUD:1.548,CHF:.890,
+  CNY:7.26,INR:84.5,BRL:5.88,MXN:20.1,SGD:1.35,HKD:7.78,
+  SEK:10.48,NOK:10.58,DKK:6.89,PLN:4.08,NZD:1.71,ZAR:18.4,
+  KRW:1455,AED:3.67,SAR:3.75,CZK:23.8,HUF:374,RON:4.62,
+  THB:34.8,IDR:16450,MYR:4.45,PHP:57.2,VND:25400,ILS:3.75,
+  CLP:965,COP:4250,ARS:1120,UAH:41.5,NGN:1620,EGP:51.2
 };
 let FX_LOADED = false;
 let FX_UPDATED = '';
@@ -1127,7 +1602,7 @@ function openProModal()  { document.getElementById('proModal').classList.add('op
 function closeProModal() { document.getElementById('proModal').classList.remove('open'); }
 function buyPro() {
   // Replace with real LemonSqueezy URL when product is created
-  window.open('https://yigitguler.gumroad.com/l/odnyt', '_blank');
+  window.open('https://totafinance.gumroad.com/l/odnyt', '_blank');
 }
 async function activateLicense() {
   const raw = document.getElementById('licenseInput').value.trim();
@@ -1147,6 +1622,9 @@ async function activateLicense() {
     const data = await res.json();
     if (data.valid) {
       localStorage.setItem('flo_pro_key', raw);
+      if (!localStorage.getItem('flo_pro_activated_at')) {
+        localStorage.setItem('flo_pro_activated_at', Date.now().toString());
+      }
       isPro = true;
       closeProModal();
       generateMonthOptions();
@@ -1201,7 +1679,7 @@ const PRO_PRICE = {
 // ========== STATE ==========
 let S = {
   income:0, extra:0, cats:{}, goals:{}, baseCurrency:'USD',
-  name:'', initialized:false
+  name:'', initialized:false, savingsGoal:0, notes:''
 };
 
 // ========== I18N ==========
@@ -1579,24 +2057,37 @@ function showPage(p) {
   if (p === 'tools') initSubRows();
   if (p === 'currency') { renderRateTable(); convertFX(); }
   window.scrollTo(0, 0);
+  // Persist page in URL hash so refresh restores the current view
+  if (p !== 'landing') {
+    history.replaceState(null, '', '#' + p);
+  } else {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
 }
 
-function showToast(msg) {
+function showToast(msg, duration) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.innerHTML = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+  setTimeout(() => t.classList.remove('show'), duration || 3200);
 }
 
 // ========== UNSAVED CHANGES ==========
 let unsavedChanges = false;
 let autoSaveTimer = null;
+// Warn before closing/navigating away when there are unsaved changes
+window.addEventListener('beforeunload', e => {
+  if (unsavedChanges) {
+    e.preventDefault();
+    e.returnValue = ''; // Required for Chrome to show the dialog
+  }
+});
 function markUnsaved() {
   unsavedChanges = true;
   const bar = document.getElementById('unsavedBar');
   if (bar) bar.classList.add('show');
   clearTimeout(autoSaveTimer);
-  autoSaveTimer = setTimeout(() => { if (unsavedChanges) saveDashboard(); }, 10000);
+  autoSaveTimer = setTimeout(() => { if (unsavedChanges) saveDashboard(); }, 5000);
 }
 function markSaved() {
   unsavedChanges = false;
@@ -1629,10 +2120,94 @@ function updatePricing() {
 }
 
 // ========== ONBOARDING ==========
+const APP_VERSION = '1.3';
 function openOnboarding() { document.getElementById('onboardingModal').classList.add('open'); }
 function closeOnboarding() { document.getElementById('onboardingModal').classList.remove('open'); }
 function skipOnboarding() { closeOnboarding(); showPage('dashboard'); }
+
+function obGo(step) {
+  [1,2,3,4].forEach(n => {
+    const el = document.getElementById('obStep'+n);
+    if (el) el.style.display = n === step ? '' : 'none';
+    const dot = document.getElementById('obDot'+n);
+    if (dot) dot.style.background = n <= step ? 'linear-gradient(90deg,var(--accent),var(--accent2))' : 'var(--border)';
+  });
+  const lbl = document.getElementById('obStepLabel');
+  if (lbl) lbl.textContent = 'Step ' + step + ' of 4';
+  // Step-specific actions
+  if (step === 4) obBuildSummary();
+}
+
+function obUpdatePreview() {
+  const inc = parseFloat(document.getElementById('ob_income')?.value)||0;
+  const ext = parseFloat(document.getElementById('ob_extra')?.value)||0;
+  const total = inc + ext;
+  const hint = document.getElementById('obIncomeHint');
+  if (hint) {
+    if (total > 0) {
+      hint.style.display = 'block';
+      hint.textContent = '✓ Total monthly income: ' + fmt(total, document.getElementById('ob_currency')?.value || 'USD');
+    } else {
+      hint.style.display = 'none';
+    }
+  }
+}
+
+function obBuildSummary() {
+  const cur = document.getElementById('ob_currency')?.value || 'USD';
+  const name = document.getElementById('ob_name')?.value || '';
+  const income = parseFloat(document.getElementById('ob_income')?.value)||0;
+  const extra = parseFloat(document.getElementById('ob_extra')?.value)||0;
+  const rent = parseFloat(document.getElementById('ob_rent')?.value)||0;
+  const food = parseFloat(document.getElementById('ob_food')?.value)||0;
+  const transport = parseFloat(document.getElementById('ob_transport')?.value)||0;
+  const subs = parseFloat(document.getElementById('ob_subs')?.value)||0;
+  const totalInc = income + extra;
+  const totalSpent = rent + food + transport + subs;
+  const saved = totalInc - totalSpent;
+  const saveRate = totalInc > 0 ? (saved / totalInc * 100).toFixed(0) : 0;
+  const score = totalInc > 0 ? Math.min(100, Math.max(0, Math.round(20 + saveRate * 0.6 + (rent/totalInc < .35 ? 15 : 0) + (food/totalInc < .2 ? 10 : 0)))) : 0;
+  const sc = document.getElementById('ob_summary');
+  if (sc) sc.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--surface);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Income</div>
+        <div style="font-size:18px;font-weight:800;color:var(--green)">${totalInc > 0 ? fmt(totalInc,cur) : '—'}</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Estimated Save Rate</div>
+        <div style="font-size:18px;font-weight:800;color:${saveRate >= 20 ? 'var(--green)' : saveRate >= 10 ? 'var(--yellow)' : 'var(--red)'}">${totalInc > 0 ? saveRate+'%' : '—'}</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Est. Savings</div>
+        <div style="font-size:18px;font-weight:800;color:var(--accent)">${totalInc > 0 ? fmt(Math.max(0,saved),cur) : '—'}</div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Health Score</div>
+        <div style="font-size:18px;font-weight:800;background:linear-gradient(135deg,#7c6dfa,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${score > 0 ? score : '—'}</div>
+      </div>
+    </div>
+    ${name ? '<div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:center">Hey '+name+'! Dashboard pre-filled. Adjust any number anytime.</div>' : '<div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:center">Dashboard pre-filled — adjust any number anytime.</div>'}
+  `;
+  // Pre-apply savings goal input suggestion
+  if (totalInc > 0 && saved > 0) {
+    const goalInput = document.getElementById('ob_savingsGoal');
+    if (goalInput && !goalInput.value) goalInput.value = Math.round(saved * 0.8);
+  }
+}
+
 function finishOnboarding() {
+  const cur = document.getElementById('ob_currency')?.value || 'USD';
+  const name = document.getElementById('ob_name')?.value || '';
+  S.name = name;
+  S.baseCurrency = cur;
+  S.income = parseFloat(document.getElementById('ob_income')?.value)||0;
+  S.extra = parseFloat(document.getElementById('ob_extra')?.value)||0;
+  S.cats.housing = parseFloat(document.getElementById('ob_rent')?.value)||0;
+  S.cats.food = parseFloat(document.getElementById('ob_food')?.value)||0;
+  S.cats.transport = parseFloat(document.getElementById('ob_transport')?.value)||0;
+  S.cats.shopping = parseFloat(document.getElementById('ob_subs')?.value)||0;
+  S.savingsGoal = parseFloat(document.getElementById('ob_savingsGoal')?.value)||0;
   closeOnboarding();
   const sel = document.getElementById('dashCurrency');
   if (sel) sel.value = S.baseCurrency;
@@ -1642,9 +2217,309 @@ function finishOnboarding() {
   showPage('dashboard');
   renderDashboard();
   liveUpdate();
-  // Open input section so user sees their pre-filled data
   if (!inputOpen) toggleInput();
-  showToast('👋 Welcome! Your data is pre-filled below.');
+  showToast('👋 Welcome' + (S.name ? ', '+S.name : '') + '! Dashboard ready.');
+}
+
+// Backward compat shims
+function obBack() { obGo(1); }
+function obStep2() { obGo(2); }
+function obStep3() { obGo(4); }
+
+// ========== COPY FROM LAST MONTH ==========
+function copyFromLastMonth() {
+  const months = JSON.parse(localStorage.getItem('flo_months') || '[]');
+  // Find previous month
+  const [y, m] = currentMonth.split('-').map(Number);
+  const prevDate = new Date(y, m - 2, 1);
+  const prevKey = prevDate.getFullYear() + '-' + String(prevDate.getMonth()+1).padStart(2,'0');
+  const raw = localStorage.getItem('flo_' + prevKey);
+  if (!raw) { showToast('⚠️ No data found for last month.'); return; }
+  const d = JSON.parse(raw);
+  // Copy cats + goals (not income, as income may differ)
+  S.cats = {...(d.cats || {})};
+  S.goals = {...(d.goals || {})};
+  if (d.savingsGoal) S.savingsGoal = d.savingsGoal;
+  syncInputsFromState();
+  updateCardStates();
+  liveUpdate();
+  showToast('📋 Last month\'s data copied. Update what changed!');
+  if (!inputOpen) toggleInput();
+}
+
+// ========== WHAT'S NEW ==========
+function openWhatsNew() {
+  document.getElementById('whatsNewModal').classList.add('open');
+  document.getElementById('whatsNewBtn').style.display = 'none';
+  localStorage.setItem('flo_last_version', APP_VERSION);
+}
+function closeWhatsNew() {
+  document.getElementById('whatsNewModal').classList.remove('open');
+  showPage('dashboard');
+}
+function checkWhatsNew() {
+  const seen = localStorage.getItem('flo_last_version');
+  const btn = document.getElementById('whatsNewBtn');
+  if (btn && seen !== APP_VERSION) {
+    btn.style.display = 'flex';
+  }
+}
+
+// ========== INTERACTIVE HERO DEMO ==========
+function updateDemo() {
+  const income = parseInt(document.getElementById('demoIncome')?.value) || 0;
+  const housing = parseInt(document.getElementById('demoHousing')?.value) || 0;
+  const food = parseInt(document.getElementById('demoFood')?.value) || 0;
+  const transport = parseInt(document.getElementById('demoTransport')?.value) || 0;
+  const spent = housing + food + transport;
+  const saved = income - spent;
+  const saveRate = income > 0 ? saved / income * 100 : 0;
+
+  // Score calculation (simplified version of calcScore)
+  let score = 0;
+  if (income > 0) {
+    const sr = saveRate;
+    if (sr >= 30) score += 40; else if (sr >= 20) score += 32; else if (sr >= 10) score += 20; else if (sr >= 0) score += 8;
+    const hp = housing / income * 100;
+    if (hp < 25) score += 25; else if (hp < 30) score += 18; else if (hp < 35) score += 10; else score += 2;
+    const fp = food / income * 100;
+    if (fp < 15) score += 20; else if (fp < 25) score += 14; else if (fp < 35) score += 8; else score += 2;
+    score += Math.max(0, 15 - Math.round(transport / income * 50));
+    score = Math.max(5, Math.min(99, Math.round(score)));
+  }
+
+  const f = v => '$' + Math.round(Math.abs(v)).toLocaleString('en-US');
+  const pct = v => income > 0 ? (v / income * 100).toFixed(0) + '%' : '0%';
+  const scoreColor = score >= 70 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444';
+  const scoreLabel = score >= 70 ? 'Great shape! 🎉' : score >= 50 ? 'Room to improve' : 'Needs attention';
+
+  const set = (id, val, style) => { const el = document.getElementById(id); if(el){el.textContent=val; if(style) Object.assign(el.style, style);} };
+  const setW = (id, pct) => { const el = document.getElementById(id); if(el) el.style.width = pct; };
+
+  set('demoIncomeVal', f(income), {color:'#22c55e'});
+  set('demoHousingVal', f(housing));
+  set('demoFoodVal', f(food));
+  set('demoTransportVal', f(transport));
+  set('demoSaved', (saved < 0 ? '-' : '') + f(saved), {color: saved >= 0 ? '#22c55e' : '#ef4444'});
+  set('demoSaveRate', saveRate.toFixed(1) + '% of income');
+  set('demoScoreNum', income > 0 ? score : '—', {color: income > 0 ? scoreColor : 'var(--muted)'});
+  set('demoScoreLabel', income > 0 ? scoreLabel : 'Enter income above', {color: scoreColor});
+
+  setW('demoBarHousing', income > 0 ? Math.min(100, housing/income*100).toFixed(1)+'%' : '0%');
+  setW('demoBarFood', income > 0 ? Math.min(100, food/income*100).toFixed(1)+'%' : '0%');
+  setW('demoBarTransport', income > 0 ? Math.min(100, transport/income*100).toFixed(1)+'%' : '0%');
+
+  const bar = document.getElementById('demoScoreBar');
+  if (bar) {
+    bar.style.width = income > 0 ? score + '%' : '0%';
+    bar.style.background = score >= 70 ? 'linear-gradient(90deg,#22c55e,#16a34a)' : score >= 50 ? 'linear-gradient(90deg,#f59e0b,#d97706)' : 'linear-gradient(90deg,#ef4444,#dc2626)';
+  }
+}
+
+// ========== SHARE SCORE ==========
+function shareScore(platform) {
+  const score = document.getElementById('scoreNum')?.textContent || '—';
+  const month = currentMonth ? new Date(currentMonth + '-01').toLocaleString('en-US', {month:'long', year:'numeric'}) : '';
+  const text = `My Flo Financial Health Score for ${month}: ${score}/100 💹 Track yours free — no bank login needed.`;
+  const url = 'https://flo.tota-finance.com';
+  if (platform === 'twitter') {
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text + '\n' + url), '_blank');
+  } else if (platform === 'whatsapp') {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank');
+  } else if (platform === 'copy') {
+    navigator.clipboard?.writeText(text + '\n' + url).then(() => showToast('✓ Score copied to clipboard!')).catch(() => showToast('Copy failed — try manually'));
+  }
+}
+
+// ========== SHARE FLO ==========
+function shareFlo(platform) {
+  const url = 'https://flo.tota-finance.com';
+  const text = 'I track my monthly budget with Flo — no bank connection needed, no login, just enter your numbers. Free forever! 💸';
+  if (platform === 'twitter') {
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text + ' ' + url), '_blank');
+  } else if (platform === 'whatsapp') {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank');
+  } else if (platform === 'copy') {
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('shareCopyBtn');
+      if (btn) { btn.innerHTML = '✓ Copied!'; setTimeout(() => { btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy link'; }, 2000); }
+      showToast('✓ Link copied!');
+    }).catch(() => showToast('flo.tota-finance.com'));
+  }
+}
+
+// ========== REVIEW REQUEST ==========
+function checkReviewRequest() {
+  if (!isPro) return;
+  const activatedAt = parseInt(localStorage.getItem('flo_pro_activated_at') || '0');
+  const asked = localStorage.getItem('flo_review_asked');
+  if (!activatedAt || asked) return;
+  const daysSince = (Date.now() - activatedAt) / 86400000;
+  if (daysSince >= 7) {
+    localStorage.setItem('flo_review_asked', '1');
+    setTimeout(() => {
+      showToast('⭐ Enjoying Flo Pro? A quick review on Gumroad helps a lot! <a href="https://totafinance.gumroad.com" target="_blank" style="color:var(--accent);font-weight:700;margin-left:4px">Leave a review →</a>', 8000);
+    }, 3000);
+  }
+}
+
+function loadDemoData() {
+  const demoMonth = currentMonth;
+  S.income = 4200; S.extra = 300; S.baseCurrency = 'USD';
+  S.cats = { housing:1200, food:480, transport:220, health:80, personal:150, shopping:320, education:0, savings:400, other:180 };
+  saveMonthData(demoMonth);
+  syncInputsFromState();
+  updateCardStates();
+  renderDashboard();
+  liveUpdate();
+  showToast('👀 Sample data loaded — this is what Flo looks like with real data!');
+  const emptyState = document.getElementById('emptyState');
+  if (emptyState) emptyState.style.display = 'none';
+}
+
+function downloadReport() {
+  const card = document.getElementById('reportCard');
+  if (!card) return;
+  const scoreEl = document.getElementById('reportScore');
+  const monthEl = document.getElementById('reportMonth');
+  const saveRateEl = document.getElementById('reportSaveRate');
+  const topCatEl = document.getElementById('reportTopCat');
+  const score = scoreEl ? scoreEl.textContent : '—';
+  const month = monthEl ? monthEl.textContent : 'This Month';
+  const saveRate = saveRateEl ? saveRateEl.textContent : '—';
+  const topCat = topCatEl ? topCatEl.textContent : '—';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 800; canvas.height = 500;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#0d0d1a';
+  ctx.fillRect(0, 0, 800, 500);
+
+  // Gradient header strip
+  const grad = ctx.createLinearGradient(0,0,800,0);
+  grad.addColorStop(0, 'rgba(124,109,250,0.3)');
+  grad.addColorStop(1, 'rgba(168,85,247,0.1)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 800, 120);
+
+  // Logo
+  ctx.font = 'bold 42px system-ui, sans-serif';
+  ctx.fillStyle = '#7c6dfa';
+  ctx.fillText('Flo', 60, 70);
+
+  // Month
+  ctx.font = '16px system-ui, sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText(month, 60, 95);
+
+  // Score
+  ctx.font = 'bold 96px system-ui, sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'right';
+  ctx.fillText(score, 740, 95);
+  ctx.font = '14px system-ui, sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText('Health Score', 740, 112);
+
+  ctx.textAlign = 'left';
+
+  // Stats boxes
+  const boxes = [
+    { label: 'Save Rate', value: saveRate, color: '#22c55e' },
+    { label: 'Top Spend', value: topCat, color: '#f59e0b' },
+  ];
+  boxes.forEach((b, i) => {
+    const x = 60 + i * 220;
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    roundRect(ctx, x, 150, 190, 90, 12);
+    ctx.fill();
+    ctx.font = 'bold 28px system-ui, sans-serif';
+    ctx.fillStyle = b.color;
+    ctx.fillText(b.value, x + 16, 198);
+    ctx.font = '13px system-ui, sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText(b.label, x + 16, 224);
+  });
+
+  // Watermark
+  ctx.font = '13px system-ui, sans-serif';
+  ctx.fillStyle = '#334155';
+  ctx.textAlign = 'right';
+  ctx.fillText('flo.tota-finance.com', 740, 460);
+
+  // Bottom tagline
+  ctx.textAlign = 'left';
+  ctx.font = '13px system-ui, sans-serif';
+  ctx.fillStyle = '#475569';
+  ctx.fillText('Track your money. Improve your score.', 60, 460);
+
+  const a = document.createElement('a');
+  a.download = 'flo-report-' + month.replace(/\s/g,'-').toLowerCase() + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('✅ Report saved as image!');
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function shareReport() {
+  const text = 'My Flo financial report — track your money at flo.tota-finance.com';
+  if (navigator.share) {
+    navigator.share({ title: 'My Flo Report', text, url: 'https://flo.tota-finance.com' });
+  } else {
+    navigator.clipboard.writeText('https://flo.tota-finance.com').then(() => showToast('📋 Link copied!'));
+  }
+}
+
+function exportBackup() {
+  const allData = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('flo_')) {
+      allData[key] = localStorage.getItem(key);
+    }
+  }
+  const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'flo-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  showToast('💾 Backup saved! Keep this file safe.');
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      let count = 0;
+      Object.entries(data).forEach(([k, v]) => {
+        if (k.startsWith('flo_')) { localStorage.setItem(k, v); count++; }
+      });
+      showToast('✅ Restored ' + count + ' items! Reloading...');
+      setTimeout(() => location.reload(), 1500);
+    } catch(err) {
+      showToast('❌ Invalid backup file');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
 }
 
 // ========== LIVE UPDATE ==========
@@ -1679,8 +2554,23 @@ function liveUpdate() {
 
 // ========== DASHBOARD ==========
 function saveDashboard() {
-  // Will be overridden by the new version below — kept as placeholder
+  S.income = parseFloat(document.getElementById('inp_income').value)||0;
+  S.extra = parseFloat(document.getElementById('inp_extra').value)||0;
+  S.savingsGoal = parseFloat(document.getElementById('inp_savingsGoal')?.value)||0;
+  S.notes = document.getElementById('inp_notes')?.value || '';
+  CAT_CFG.forEach(c => {
+    const vi = document.getElementById('cat_v_'+c.k);
+    const gi = document.getElementById('cat_g_'+c.k);
+    S.cats[c.k] = vi ? Math.max(0, parseFloat(vi.value)||0) : 0;
+    if (gi) S.goals[c.k] = parseFloat(gi.value)||0;
+  });
+  S.baseCurrency = document.getElementById('dashCurrency')?.value || S.baseCurrency;
+  saveMonthData(currentMonth);
   renderDashboard();
+  clearTimeout(autoSaveTimer);
+  document.getElementById('unsavedBar').classList.remove('show');
+  unsavedChanges = false;
+  showToast('✓ Saved!');
 }
 
 function renderDashboard() {
@@ -1688,8 +2578,24 @@ function renderDashboard() {
   const pb = document.getElementById('premiumBanner');
   if (pb) pb.style.display = isPro ? 'none' : '';
 
+  // Unlock Pro features (remove lock overlays + blur)
+  document.querySelectorAll('.pro-locked .lock-overlay').forEach(el => el.style.display = isPro ? 'none' : '');
+  document.querySelectorAll('.pro-inner').forEach(el => {
+    el.style.filter = isPro ? 'none' : '';
+    el.style.pointerEvents = isPro ? 'auto' : '';
+  });
+  // Pro badge in nav
+  const navBadge = document.getElementById('navProBadge');
+  if (navBadge) navBadge.style.display = isPro ? 'flex' : 'none';
+
   const displayCur = document.getElementById('dashCurrency')?.value || S.baseCurrency;
   const rate = getRate(S.baseCurrency || 'USD', displayCur);
+
+  // Show/hide empty state
+  const emptyEl = document.getElementById('emptyState');
+  if (emptyEl) emptyEl.style.display = (S.income === 0 && S.extra === 0) ? 'flex' : 'none';
+  if (emptyEl) emptyEl.style.flexDirection = 'column';
+  if (emptyEl) emptyEl.style.alignItems = 'center';
 
   const income = (S.income + (S.extra || 0)) * rate;
   const cats = {};
@@ -1701,26 +2607,32 @@ function renderDashboard() {
   const scoreColor = score >= 70 ? 'var(--green)' : score >= 50 ? 'var(--yellow)' : 'var(--red)';
 
   // Stats
+  const spentPct = income > 0 ? (totalSpent/income*100).toFixed(1) : null;
+  const savePctStr = income > 0 ? saveRate.toFixed(1) : null;
   document.getElementById('dashStats').innerHTML = `
     <div class="stat-card income">
-      <div class="stat-label">Income</div>
+      <div class="stat-card-icon">💰</div>
+      <div class="stat-label">${t('stat_income')}</div>
       <div class="stat-value" style="color:var(--green)">${income > 0 ? fmt(income, displayCur) : '—'}</div>
-      <div class="stat-sub">${displayCur} · ${t('this_month')}</div>
+      <div class="stat-sub">${income > 0 ? displayCur + ' · ' + t('this_month') : '<span style="color:var(--muted)">' + t('enter_data') + '</span>'}</div>
     </div>
     <div class="stat-card spent">
-      <div class="stat-label">Total Spent</div>
+      <div class="stat-card-icon">💸</div>
+      <div class="stat-label">${t('stat_spent')}</div>
       <div class="stat-value" style="color:${totalSpent > income && income > 0 ? 'var(--red)' : 'var(--text)'}">${totalSpent > 0 ? fmt(totalSpent, displayCur) : '—'}</div>
-      <div class="stat-sub">${income > 0 ? (totalSpent/income*100).toFixed(1)+t('of_income') : t('enter_data')}</div>
+      <div class="stat-sub">${spentPct ? `<span style="color:${parseFloat(spentPct)>80?'var(--red)':parseFloat(spentPct)>60?'var(--yellow)':'var(--muted)'}">${spentPct}${t('of_income')}</span>` : ''}</div>
     </div>
     <div class="stat-card saved">
-      <div class="stat-label">Saved</div>
+      <div class="stat-card-icon">🏦</div>
+      <div class="stat-label">${t('stat_saved')}</div>
       <div class="stat-value" style="color:${saved >= 0 ? 'var(--accent)' : 'var(--red)'}">${income > 0 ? fmt(saved, displayCur) : '—'}</div>
-      <div class="stat-sub" style="color:${saveRate >= 20 ? 'var(--green)' : saveRate >= 10 ? 'var(--yellow)' : 'var(--red)'}">${income > 0 ? saveRate.toFixed(1)+t('of_income') : ''}</div>
+      <div class="stat-sub">${savePctStr ? `<span style="color:${saveRate>=20?'var(--green)':saveRate>=10?'var(--yellow)':'var(--red)'}">${saved>=0?'▲':'▼'} ${savePctStr}${t('of_income')}</span>` : ''}</div>
     </div>
-    <div class="stat-card score">
-      <div class="stat-label">Health Score</div>
+    <div class="stat-card score" style="cursor:pointer" onclick="document.getElementById('scoreReportLock')?.scrollIntoView({behavior:'smooth',block:'center'})">
+      <div class="stat-card-icon">📊</div>
+      <div class="stat-label">${t('stat_score')}</div>
       <div class="stat-value" style="color:${scoreColor}">${income > 0 ? score : '—'}</div>
-      <div class="stat-sub">${income > 0 ? (score >= 70 ? t('score_great_s') : score >= 50 ? t('score_fair_s') : t('score_needs_s')) : ''}</div>
+      <div class="stat-sub">${income > 0 ? `<span style="color:${scoreColor}">${score >= 70 ? t('score_great_s') : score >= 50 ? t('score_fair_s') : t('score_needs_s')}</span>` : ''}</div>
     </div>
   `;
 
@@ -1744,6 +2656,30 @@ function renderDashboard() {
         </div>`;
       }).join('');
 
+  // Savings goal progress
+  const goalInput = document.getElementById('inp_savingsGoal');
+  if (goalInput && !goalInput.value && S.savingsGoal) goalInput.value = S.savingsGoal;
+  const goalBar = document.getElementById('goalProgressBar');
+  const goalFill = document.getElementById('goalProgressFill');
+  const goalLbl = document.getElementById('goalProgressLabel');
+  if (S.savingsGoal > 0 && income > 0) {
+    const actualSaved = saved / rate; // in base currency
+    const pct = Math.min(100, Math.max(0, actualSaved / S.savingsGoal * 100));
+    if (goalBar) goalBar.style.display = 'block';
+    if (goalFill) { goalFill.style.width = pct + '%'; goalFill.style.background = pct >= 100 ? 'linear-gradient(90deg,#22c55e,#16a34a)' : pct >= 60 ? 'linear-gradient(90deg,#f59e0b,#d97706)' : 'linear-gradient(90deg,#ef4444,#dc2626)'; }
+    if (goalLbl) goalLbl.textContent = pct.toFixed(0) + '% of goal (' + fmt(actualSaved, S.baseCurrency) + ' / ' + fmt(S.savingsGoal, S.baseCurrency) + ')';
+  } else {
+    if (goalBar) goalBar.style.display = 'none';
+    if (goalLbl) goalLbl.textContent = '';
+  }
+
+  // Month label in header
+  const monthLabelEl = document.getElementById('dashMonthLabel');
+  if (monthLabelEl && currentMonth) {
+    const d = new Date(currentMonth + '-01');
+    monthLabelEl.textContent = d.toLocaleString('en-US', {month:'long', year:'numeric'});
+  }
+
   // Score
   document.getElementById('scoreNum').textContent = income > 0 ? score : '—';
   document.getElementById('scoreNum').style.color = scoreColor;
@@ -1752,6 +2688,10 @@ function renderDashboard() {
     : t('score_empty');
   document.getElementById('scoreBar').style.width = income > 0 ? score + '%' : '0%';
   document.getElementById('scoreBar').style.background = `linear-gradient(90deg, ${score >= 70 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444'}, ${score >= 70 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626'})`;
+
+  // Show score share row only when there's data
+  const shareRow = document.getElementById('scoreShareRow');
+  if (shareRow) shareRow.style.display = income > 0 ? 'block' : 'none';
 
   // Insights
   document.getElementById('insightsList').innerHTML = generateInsights(income, cats, saveRate, score, displayCur)
@@ -1915,7 +2855,20 @@ function getSpendingForecast() {
 
 function renderTrendChart() {
   const canvas = document.getElementById('trendChart');
-  if (!canvas || typeof Chart === 'undefined') return;
+  if (!canvas) return;
+  if (typeof Chart === 'undefined') {
+    // Chart.js CDN failed — show a text fallback instead of silent empty
+    const wrap = canvas.parentElement;
+    if (wrap && !wrap.querySelector('.chart-fallback')) {
+      canvas.style.display = 'none';
+      const fb = document.createElement('div');
+      fb.className = 'chart-fallback';
+      fb.style.cssText = 'padding:18px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed var(--border);border-radius:10px';
+      fb.innerHTML = '📊 Trend chart unavailable — chart library failed to load.<br><button onclick="window.location.reload()" style="margin-top:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:5px 14px;font-size:12px;cursor:pointer">Reload page</button>';
+      wrap.appendChild(fb);
+    }
+    return;
+  }
   const now = new Date();
   const labels=[], incData=[], spentData=[], savedData=[];
   for (let i = 5; i >= 0; i--) {
@@ -1930,9 +2883,22 @@ function renderTrendChart() {
       incData.push(inc); spentData.push(spent); savedData.push(Math.max(0,inc-spent));
     } else { incData.push(0); spentData.push(0); savedData.push(0); }
   }
-  if (window._trendChart) { window._trendChart.destroy(); window._trendChart=null; }
   const isLight = document.documentElement.getAttribute('data-theme')==='light';
   const tc = isLight?'#6666aa':'#7777aa', gc = isLight?'rgba(0,0,0,.06)':'rgba(255,255,255,.06)';
+  // Reuse existing Chart instance — just update data to avoid flicker and memory leaks
+  if (window._trendChart) {
+    window._trendChart.data.labels = labels;
+    window._trendChart.data.datasets[0].data = incData;
+    window._trendChart.data.datasets[1].data = spentData;
+    window._trendChart.data.datasets[2].data = savedData;
+    window._trendChart.options.scales.x.ticks.color = tc;
+    window._trendChart.options.scales.y.ticks.color = tc;
+    window._trendChart.options.scales.x.grid.color = gc;
+    window._trendChart.options.scales.y.grid.color = gc;
+    window._trendChart.options.plugins.legend.labels.color = tc;
+    window._trendChart.update();
+    return;
+  }
   window._trendChart = new Chart(canvas.getContext('2d'), {
     type:'bar',
     data:{labels, datasets:[
@@ -2221,7 +3187,17 @@ function generateMonthOptions() {
     const lbl = d.toLocaleString('en-US', {month:'long', year:'numeric'});
     opts.push(`<option value="${val}"${val===currentMonth?' selected':''}>${lbl}</option>`);
   }
-  if (!isPro) opts.push(`<option disabled>── Pro: unlock 10 more months ──</option>`);
+  if (!isPro) {
+    opts.push(`<option disabled>── Pro: unlock 10 more months ──</option>`);
+    // Show a one-time tip about the 2-month free limit
+    if (!sessionStorage.getItem('flo_history_hint')) {
+      sessionStorage.setItem('flo_history_hint', '1');
+      setTimeout(() => {
+        const hasOldData = (() => { try { const m=new Date(); const d=new Date(m.getFullYear(),m.getMonth()-2,1); return !!localStorage.getItem('flo_'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')); } catch(e){return false;} })();
+        if (hasOldData) showToast('📅 Free plan shows 2 months. Upgrade to Pro for 12-month history.', 6000);
+      }, 5000);
+    }
+  }
   sel.innerHTML = opts.join('');
 }
 
@@ -2234,7 +3210,7 @@ function onMonthChange() {
 
 // ========== LOCALSTORAGE ==========
 function saveMonthData(month) {
-  const data = {income:S.income, extra:S.extra, cats:{...S.cats}, goals:{...S.goals}, baseCurrency:S.baseCurrency};
+  const data = {income:S.income, extra:S.extra, cats:{...S.cats}, goals:{...S.goals}, baseCurrency:S.baseCurrency, savingsGoal:S.savingsGoal||0, notes:S.notes||''};
   localStorage.setItem('flo_' + month, JSON.stringify(data));
   localStorage.setItem('flo_profile', JSON.stringify({name:S.name, baseCurrency:S.baseCurrency}));
   localStorage.setItem('flo_lastMonth', month);
@@ -2249,11 +3225,13 @@ function loadMonthData(month) {
     S.cats = d.cats || {};
     S.goals = d.goals || {};
     S.baseCurrency = d.baseCurrency || S.baseCurrency;
+    S.savingsGoal = d.savingsGoal || 0;
+    S.notes = d.notes || '';
     return true;
   }
   // No data for this month — reset cats but keep currency/name
   S.income = 0; S.extra = 0;
-  S.cats = {}; S.goals = {};
+  S.cats = {}; S.goals = {}; S.savingsGoal = 0; S.notes = '';
   return false;
 }
 
@@ -2268,6 +3246,10 @@ function loadProfile() {
 function syncInputsFromState() {
   document.getElementById('inp_income').value = S.income || '';
   document.getElementById('inp_extra').value = S.extra || '';
+  const goalEl = document.getElementById('inp_savingsGoal');
+  if (goalEl) goalEl.value = S.savingsGoal || '';
+  const notesEl = document.getElementById('inp_notes');
+  if (notesEl) notesEl.value = S.notes || '';
   CAT_CFG.forEach(c => {
     const vi = document.getElementById('cat_v_'+c.k);
     if (vi) vi.value = S.cats[c.k] || '';
@@ -2488,12 +3470,92 @@ function obStep3() {
   document.getElementById('obProgress').style.width = '100%';
 }
 
+// ========== RECURRING TRANSACTIONS ==========
+let recurringOpen = false;
+let recurringItems = []; // [{name, cat, amount}]
+
+function loadRecurring() {
+  try {
+    const raw = localStorage.getItem('flo_recurring');
+    recurringItems = raw ? JSON.parse(raw) : [];
+  } catch(e) { recurringItems = []; }
+}
+
+function saveRecurring() {
+  localStorage.setItem('flo_recurring', JSON.stringify(recurringItems));
+}
+
+function toggleRecurring() {
+  recurringOpen = !recurringOpen;
+  document.getElementById('recurringBody').style.display = recurringOpen ? '' : 'none';
+  document.getElementById('recurringToggleBtn').textContent = recurringOpen ? 'Hide' : 'Show';
+  if (recurringOpen) renderRecurringList();
+}
+
+function renderRecurringList() {
+  const list = document.getElementById('recurringList');
+  if (!list) return;
+  if (recurringItems.length === 0) {
+    list.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:4px 0">No recurring items yet — add Netflix, rent, gym, etc.</div>';
+    return;
+  }
+  const catOptions = CAT_CFG.map(c => `<option value="${c.k}">${c.e} ${catName(c.k)}</option>`).join('');
+  list.innerHTML = recurringItems.map((item, i) => `
+    <div style="display:flex;gap:6px;align-items:center;background:var(--surface2);border-radius:8px;padding:6px 8px">
+      <input type="text" value="${item.name||''}" placeholder="e.g. Netflix"
+        onchange="recurringItems[${i}].name=this.value;saveRecurring()"
+        style="flex:1.4;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:12px;outline:none;padding:2px 0;min-width:0"/>
+      <select onchange="recurringItems[${i}].cat=this.value;saveRecurring()"
+        style="flex:1.4;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:11px;padding:3px 5px;outline:none;min-width:0">
+        ${CAT_CFG.map(c => `<option value="${c.k}"${c.k===item.cat?' selected':''}>${c.e} ${catName(c.k)}</option>`).join('')}
+      </select>
+      <input type="number" value="${item.amount||''}" placeholder="0" min="0"
+        onchange="recurringItems[${i}].amount=Math.max(0,parseFloat(this.value)||0);saveRecurring()"
+        style="width:70px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:13px;font-weight:700;outline:none;padding:2px 0;text-align:right"/>
+      <button onclick="removeRecurringRow(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px">×</button>
+    </div>`).join('');
+}
+
+function addRecurringRow() {
+  recurringItems.push({ name: '', cat: CAT_CFG[0].k, amount: 0 });
+  saveRecurring();
+  renderRecurringList();
+}
+
+function removeRecurringRow(i) {
+  recurringItems.splice(i, 1);
+  saveRecurring();
+  renderRecurringList();
+}
+
+function applyRecurring() {
+  if (recurringItems.length === 0) { showToast('No recurring items to apply.'); return; }
+  let applied = 0;
+  recurringItems.forEach(item => {
+    if (!item.cat || !item.amount) return;
+    const inp = document.getElementById('cat_v_' + item.cat);
+    if (inp) {
+      const current = parseFloat(inp.value) || 0;
+      inp.value = (current + item.amount).toFixed(0);
+      inp.dispatchEvent(new Event('input'));
+      applied++;
+    }
+  });
+  if (applied > 0) {
+    liveUpdate();
+    showToast(`✓ Applied ${applied} recurring item${applied>1?'s':''} to this month`);
+  } else {
+    showToast('No matching categories found.');
+  }
+}
+
 // ========== INIT ==========
 applyTheme(currentTheme);
 loadProStatus();
 loadProfile();
-// Show Tota Finance link on desktop
-if (window.innerWidth > 640) { const tl = document.getElementById('totaLink'); if (tl) tl.style.display = 'flex'; }
+loadRecurring();
+// Show Tota Finance link (all screens)
+const tl = document.getElementById('totaLink'); if (tl) tl.style.display = 'flex';
 renderCatCards();
 generateMonthOptions();
 syncInputsFromState();
@@ -2502,13 +3564,193 @@ renderNwRows();
 calcNetWorth();
 // Hook month selector
 document.getElementById('dashMonth').addEventListener('change', onMonthChange);
-showPage('landing');
+// Hash routing: restore page on refresh (e.g. user refreshes on /dashboard)
+const _hashPage = location.hash.replace('#', '');
+const _validPages = ['landing', 'dashboard', 'tools', 'currency'];
+showPage(_validPages.includes(_hashPage) ? _hashPage : 'landing');
 renderDashboard();
+// Collapse input section if user already has data
+const _hasData = (S.income > 0 || S.extra > 0 || Object.values(S.cats || {}).some(v => v > 0));
+if (_hasData && inputOpen) toggleInput();
+// Check What's New badge
+checkWhatsNew();
+// One-time backup reminder for users who have saved data
+(function() {
+  try {
+    const hasData = localStorage.getItem('flo_lastMonth');
+    const warned = sessionStorage.getItem('flo_backup_warned');
+    if (hasData && !warned) {
+      sessionStorage.setItem('flo_backup_warned', '1');
+      setTimeout(() => {
+        showToast('💾 Your data is stored in this browser only. If you clear browser data, it will be lost — use CSV export as a backup.', 7000);
+      }, 4000);
+    }
+  } catch(e) {}
+})();
+// Check review request (after brief delay)
+setTimeout(checkReviewRequest, 4000);
 fetchLiveRates().then(() => {
   const note = document.getElementById('fx_rate_note');
   if (note && !FX_LOADED) { note.textContent = '● Fallback rates — check your connection'; note.style.color='var(--yellow)'; }
   if (note && FX_LOADED)  { note.style.color = 'var(--green)'; showToast('✓ Live rates loaded'); }
 });
 </script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      reg.addEventListener('updatefound', () => {
+        const newSW = reg.installing;
+        newSW?.addEventListener('statechange', () => {
+          if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+            showToast('🔄 Flo updated! <button onclick="window.location.reload()" style="background:var(--accent);color:white;border:none;border-radius:5px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer;margin-left:6px">Reload ↻</button>', 10000);
+          }
+        });
+      });
+    }).catch(() => {});
+  });
+}
+</script>
+
+<!-- COMING SOON OVERLAY -->
+<style>
+#flo-coming-soon {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  /* Frosted glass over blurred content */
+  background: rgba(7,7,15,0.72);
+  backdrop-filter: blur(18px) saturate(0.6);
+  -webkit-backdrop-filter: blur(18px) saturate(0.6);
+}
+#flo-coming-soon .cs-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(17,17,24,0.92);
+  border: 1px solid rgba(124,109,250,0.25);
+  border-radius: 24px;
+  padding: 40px 36px;
+  text-align: center;
+  box-shadow: 0 0 80px rgba(124,109,250,0.12), 0 32px 80px rgba(0,0,0,0.6);
+  animation: csIn 0.5s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes csIn {
+  from { opacity:0; transform: translateY(24px) scale(0.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+.cs-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#7c6dfa,#a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  font-family: Georgia, serif;
+  box-shadow: 0 8px 24px rgba(124,109,250,0.35);
+}
+.cs-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(124,109,250,0.12);
+  border: 1px solid rgba(124,109,250,0.3);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #a78bfa;
+  letter-spacing: 0.4px;
+  margin-bottom: 20px;
+}
+.cs-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7c6dfa;
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.4; transform:scale(0.7); }
+}
+.cs-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #f0f0ff;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+.cs-subtitle {
+  font-size: 14px;
+  color: #7777aa;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.cs-tota-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c4b5fd;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.cs-tota-link:hover {
+  background: rgba(124,109,250,0.1);
+  border-color: rgba(124,109,250,0.35);
+  color: #a78bfa;
+}
+.cs-tota-link img {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+}
+.cs-arrow {
+  opacity: 0.6;
+  font-size: 12px;
+}
+.cs-footer {
+  margin-top: 24px;
+  font-size: 11px;
+  color: rgba(119,119,170,0.6);
+}
+</style>
+
+<div id="flo-coming-soon">
+  <div class="cs-card">
+    <div class="cs-logo">F</div>
+    <div class="cs-badge">
+      <span class="cs-badge-dot"></span>
+      Under Development
+    </div>
+    <h1 class="cs-title">Flo is getting<br>a big upgrade ✦</h1>
+    <p class="cs-subtitle">
+      We're rebuilding Flo from the ground up —<br>
+      smarter, faster, and more powerful than ever.<br>
+      Stay tuned.
+    </p>
+    <a href="https://tota-finance.com" class="cs-tota-link">
+      <img src="https://tota-finance.com/logo.png" alt="Tota Finance" />
+      In the meantime, try Tota Finance
+      <span class="cs-arrow">→</span>
+    </a>
+    <p class="cs-footer">flo.tota-finance.com · Coming Soon</p>
+  </div>
+</div>
 </body>
 </html>
